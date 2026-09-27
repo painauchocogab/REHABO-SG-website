@@ -1,0 +1,2370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REHABO-SG | System Initialization</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700&family=Share+Tech+Mono&display=swap");
+
+        * {
+            box-sizing: border-box;
+        }
+
+      body {
+    min-height: 100vh;
+    margin: 0;
+    display: block;
+    padding: 9rem 1rem 4rem;
+    overflow-x: hidden;
+    color: #e8f5ff;
+    font-family: "Share Tech Mono", monospace;
+    background:
+        radial-gradient(ellipse at 50% 55%, rgba(0, 105, 181, 0.24), transparent 55%),
+        linear-gradient(145deg, #020a17 0%, #062442 55%, #031126 100%);
+}
+
+        .brand-logo {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            width: clamp(6rem, 12vw, 10rem);
+            height: auto;
+            filter: drop-shadow(0 0 12px rgba(100, 196, 242, 0.25));
+        }
+
+        .initialization-panel {
+            position: relative;
+            margin: 0 auto 4rem;
+            width: min(100%, 500px);
+            padding: clamp(1.5rem, 5vw, 2.5rem);
+            border: 1px solid rgba(141, 204, 237, 0.65);
+            background: rgba(2, 13, 30, 0.82);
+            box-shadow: 0 0 36px rgba(0, 126, 212, 0.14), inset 0 0 28px rgba(0, 103, 171, 0.08);
+        }
+
+        .initialization-panel::before,
+        .initialization-panel::after {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-color: #7bd6ff;
+            content: "";
+        }
+
+        .initialization-panel::before {
+            top: -1px;
+            left: -1px;
+            border-top: 2px solid;
+            border-left: 2px solid;
+        }
+
+        .initialization-panel::after {
+            right: -1px;
+            bottom: -1px;
+            border-right: 2px solid;
+            border-bottom: 2px solid;
+        }
+
+        .panel-heading {
+            margin: 0;
+            color: #8fdcff;
+            font-family: "Orbitron", sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 2rem 0 1rem;
+            font-family: "Orbitron", sans-serif;
+            font-size: clamp(1.1rem, 4vw, 1.45rem);
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-align: center;
+        }
+
+        .initialization-status {
+            min-height: 1.4em;
+            margin: 0 0 1.7rem;
+            color: #76cfff;
+            font-size: 0.95rem;
+            letter-spacing: 0.12em;
+            text-align: center;
+        }
+
+        .pulse {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            margin-right: 0.5rem;
+            border: 1px solid #90e0ff;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #29baff;
+            animation: pulse 1.2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            50% {
+                opacity: 0.35;
+                box-shadow: 0 0 3px #29baff;
+            }
+        }
+
+        .system-list {
+            display: grid;
+            gap: 0.7rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .system-list li {
+            display: grid;
+            grid-template-columns: 1.2rem 1fr auto;
+            gap: 0.35rem;
+            align-items: center;
+            color: #d7eafa;
+            font-size: clamp(0.75rem, 3vw, 0.92rem);
+            letter-spacing: 0.035em;
+        }
+
+        .indicator {
+            color: #ffc96b;
+            text-align: center;
+        }
+
+        .system-list li.ready .indicator,
+        .system-list li.ready .device-state {
+            color: #63efc1;
+        }
+
+        .device-state {
+            color: #85abc4;
+            text-align: right;
+        }
+
+        .progress-area {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .progress-track {
+            flex: 1;
+            height: 17px;
+            overflow: hidden;
+            border: 1px solid rgba(132, 204, 237, 0.55);
+            background: #07172b;
+        }
+
+        .progress-fill {
+            width: 0;
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                #e9f8ff 0 9px,
+                #acd9ef 9px 10px
+            );
+            box-shadow: 0 0 12px rgba(101, 205, 255, 0.6);
+            transition: width 80ms linear;
+        }
+
+        .progress-value {
+            min-width: 3rem;
+            color: #e8f5ff;
+            font-size: 0.95rem;
+        }
+
+        .panel-footer {
+            margin: 1.5rem 0 0;
+            color: #6489a5;
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+            text-align: center;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        html {
+    scroll-behavior: smooth;
+}
+
+.control-dashboard {
+    width: min(100%, 900px);
+    margin: 0 auto;
+    padding: clamp(1.5rem, 5vw, 3rem);
+    border: 1px solid rgba(141, 204, 237, 0.55);
+    background: rgba(2, 13, 30, 0.78);
+    box-shadow: 0 0 36px rgba(0, 126, 212, 0.14);
+}
+
+.dashboard-header {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(141, 204, 237, 0.28);
+}
+
+.dashboard-brand {
+    margin: 0 0 0.5rem;
+    color: #8fdcff;
+    font-family: "Orbitron", sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+}
+
+.dashboard-title {
+    margin: 0;
+    font-size: clamp(1rem, 4vw, 1.35rem);
+    font-weight: 400;
+}
+
+.dashboard-status {
+    margin: 1rem 0 0;
+    color: #63efc1;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+}
+
+.dashboard-status span {
+    margin: 0 0.4rem;
+}
+
+.mode-heading {
+    margin: 2rem 0 1.25rem;
+    color: #bfeaff;
+    font-size: 0.95rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-align: center;
+}
+
+.mode-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.mode-card {
+    min-height: 170px;
+    padding: 1.2rem 0.75rem;
+    border: 1px solid rgba(141, 204, 237, 0.6);
+    color: #e8f5ff;
+    background: rgba(5, 28, 52, 0.7);
+    font: inherit;
+    cursor: pointer;
+    transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.mode-card:hover {
+    transform: translateY(-4px);
+    border-color: #7bd6ff;
+    background: rgba(17, 75, 111, 0.55);
+}
+
+.mode-card[aria-pressed="true"] {
+    border-color: #63efc1;
+    background: rgba(20, 103, 99, 0.25);
+    box-shadow: 0 0 18px rgba(99, 239, 193, 0.12);
+}
+
+.mode-icon {
+    display: block;
+    margin-bottom: 1.2rem;
+    color: #8fdcff;
+    font-size: 1.6rem;
+}
+
+.mode-name {
+    font-size: 0.8rem;
+    line-height: 1.7;
+}
+
+.mode-message {
+    min-height: 1.2em;
+    margin: 1.5rem 0 0;
+    color: #8fdcff;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.scroll-to-dashboard {
+    display: block;
+    width: fit-content;
+    margin: 2rem auto 0;
+    color: #8fdcff;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+}
+
+.scroll-to-dashboard:hover {
+    color: #fff;
+}
+
+.control-dashboard.reveal-ready {
+    opacity: 0;
+    transform: translateY(35px);
+    transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.control-dashboard.reveal-ready.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 600px) {
+    .mode-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mode-card {
+        min-height: 120px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+    }
+
+    .control-dashboard.reveal-ready {
+        opacity: 1;
+        transform: none;
+    }
+}
+.training-workspace {
+    width: min(100%, 900px);
+    margin: 4rem auto;
+    padding: clamp(1.25rem, 4vw, 2rem);
+    border: 1px solid rgba(141, 204, 237, 0.55);
+    background: rgba(2, 13, 30, 0.88);
+    scroll-margin-top: 2rem;
+}
+
+.training-workspace[hidden] {
+    display: none;
+}
+
+.training-heading {
+    margin: 0 0 1.5rem;
+    color: #8fdcff;
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(1rem, 4vw, 1.35rem);
+    letter-spacing: 0.08em;
+}
+
+.training-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(220px, 0.8fr);
+    gap: 1rem;
+}
+
+.exercise-panel,
+.monitor-panel {
+    padding: 1.25rem;
+    border: 1px solid rgba(141, 204, 237, 0.35);
+    background: rgba(5, 28, 52, 0.65);
+}
+
+.exercise-title,
+.monitor-title {
+    margin: 0 0 1rem;
+    color: #bfeaff;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+}
+
+.exercise-stage {
+    position: relative;
+    min-height: 280px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border: 1px dashed rgba(141, 204, 237, 0.45);
+    background:
+        radial-gradient(circle, rgba(0, 126, 212, 0.12), transparent 65%),
+        #04152a;
+}
+
+.stage-instruction {
+    max-width: 80%;
+    color: #c9e6f5;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.target-button {
+    position: absolute;
+    top: 28%;
+    left: 65%;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 2px solid #63efc1;
+    border-radius: 50%;
+    background: #63efc1;
+    box-shadow: 0 0 18px rgba(99, 239, 193, 0.8);
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+}
+
+.target-button:disabled {
+    display: none;
+}
+
+.exercise-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.start-exercise {
+    padding: 0.8rem 1rem;
+    border: 1px solid #8fdcff;
+    color: #e8f5ff;
+    background: #062442;
+    font: inherit;
+    cursor: pointer;
+}
+
+.start-exercise:hover,
+.start-exercise:focus-visible {
+    background: #10466a;
+}
+
+.repetition-count {
+    color: #8fdcff;
+    font-size: 0.85rem;
+}
+
+.monitor-status {
+    margin: 0 0 1.5rem;
+    color: #63efc1;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+}
+
+.metric {
+    margin-top: 1.25rem;
+}
+
+.metric-label {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: #c9e6f5;
+    font-size: 0.78rem;
+}
+
+.metric-track {
+    height: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(141, 204, 237, 0.4);
+    background: #04152a;
+}
+
+.metric-fill {
+    width: 0;
+    height: 100%;
+    background: #8fdcff;
+    transition: width 250ms ease;
+}
+
+.metric-note {
+    margin: 1.5rem 0 0;
+    color: #6489a5;
+    font-size: 0.68rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 650px) {
+    .training-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .exercise-stage {
+        min-height: 230px;
+    }
+}
+.training-workspace {
+    width: min(1100px, calc(100% - 2rem));
+    margin: 4rem auto;
+    padding: clamp(1rem, 3vw, 1.75rem);
+    border: 1px solid rgba(63, 190, 255, 0.55);
+    background: linear-gradient(145deg, rgba(3, 22, 44, 0.98), rgba(2, 12, 29, 0.98));
+    box-shadow: 0 0 35px rgba(0, 153, 255, 0.12);
+    scroll-margin-top: 2rem;
+}
+
+.training-workspace[hidden] {
+    display: none;
+}
+
+.training-topbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.training-heading {
+    margin: 0;
+    color: #8fdcff;
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(1rem, 3vw, 1.35rem);
+    letter-spacing: 0.08em;
+}
+
+.session-badge {
+    padding: 0.55rem 0.8rem;
+    border: 1px solid rgba(99, 239, 193, 0.4);
+    color: #63efc1;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+}
+
+.training-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(230px, 0.8fr);
+    gap: 1rem;
+}
+
+.exercise-panel,
+.monitor-panel {
+    min-width: 0;
+    padding: 1rem;
+    border: 1px solid rgba(80, 164, 213, 0.38);
+    background: rgba(3, 17, 37, 0.82);
+}
+
+.exercise-title,
+.monitor-title {
+    margin: 0;
+    color: #c7edff;
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+}
+
+.exercise-stage {
+    position: relative;
+    min-height: 340px;
+    margin-top: 0.9rem;
+    overflow: hidden;
+    border: 1px solid rgba(43, 175, 255, 0.55);
+    background:
+        radial-gradient(ellipse at 65% 40%, rgba(0, 171, 255, 0.18), transparent 35%),
+        linear-gradient(rgba(30, 136, 190, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 136, 190, 0.08) 1px, transparent 1px),
+        #04152b;
+    background-size: auto, 30px 30px, 30px 30px, auto;
+}
+
+.exercise-stage::after {
+    position: absolute;
+    inset: 12px;
+    border: 1px solid rgba(82, 183, 235, 0.12);
+    content: "";
+    pointer-events: none;
+}
+
+.stage-instruction {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 1;
+    margin: 0;
+    padding: 0.8rem;
+    border: 1px solid rgba(65, 178, 244, 0.42);
+    color: #d8f3ff;
+    background: rgba(2, 15, 33, 0.9);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.target-button {
+    z-index: 1;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #63efc1;
+    background: #39dfa9;
+    box-shadow: 0 0 10px #63efc1, 0 0 28px rgba(63, 255, 190, 0.65);
+}
+
+.monitor-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.monitor-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.monitor-status {
+    margin: 0;
+    color: #63efc1;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+}
+
+.metric {
+    margin: 0;
+    padding: 0.85rem;
+    border: 1px solid rgba(80, 164, 213, 0.27);
+    background: rgba(6, 31, 57, 0.72);
+}
+
+.metric-label {
+    margin-bottom: 0.65rem;
+    color: #bce9ff;
+    font-size: 0.72rem;
+}
+
+.metric-label span:last-child {
+    color: #8fdcff;
+}
+
+.metric-track {
+    height: 9px;
+    border-color: rgba(80, 164, 213, 0.35);
+}
+
+.metric-fill {
+    background: linear-gradient(90deg, #148cff, #55e3ff);
+    box-shadow: 0 0 10px rgba(47, 189, 255, 0.45);
+}
+
+.repetition-count {
+    padding: 0.8rem;
+    border: 1px solid rgba(80, 164, 213, 0.27);
+    color: #8fdcff;
+    font-size: 0.78rem;
+}
+
+.exercise-controls {
+    margin-top: 1rem;
+}
+
+.start-exercise {
+    border-color: #27baff;
+    background: linear-gradient(90deg, #075ba5, #0879bd);
+    letter-spacing: 0.08em;
+}
+
+.start-exercise:hover,
+.start-exercise:focus-visible {
+    background: #1195d9;
+}
+
+.metric-note {
+    margin-top: auto;
+}
+
+@media (max-width: 700px) {
+    .training-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .exercise-stage {
+        min-height: 270px;
+    }
+}
+.session-setup {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    color: #bce9ff;
+    font-size: 0.8rem;
+}
+
+.session-setup select {
+    padding: 0.65rem;
+    border: 1px solid rgba(80, 164, 213, 0.55);
+    color: #e8f5ff;
+    background: #04152b;
+    font: inherit;
+}
+
+.session-timer {
+    margin-left: auto;
+    color: #63efc1;
+    font-size: 1.1rem;
+}
+
+.start-exercise:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.session-feedback {
+    width: min(90vw, 440px);
+    padding: 1.5rem;
+    border: 1px solid #55caff;
+    color: #e8f5ff;
+    background: #04152b;
+    box-shadow: 0 0 35px rgba(0, 153, 255, 0.3);
+    font-family: "Share Tech Mono", monospace;
+}
+
+.session-feedback::backdrop {
+    background: rgba(0, 5, 15, 0.78);
+    backdrop-filter: blur(4px);
+}
+
+.session-feedback h2 {
+    color: #8fdcff;
+    font-family: "Orbitron", sans-serif;
+    font-size: 1rem;
+}
+
+.session-feedback p {
+    line-height: 1.6;
+}
+
+.feedback-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+.exercise-dock {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1.25rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid rgba(80, 164, 213, 0.4);
+    background: rgba(3, 17, 37, 0.88);
+}
+
+.dock-heading {
+    margin: 0 0 0.75rem;
+    color: #8fdcff;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+}
+
+.dock-buttons,
+.exercise-type-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.dock-button,
+.exercise-type {
+    min-height: 44px;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid rgba(80, 164, 213, 0.55);
+    color: #e8f5ff;
+    background: #061b33;
+    font: inherit;
+    cursor: pointer;
+}
+
+.dock-button:hover,
+.exercise-type:hover,
+.exercise-type[aria-pressed="true"] {
+    border-color: #42caff;
+    background: #0b3760;
+    box-shadow: 0 0 12px rgba(47, 189, 255, 0.2);
+}
+
+.dock-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+@media (max-width: 650px) {
+    .exercise-dock {
+        grid-template-columns: 1fr;
+    }
+}
+.initialization-panel {
+    width: min(100%, 760px);
+    border-color: rgba(72, 199, 255, 0.7);
+    background:
+        linear-gradient(rgba(45, 157, 220, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45, 157, 220, 0.035) 1px, transparent 1px),
+        radial-gradient(ellipse at 50% 0%, rgba(0, 153, 255, 0.16), transparent 60%),
+        rgba(2, 13, 30, 0.96);
+    background-size: 28px 28px, 28px 28px, auto, auto;
+    box-shadow: 0 0 45px rgba(0, 153, 255, 0.16),
+                inset 0 0 35px rgba(0, 103, 171, 0.12);
+}
+
+.initialization-panel::before,
+.initialization-panel::after {
+    width: 26px;
+    height: 26px;
+    border-color: #55d9ff;
+    filter: drop-shadow(0 0 5px #168dff);
+}
+
+.initialization-panel h1 {
+    color: #f0faff;
+    text-shadow: 0 0 18px rgba(85, 217, 255, 0.35);
+}
+
+.system-list li {
+    padding: 0.55rem 0.7rem;
+    border-bottom: 1px solid rgba(85, 180, 225, 0.12);
+    background: rgba(5, 30, 54, 0.35);
+}
+
+.progress-track {
+    height: 20px;
+    border-color: rgba(85, 217, 255, 0.7);
+    box-shadow: 0 0 12px rgba(0, 153, 255, 0.18);
+}
+
+.progress-fill {
+    background: repeating-linear-gradient(
+        90deg,
+        #dff8ff 0 9px,
+        #83dfff 9px 11px
+    );
+    box-shadow: 0 0 16px rgba(85, 217, 255, 0.85);
+}
+
+.scroll-to-dashboard {
+    padding: 0.7rem 1rem;
+    border: 1px solid rgba(85, 217, 255, 0.4);
+    background: rgba(5, 42, 70, 0.45);
+    transition: background 180ms ease, box-shadow 180ms ease;
+}
+
+.scroll-to-dashboard:hover {
+    background: rgba(10, 97, 143, 0.45);
+    box-shadow: 0 0 18px rgba(85, 217, 255, 0.25);
+}
+
+@media (max-width: 600px) {
+    .initialization-panel {
+        padding: 1.5rem 1rem;
+    }
+} 
+.control-dashboard {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-color: rgba(66, 202, 255, 0.7);
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(0, 153, 255, 0.18), transparent 60%),
+        linear-gradient(145deg, rgba(4, 28, 52, 0.98), rgba(2, 13, 30, 0.98));
+    box-shadow: 0 0 40px rgba(0, 153, 255, 0.16);
+}
+
+.control-dashboard::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background:
+        linear-gradient(rgba(45, 157, 220, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45, 157, 220, 0.045) 1px, transparent 1px);
+    background-size: 28px 28px;
+    content: "";
+    pointer-events: none;
+}
+
+.dashboard-header,
+.mode-heading,
+.mode-grid,
+.mode-message {
+    position: relative;
+}
+
+.dashboard-brand {
+    text-shadow: 0 0 12px rgba(66, 202, 255, 0.65);
+}
+
+.dashboard-title {
+    font-family: "Orbitron", sans-serif;
+    text-shadow: 0 0 18px rgba(66, 202, 255, 0.2);
+}
+
+.mode-card {
+    position: relative;
+    overflow: hidden;
+    border-color: rgba(66, 202, 255, 0.45);
+    background: linear-gradient(145deg, rgba(8, 40, 70, 0.9), rgba(3, 18, 38, 0.95));
+    box-shadow: inset 0 0 22px rgba(0, 153, 255, 0.06);
+}
+
+.mode-card:hover,
+.mode-card:focus-visible {
+    transform: translateY(-6px);
+    border-color: #42caff;
+    background: linear-gradient(145deg, rgba(7, 79, 119, 0.8), rgba(3, 27, 52, 0.98));
+    box-shadow: 0 0 24px rgba(0, 174, 255, 0.22);
+}
+
+.mode-card[aria-pressed="true"] {
+    border-color: #63efc1;
+    background: linear-gradient(145deg, rgba(8, 87, 91, 0.65), rgba(3, 27, 52, 0.98));
+    box-shadow: 0 0 24px rgba(99, 239, 193, 0.2);
+}
+
+.mode-icon {
+    color: #55d9ff;
+    text-shadow: 0 0 14px rgba(66, 202, 255, 0.7);
+}
+
+.mode-message {
+    padding: 0.8rem;
+    border: 1px solid rgba(66, 202, 255, 0.28);
+    background: rgba(3, 24, 46, 0.65);
+}  
+.target-button {
+    border-color: var(--target-color, #39dfa9);
+    background: var(--target-color, #39dfa9);
+    box-shadow: 0 0 12px var(--target-color, #39dfa9),
+                0 0 26px var(--target-color, #39dfa9);
+}
+.balance-workspace {
+    width: min(1100px, 100%);
+    margin: 3rem auto;
+    padding: clamp(1rem, 3vw, 2rem);
+    border: 1px solid rgba(66, 202, 255, 0.65);
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(0, 153, 255, 0.16), transparent 60%),
+        rgba(2, 13, 30, 0.96);
+    box-shadow: 0 0 35px rgba(0, 153, 255, 0.14);
+    scroll-margin-top: 2rem;
+}
+
+.balance-workspace[hidden] {
+    display: none;
+}
+
+.balance-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(80, 164, 213, 0.35);
+}
+
+.balance-header h2 {
+    margin: 0;
+    color: #8fdcff;
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(1rem, 3vw, 1.4rem);
+}
+
+.balance-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(250px, 0.8fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.balance-stage,
+.balance-metrics {
+    padding: 1.25rem;
+    border: 1px solid rgba(80, 164, 213, 0.35);
+    background: rgba(3, 17, 37, 0.82);
+}
+
+.balance-stage h3,
+.balance-metrics h3 {
+    margin: 0 0 1rem;
+    color: #bce9ff;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+}
+
+.weight-track {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 56px;
+    gap: 0.75rem;
+    min-height: 280px;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid rgba(43, 175, 255, 0.45);
+    background:
+        linear-gradient(rgba(30, 136, 190, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 136, 190, 0.07) 1px, transparent 1px),
+        #04152b;
+    background-size: 28px 28px;
+}
+
+.weight-target {
+    min-height: 110px;
+    border: 1px solid rgba(66, 202, 255, 0.55);
+    color: #bce9ff;
+    background: rgba(4, 35, 63, 0.85);
+    font: inherit;
+    cursor: pointer;
+    transition: 180ms ease;
+}
+
+.weight-target[aria-pressed="true"],
+.weight-target:hover {
+    border-color: #63efc1;
+    color: #63efc1;
+    box-shadow: 0 0 18px rgba(99, 239, 193, 0.22);
+}
+
+.weight-ball {
+    display: block;
+    width: 18px;
+    height: 18px;
+    margin: 0 auto 0.7rem;
+    border-radius: 50%;
+    background: #42caff;
+    box-shadow: 0 0 16px #42caff;
+}
+
+.weight-target[aria-pressed="true"] .weight-ball {
+    background: #63efc1;
+    box-shadow: 0 0 18px #63efc1;
+}
+
+.weight-instruction {
+    min-height: 2.5em;
+    margin: 1rem 0 0;
+    color: #8fdcff;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.balance-setup,
+.balance-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.balance-setup label,
+.balance-metric {
+    color: #bce9ff;
+    font-size: 0.8rem;
+}
+
+.balance-setup select {
+    padding: 0.6rem;
+    border: 1px solid rgba(80, 164, 213, 0.55);
+    color: #e8f5ff;
+    background: #04152b;
+    font: inherit;
+}
+
+.balance-timer {
+    margin-left: auto;
+    color: #63efc1;
+    font-size: 1.1rem;
+}
+
+.balance-metric {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgba(80, 164, 213, 0.2);
+}
+
+.balance-metric strong {
+    color: #63efc1;
+}
+
+.balance-note {
+    color: #789bb3;
+    font-size: 0.7rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+    .balance-layout {
+        grid-template-columns: 1fr;
+    }
+}
+.weight-target {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 1rem;
+    min-height: 180px;
+    border: 0;
+    color: #42caff;
+    background: transparent;
+}
+
+.footprint-image {
+    width: clamp(90px, 14vw, 150px);
+    height: 190px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 12px #168dff);
+}
+
+
+.weight-target:hover,
+.weight-target:focus-visible {
+    color: #8feaff;
+    background: transparent;
+    box-shadow: none;
+}
+
+.weight-target:hover .footprint-image,
+.weight-target:focus-visible .footprint-image {
+    filter: brightness(0) saturate(100%) invert(84%) sepia(47%)
+            saturate(600%) hue-rotate(105deg) drop-shadow(0 0 16px #63efc1);
+}
+.pressure-legend {
+    display: flex;
+    height: 250px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.55rem;
+}
+
+.pressure-legend img {
+    width: 36px;
+    height: 190px;
+    object-fit: fill;
+}
+
+.pressure-high { color: #ff6464; }
+.pressure-low { color: #8feaff; }
+.progress-workspace {
+    width: min(1100px, 100%);
+    margin: 3rem auto;
+    padding: clamp(1rem, 3vw, 2rem);
+    border: 1px solid rgba(66, 202, 255, 0.65);
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(0, 153, 255, 0.15), transparent 60%),
+        rgba(2, 13, 30, 0.96);
+    box-shadow: 0 0 35px rgba(0, 153, 255, 0.14);
+    scroll-margin-top: 2rem;
+}
+
+.progress-workspace[hidden] {
+    display: none;
+}
+
+.progress-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(80, 164, 213, 0.35);
+}
+
+.progress-header h2 {
+    margin: 0;
+    color: #8fdcff;
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(1rem, 3vw, 1.4rem);
+}
+
+.progress-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.progress-card {
+    min-width: 0;
+    padding: 1.25rem;
+    border: 1px solid rgba(80, 164, 213, 0.35);
+    background: rgba(3, 17, 37, 0.82);
+}
+
+.progress-card h3 {
+    margin: 0 0 1rem;
+    color: #bce9ff;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+}
+
+.performance-chart {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.chart-grid {
+    stroke: rgba(80, 164, 213, 0.22);
+    stroke-width: 1;
+}
+
+.chart-axis-label,
+.chart-session-label {
+    fill: #8fb3ca;
+    font: 12px "Share Tech Mono", monospace;
+}
+
+.chart-line {
+    fill: none;
+    stroke: #42caff;
+    stroke-width: 3;
+    filter: drop-shadow(0 0 5px rgba(66, 202, 255, 0.75));
+}
+
+.chart-point {
+    fill: #63efc1;
+    stroke: #04152b;
+    stroke-width: 3;
+}
+
+.progress-stat {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(80, 164, 213, 0.2);
+    color: #bce9ff;
+    font-size: 0.82rem;
+}
+
+.progress-stat strong {
+    color: #63efc1;
+}
+
+.overall-card {
+    grid-column: 1 / -1;
+    text-align: center;
+}
+
+.overall-score {
+    margin: 1rem 0;
+    color: #8fdcff;
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(2rem, 6vw, 3rem);
+    text-shadow: 0 0 18px rgba(66, 202, 255, 0.45);
+}
+
+.progress-milestones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(0.5rem, 3vw, 2rem);
+    margin: 1.5rem 0;
+}
+
+.milestone {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--milestone-color);
+    box-shadow: 0 0 12px var(--milestone-color);
+}
+
+.progress-report {
+    margin-top: 1rem;
+    border-top: 1px solid rgba(80, 164, 213, 0.28);
+    padding-top: 1rem;
+    color: #bce9ff;
+    text-align: left;
+}
+
+.progress-report summary {
+    width: fit-content;
+    margin: 0 auto;
+    color: #8fdcff;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+}
+
+.progress-report p {
+    line-height: 1.6;
+}
+
+@media (max-width: 700px) {
+    .progress-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .overall-card {
+        grid-column: auto;
+    }
+}
+.progress-workspace {
+    position: relative;
+    overflow: hidden;
+    border-color: rgba(66, 202, 255, 0.7);
+    background:
+        linear-gradient(rgba(45, 157, 220, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45, 157, 220, 0.035) 1px, transparent 1px),
+        radial-gradient(ellipse at 50% 0%, rgba(0, 153, 255, 0.18), transparent 60%),
+        #020d1e;
+    background-size: 28px 28px, 28px 28px, auto, auto;
+    box-shadow: 0 0 40px rgba(0, 153, 255, 0.16);
+}
+
+.progress-workspace[hidden] {
+    display: none;
+}
+
+.progress-header h2 {
+    text-shadow: 0 0 16px rgba(66, 202, 255, 0.45);
+}
+
+.progress-card {
+    position: relative;
+    overflow: hidden;
+    border-color: rgba(66, 202, 255, 0.38);
+    background:
+        radial-gradient(ellipse at top left, rgba(0, 153, 255, 0.09), transparent 65%),
+        rgba(3, 17, 37, 0.94);
+    box-shadow: inset 0 0 24px rgba(0, 153, 255, 0.05);
+}
+
+.progress-card h3 {
+    color: #8fdcff;
+    text-shadow: 0 0 10px rgba(66, 202, 255, 0.25);
+}
+
+.performance-chart {
+    padding: 0.5rem;
+    border: 1px solid rgba(66, 202, 255, 0.14);
+    background: rgba(2, 13, 30, 0.55);
+}
+
+.chart-line {
+    stroke-width: 4;
+    filter: drop-shadow(0 0 7px rgba(66, 202, 255, 0.85));
+}
+
+.chart-point {
+    filter: drop-shadow(0 0 6px rgba(99, 239, 193, 0.8));
+}
+
+.progress-stat {
+    padding: 0.9rem 0;
+}
+
+.progress-stat strong {
+    text-shadow: 0 0 9px rgba(99, 239, 193, 0.45);
+}
+
+.overall-score {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    width: 150px;
+    aspect-ratio: 1;
+    place-items: center;
+    margin: 1.5rem auto;
+    border-radius: 50%;
+    background: conic-gradient(#42caff 0 82%, rgba(66, 202, 255, 0.14) 82% 100%);
+    font-size: 2.4rem;
+    font-weight: 700;
+    text-shadow: 0 0 14px rgba(66, 202, 255, 0.6);
+    filter: drop-shadow(0 0 14px rgba(0, 153, 255, 0.25));
+}
+
+.overall-score::before {
+    position: absolute;
+    z-index: -1;
+    inset: 9px;
+    border: 1px solid rgba(66, 202, 255, 0.25);
+    border-radius: inherit;
+    background: #04152b;
+    content: "";
+}
+
+.progress-milestones {
+    padding: 1rem;
+    border: 1px solid rgba(66, 202, 255, 0.16);
+    background: rgba(2, 13, 30, 0.45);
+}
+
+.progress-report summary {
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(66, 202, 255, 0.35);
+    background: rgba(5, 42, 70, 0.4);
+    transition: 180ms ease;
+}
+
+.progress-report summary:hover,
+.progress-report summary:focus-visible {
+    border-color: #42caff;
+    box-shadow: 0 0 16px rgba(66, 202, 255, 0.22);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .chart-point {
+        animation: progress-glow 2.4s ease-in-out infinite alternate;
+    }
+
+    @keyframes progress-glow {
+        to {
+            filter: drop-shadow(0 0 11px rgba(99, 239, 193, 0.95));
+        }
+    }
+}
+.history-workspace {
+    width: min(1100px, 100%);
+    margin: 3rem auto;
+    padding: clamp(1rem, 3vw, 2rem);
+    border: 1px solid rgba(66, 202, 255, 0.65);
+    background:
+        linear-gradient(rgba(45, 157, 220, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45, 157, 220, 0.035) 1px, transparent 1px),
+        rgba(2, 13, 30, 0.96);
+    background-size: 28px 28px;
+    box-shadow: 0 0 35px rgba(0, 153, 255, 0.14);
+    scroll-margin-top: 2rem;
+}
+
+.history-workspace[hidden] {
+    display: none;
+}
+
+.history-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(80, 164, 213, 0.35);
+}
+
+.history-header h2 {
+    margin: 0;
+    color: #8fdcff;
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(1rem, 3vw, 1.4rem);
+}
+
+.history-header p {
+    color: #63efc1;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+}
+
+.history-clear {
+    padding: 0.65rem 0.8rem;
+    border: 1px solid rgba(255, 100, 120, 0.55);
+    color: #ff9aa9;
+    background: rgba(65, 15, 35, 0.35);
+    font: inherit;
+    cursor: pointer;
+}
+
+.history-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.history-summary div {
+    display: grid;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: 1px solid rgba(80, 164, 213, 0.3);
+    background: rgba(3, 17, 37, 0.8);
+}
+
+.history-summary span {
+    color: #8fb3ca;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+}
+
+.history-summary strong {
+    color: #63efc1;
+    font-size: 1.1rem;
+}
+
+.history-list {
+    display: grid;
+    gap: 0.6rem;
+    max-height: 440px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.history-entry,
+.history-empty {
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(80, 164, 213, 0.25);
+    color: #c9e6f5;
+    background: rgba(3, 17, 37, 0.8);
+    line-height: 1.5;
+}
+
+.history-entry {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+}
+
+.history-entry strong {
+    color: #8fdcff;
+}
+
+.history-entry time {
+    color: #8fb3ca;
+    font-size: 0.75rem;
+}
+
+.history-note {
+    color: #789bb3;
+    font-size: 0.72rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+    .history-summary {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+</head>
+<body>
+    <a href="index.html" aria-label="Return to REHABO-SG home">
+        <img class="brand-logo" src="REHABO-SG%20LOGO.png" alt="REHABO-SG logo">
+    </a>
+
+    <main class="initialization-panel">
+        <p class="panel-heading">REHABO-SG</p>
+        <h1>SYSTEM INITIALIZATION</h1>
+        <p class="initialization-status" aria-live="polite">
+            <span class="pulse" aria-hidden="true"></span>
+            <span id="status-message">INITIALIZING SYSTEM...</span>
+        </p>
+
+        <ul class="system-list" aria-label="System component status">
+            <li data-ready-at="18"><span class="indicator">○</span><span>ROBOT CONTROLLER</span><span class="device-state">CHECKING</span></li>
+            <li data-ready-at="38"><span class="indicator">○</span><span>MOTION SENSOR</span><span class="device-state">CHECKING</span></li>
+            <li data-ready-at="58"><span class="indicator">○</span><span>BALANCE PLATFORM</span><span class="device-state">CHECKING</span></li>
+            <li data-ready-at="78"><span class="indicator">○</span><span>TABLET INTERFACE</span><span class="device-state">CHECKING</span></li>
+            <li><span class="indicator">◐</span><span>PATIENT PROFILE</span><span class="device-state">STANDBY</span></li>
+        </ul>
+
+        <div class="progress-area">
+            <div class="progress-track" role="progressbar" aria-label="System initialization progress"
+                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <div class="progress-fill"></div>
+            </div>
+            <span class="progress-value">0%</span>
+        </div>
+
+        <p class="panel-footer">SECURE REHABILITATION SYSTEM</p>
+        <a class="scroll-to-dashboard" href="#control-dashboard">
+            ↓ &nbsp; OPEN CONTROL DASHBOARD
+        </a>
+    </main>
+
+    <section class="control-dashboard" id="control-dashboard" aria-labelledby="dashboard-title">
+        <header class="dashboard-header">
+            <p class="dashboard-brand">REHABO-SG</p>
+            <h2 class="dashboard-title" id="dashboard-title">REHABILITATION CONTROL SYSTEM</h2>
+            <p class="dashboard-status">SYSTEM STATUS <span>●</span> ONLINE</p>
+        </header>
+
+        <h3 class="mode-heading">SELECT REHABILITATION MODE</h3>
+
+        <div class="mode-grid">
+            <button class="mode-card" type="button" aria-pressed="false">
+                <span class="mode-icon" aria-hidden="true">↗</span>
+                <span class="mode-name">UPPER LIMB<br>TRAINING</span>
+            </button>
+            <button class="mode-card" type="button" aria-pressed="false">
+                <span class="mode-icon" aria-hidden="true">⇄</span>
+                <span class="mode-name">BALANCE &amp;<br>WEIGHT SHIFT</span>
+            </button>
+            <button class="mode-card" type="button" aria-pressed="false">
+                <span class="mode-icon" aria-hidden="true">▥</span>
+                <span class="mode-name">PROGRESS<br>TRACKING</span>
+            </button>
+            <button class="mode-card" type="button" aria-pressed="false">
+    <span class="mode-icon" aria-hidden="true">◷</span>
+    <span class="mode-name">HISTORICAL<br>TRIALS</span>
+</button>
+        </div>
+
+        <p class="mode-message" id="mode-message" aria-live="polite">SELECT A MODE</p>
+    </section>
+<section class="training-workspace" id="upper-limb-training"
+         aria-labelledby="training-heading" hidden>
+    <header class="training-topbar">
+        <h2 class="training-heading" id="training-heading">REHAB MODE // UPPER-LIMB</h2>
+        <span class="session-badge">● READY</span>
+    </header>
+
+    <div class="training-layout">
+        <section class="exercise-panel" aria-labelledby="exercise-title">
+            <h3 class="exercise-title" id="exercise-title">UPPER-LIMB REHABILITATION</h3>
+
+            <div class="exercise-stage">
+                <p class="stage-instruction" id="exercise-instruction">
+                    Choose a duration, then start the exercise.
+                </p>
+                <button class="target-button" type="button"
+                        aria-label="Reach for the target" disabled></button>
+            </div>
+
+            <div class="session-setup">
+                <label for="duration-select">SESSION LENGTH</label>
+                <select id="duration-select">
+                    <option value="">Choose time</option>
+                    <option value="20">20 seconds</option>
+                    <option value="40">40 seconds</option>
+                    <option value="60">60 seconds</option>
+                    <option value="90">90 seconds</option>
+                    <option value="120">120 seconds</option>
+                </select>
+                <span class="session-timer" id="session-timer" aria-live="polite">--:--</span>
+            </div>
+
+            <div class="exercise-controls">
+                <span class="repetition-count">
+                    REPETITIONS: <span id="repetitions">0</span>
+                </span>
+            </div>
+        </section>
+
+        <aside class="monitor-panel" aria-labelledby="monitor-title">
+            <h3 class="monitor-title" id="monitor-title">LIVE MONITORING</h3>
+            <p class="monitor-status">● SIMULATED SESSION</p>
+
+            <div class="metric">
+                <div class="metric-label"><span>ARM ANGLE</span><span id="angle-value">0°</span></div>
+                <div class="metric-track"><div class="metric-fill" id="angle-fill"></div></div>
+            </div>
+            <div class="metric">
+                <div class="metric-label"><span>MOVEMENT SPEED</span><span id="speed-value">0.00 m/s</span></div>
+                <div class="metric-track"><div class="metric-fill" id="speed-fill"></div></div>
+            </div>
+            <div class="metric">
+                <div class="metric-label"><span>TARGET ACCURACY</span><span id="accuracy-value">0%</span></div>
+                <div class="metric-track"><div class="metric-fill" id="accuracy-fill"></div></div>
+            </div>
+            <p class="metric-note">Demo values are simulated, not readings from a real device.</p>
+        </aside>
+    </div>
+
+    <section class="exercise-dock" aria-label="Exercise controls">
+        <div>
+            <h3 class="dock-heading">EXERCISE CONTROLS</h3>
+            <div class="dock-buttons">
+                <button class="dock-button start-exercise" type="button" disabled>▶ START EXERCISE</button>
+                <button class="dock-button" id="pause-exercise" type="button" disabled>PAUSE</button>
+                <button class="dock-button" id="reset-exercise" type="button">RESET</button>
+            </div>
+        </div>
+
+        <div>
+            <h3 class="dock-heading">EXERCISE TYPE</h3>
+            <div class="exercise-type-list">
+                <button class="exercise-type" type="button" aria-pressed="true">REACH</button>
+                <button class="exercise-type" type="button" aria-pressed="false">DIRECTION</button>
+                <button class="exercise-type" type="button" aria-pressed="false">CIRCULAR</button>
+                <button class="exercise-type" type="button" aria-pressed="false">FOLLOW</button>
+            </div>
+        </div>
+    </section>
+</section>
+<section class="balance-workspace" id="balance-workspace" aria-labelledby="balance-title" hidden>
+    <header class="balance-header">
+        <h2 id="balance-title">REHAB MODE // BALANCE &amp; WEIGHT SHIFT</h2>
+        <span class="session-badge">● SIMULATED SESSION</span>
+    </header>
+
+    <div class="balance-layout">
+        <section class="balance-stage" aria-labelledby="weight-shift-title">
+            <h3 id="weight-shift-title">WEIGHT DISTRIBUTION // CENTER OF MASS</h3>
+
+            <div class="weight-track">
+    <button class="weight-target" type="button" data-side="LEFT" disabled
+            aria-label="Shift weight left">
+        <img class="footprint-image" src="Foot Print Left.png" alt="">
+        <span>SHIFT LEFT</span>
+    </button>
+
+    <button class="weight-target" type="button" data-side="RIGHT" disabled
+            aria-label="Shift weight right">
+        <img class="footprint-image" src="Foot Print Right.png" alt="">
+        <span>SHIFT RIGHT</span>
+    </button>
+    <aside class="pressure-legend" aria-label="Pressure scale">
+    <span class="pressure-low">LOWEST</span>
+    <img src="Color Spectrum.png" alt="Pressure spectrum from low to high">
+    <span class="pressure-high">HIGHEST</span>
+</aside>
+</div>
+
+            <p class="weight-instruction" id="weight-instruction">
+                Choose a duration, then start the test.
+            </p>
+
+            <div class="balance-setup">
+                <label for="balance-duration">TEST LENGTH</label>
+                <select id="balance-duration">
+                    <option value="20">20 seconds</option>
+                    <option value="40" selected>40 seconds</option>
+                    <option value="60">60 seconds</option>
+                    <option value="90">90 seconds</option>
+                </select>
+                <span class="balance-timer" id="balance-timer">00:40</span>
+            </div>
+
+            <div class="balance-controls">
+                <button class="start-exercise" id="start-balance" type="button">▶ START BALANCE TEST</button>
+                <button class="start-exercise" id="reset-balance" type="button">RESET</button>
+            </div>
+        </section>
+
+        <aside class="balance-metrics" aria-label="Balance test measurements">
+            <h3>LIVE BALANCE METRICS</h3>
+            <div class="balance-metric"><span>BALANCE SCORE</span><strong id="balance-score">—</strong></div>
+            <div class="balance-metric"><span>LEFT / RIGHT</span><strong id="weight-split">50% / 50%</strong></div>
+            <div class="balance-metric"><span>CENTER DEVIATION</span><strong id="center-deviation">0.0 cm</strong></div>
+            <div class="balance-metric"><span>TIME</span><strong id="balance-elapsed">00:00</strong></div>
+            <p class="balance-note">Demo results are simulated and are not clinical measurements.</p>
+        </aside>
+    </div>
+</section>
+<section class="progress-workspace" id="progress-workspace"
+         aria-labelledby="progress-title" hidden>
+    <header class="progress-header">
+        <h2 id="progress-title">REHAB MODE // PROGRESS TRACKING</h2>
+        <span class="session-badge">● DEMO DATA</span>
+    </header>
+
+    <div class="progress-grid">
+        <section class="progress-card" aria-labelledby="trend-title">
+            <h3 id="trend-title">PERFORMANCE TREND</h3>
+            <svg class="performance-chart" viewBox="0 0 520 250"
+                 role="img" aria-label="Sample performance increased from 40 to 82 over five sessions">
+                <line class="chart-grid" x1="55" y1="30" x2="500" y2="30"/>
+                <line class="chart-grid" x1="55" y1="75" x2="500" y2="75"/>
+                <line class="chart-grid" x1="55" y1="120" x2="500" y2="120"/>
+                <line class="chart-grid" x1="55" y1="165" x2="500" y2="165"/>
+                <line class="chart-grid" x1="55" y1="210" x2="500" y2="210"/>
+
+                <text class="chart-axis-label" x="12" y="214">0</text>
+                <text class="chart-axis-label" x="5" y="169">25</text>
+                <text class="chart-axis-label" x="5" y="124">50</text>
+                <text class="chart-axis-label" x="5" y="79">75</text>
+                <text class="chart-axis-label" x="0" y="34">100</text>
+
+                <polyline class="chart-line"
+                          points="75,138 175,102 275,102 375,66 475,57"/>
+                <circle class="chart-point" cx="75" cy="138" r="6"/>
+                <circle class="chart-point" cx="175" cy="102" r="6"/>
+                <circle class="chart-point" cx="275" cy="102" r="6"/>
+                <circle class="chart-point" cx="375" cy="66" r="6"/>
+                <circle class="chart-point" cx="475" cy="57" r="6"/>
+
+                <text class="chart-session-label" x="65" y="238">01</text>
+                <text class="chart-session-label" x="165" y="238">02</text>
+                <text class="chart-session-label" x="265" y="238">03</text>
+                <text class="chart-session-label" x="365" y="238">04</text>
+                <text class="chart-session-label" x="465" y="238">05</text>
+            </svg>
+        </section>
+
+        <section class="progress-card" aria-labelledby="current-session-title">
+            <h3 id="current-session-title">CURRENT SESSION</h3>
+            <p class="progress-stat"><span>UPPER-LIMB ACCURACY</span><strong>86%</strong></p>
+            <p class="progress-stat"><span>REPETITIONS</span><strong>10 / 10</strong></p>
+            <p class="progress-stat"><span>BALANCE WEIGHT SHIFT</span><strong>79%</strong></p>
+            <p class="progress-stat"><span>STABILITY</span><strong>82%</strong></p>
+        </section>
+
+        <section class="progress-card overall-card" aria-labelledby="overall-title">
+            <h3 id="overall-title">OVERALL SESSION PERFORMANCE</h3>
+            <div class="overall-score">82%</div>
+
+            <div class="progress-milestones" aria-label="Four sample progress milestones">
+                <span class="milestone" style="--milestone-color:#42caff"></span>
+                <span class="milestone" style="--milestone-color:#ffd166"></span>
+                <span class="milestone" style="--milestone-color:#ff8c69"></span>
+                <span class="milestone" style="--milestone-color:#ff5470"></span>
+            </div>
+
+            <details class="progress-report">
+                <summary>VIEW FULL SESSION REPORT</summary>
+                <p>Sample report: upper-limb accuracy was 86% across 10 repetitions. Balance weight-shift performance was 79%, with a stability score of 82%.</p>
+                <p>These values are illustrative demo data, not clinical measurements.</p>
+            </details>
+        </section>
+    </div>
+</section>
+<section class="history-workspace" id="history-workspace"
+         aria-labelledby="history-title" hidden>
+    <header class="history-header">
+        <div>
+            <h2 id="history-title">REHAB MODE // HISTORICAL TRIALS</h2>
+            <p>SESSION ACTIVITY LOG <span aria-hidden="true">● LIVE</span></p>
+        </div>
+        <button class="history-clear" id="clear-history" type="button">CLEAR HISTORY</button>
+    </header>
+
+    <div class="history-summary">
+        <div><span>TOTAL TRIALS</span><strong id="history-count">0</strong></div>
+        <div><span>LAST ACTIVITY</span><strong id="history-last">—</strong></div>
+    </div>
+
+    <ol class="history-list" id="history-list" aria-live="polite">
+        <li class="history-empty">No trials recorded yet. Complete an exercise to see activity here.</li>
+    </ol>
+
+    <p class="history-note">
+        Activity is saved in this browser. Demo logs are not clinical records or sensor readings.
+    </p>
+</section>
+<dialog class="session-feedback" id="session-feedback" aria-labelledby="feedback-title">
+    <h2 id="feedback-title">SESSION COMPLETE</h2>
+    <p id="feedback-summary"></p>
+    <p id="feedback-detail">
+        These are simulated demo results, not a clinical assessment.
+    </p>
+    <div class="feedback-actions">
+        <button class="start-exercise" id="retry-session" type="button">RUN AGAIN</button>
+        <button class="start-exercise" id="close-feedback" type="button">CLOSE</button>
+    </div>
+</dialog>
+    <script>
+      const progressTrack = document.querySelector(".progress-track");
+const progressFill = document.querySelector(".progress-fill");
+const progressValue = document.querySelector(".progress-value");
+const statusMessage = document.querySelector("#status-message");
+const components = document.querySelectorAll("[data-ready-at]");
+
+const trainingWorkspace = document.querySelector("#upper-limb-training");
+const modeMessage = document.querySelector("#mode-message");
+const durationSelect = document.querySelector("#duration-select");
+const timerDisplay = document.querySelector("#session-timer");
+const startButton = document.querySelector(".start-exercise");
+const pauseButton = document.querySelector("#pause-exercise");
+const resetButton = document.querySelector("#reset-exercise");
+const targetButton = document.querySelector(".target-button");
+const exerciseInstruction = document.querySelector("#exercise-instruction");
+const repetitionsDisplay = document.querySelector("#repetitions");
+const feedbackDialog = document.querySelector("#session-feedback");
+
+let progress = 0;
+let repetitions = 0;
+let secondsRemaining = 0;
+let timerInterval = null;
+let motionFrame = null;
+let sessionActive = false;
+let sessionPaused = false;
+let selectedType = "REACH";
+let directionIndex = 0;
+
+const exerciseTypes = {
+    REACH: {
+        color: "#39dfa9",
+        instruction: "Reach for the green target."
+    },
+    DIRECTION: {
+        color: "#42caff",
+        instruction: "Follow the direction prompt."
+    },
+    CIRCULAR: {
+        color: "#bd83ff",
+        instruction: "Track and hit the orbiting target."
+    },
+    FOLLOW: {
+        color: "#ffad5c",
+        instruction: "Follow the moving target and tap it."
+    }
+};
+
+const directions = [
+    { label: "UP", x: 50, y: 22 },
+    { label: "RIGHT", x: 78, y: 47 },
+    { label: "DOWN", x: 50, y: 70 },
+    { label: "LEFT", x: 22, y: 47 }
+];
+
+function setTargetPosition(x, y) {
+    targetButton.style.left = `${x}%`;
+    targetButton.style.top = `${y}%`;
+}
+
+function showDirectionPrompt() {
+    const direction = directions[directionIndex % directions.length];
+    exerciseInstruction.textContent = `Reach ${direction.label} for the target.`;
+    setTargetPosition(direction.x, direction.y);
+}
+
+function stopTargetMotion() {
+    if (motionFrame !== null) {
+        cancelAnimationFrame(motionFrame);
+        motionFrame = null;
+    }
+}
+
+function animateTarget(timestamp) {
+    if (!sessionActive || sessionPaused) return;
+
+    if (selectedType === "CIRCULAR") {
+        const angle = timestamp * 0.0018;
+        setTargetPosition(
+            50 + Math.cos(angle) * 28,
+            43 + Math.sin(angle) * 27
+        );
+    } else if (selectedType === "FOLLOW") {
+        setTargetPosition(
+            50 + Math.sin(timestamp * 0.0013) * 33,
+            43 + Math.sin(timestamp * 0.0019 + 1) * 23
+        );
+    } else {
+        return;
+    }
+
+    motionFrame = requestAnimationFrame(animateTarget);
+}
+
+function startTargetMotion() {
+    stopTargetMotion();
+
+    if (selectedType === "CIRCULAR" || selectedType === "FOLLOW") {
+        motionFrame = requestAnimationFrame(animateTarget);
+    } else if (selectedType === "DIRECTION") {
+        showDirectionPrompt();
+    } else {
+        setTargetPosition(20 + Math.random() * 60, 20 + Math.random() * 48);
+    }
+}
+
+// Simulated system initialization
+const initialization = window.setInterval(() => {
+    progress = Math.min(progress + 1, 100);
+    progressFill.style.width = `${progress}%`;
+    progressValue.textContent = `${progress}%`;
+    progressTrack.setAttribute("aria-valuenow", progress);
+
+    components.forEach((component) => {
+        if (progress >= Number(component.dataset.readyAt)) {
+            component.classList.add("ready");
+            component.querySelector(".indicator").textContent = "✓";
+            component.querySelector(".device-state").textContent = "ONLINE";
+        }
+    });
+
+    if (progress === 100) {
+        clearInterval(initialization);
+        statusMessage.textContent = "SYSTEM READY";
+    }
+}, 45);
+
+const balanceWorkspace = document.querySelector("#balance-workspace");
+const progressWorkspace = document.querySelector("#progress-workspace");
+const historyWorkspace = document.querySelector("#history-workspace");
+
+document.querySelectorAll(".mode-card").forEach((card) => {
+    card.addEventListener("click", () => {
+        document.querySelectorAll(".mode-card").forEach((item) => {
+            item.setAttribute("aria-pressed", "false");
+        });
+
+        card.setAttribute("aria-pressed", "true");
+
+        const name = card.querySelector(".mode-name").textContent
+            .replace(/\s+/g, " ")
+            .trim();
+
+        const isUpperLimb = name.includes("UPPER LIMB");
+        const isBalance = name.includes("BALANCE");
+        const isProgress = name.includes("PROGRESS");
+const isHistory = name.includes("HISTORICAL");
+
+modeMessage.textContent = `${name} SELECTED`;
+trainingWorkspace.hidden = !isUpperLimb;
+balanceWorkspace.hidden = !isBalance;
+progressWorkspace.hidden = !isProgress;
+historyWorkspace.hidden = !isHistory;
+
+        const selectedWorkspace = isUpperLimb
+    ? trainingWorkspace
+    : isBalance
+        ? balanceWorkspace
+        : isProgress
+            ? progressWorkspace
+            : isHistory
+                ? historyWorkspace
+                : null;
+
+        selectedWorkspace?.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    });
+});
+const historyList = document.querySelector("#history-list");
+const historyCount = document.querySelector("#history-count");
+const historyLast = document.querySelector("#history-last");
+const historyKey = "rehabo-sg-trial-history";
+
+let trialHistory = [];
+
+try {
+    trialHistory = JSON.parse(localStorage.getItem(historyKey) || "[]");
+    if (!Array.isArray(trialHistory)) trialHistory = [];
+} catch {
+    trialHistory = [];
+}
+
+function renderHistory() {
+    historyCount.textContent = String(trialHistory.length);
+
+    if (trialHistory.length === 0) {
+        historyLast.textContent = "—";
+        historyList.innerHTML =
+            '<li class="history-empty">No trials recorded yet. Complete an exercise to see activity here.</li>';
+        return;
+    }
+
+    historyLast.textContent = new Date(trialHistory[0].time).toLocaleTimeString();
+
+    historyList.innerHTML = trialHistory.map((entry) => `
+        <li class="history-entry">
+            <span><strong>${entry.exercise}</strong> — ${entry.detail}</span>
+            <time datetime="${entry.time}">${new Date(entry.time).toLocaleString()}</time>
+        </li>
+    `).join("");
+}
+
+function recordTrial(exercise, detail) {
+    trialHistory.unshift({
+        exercise,
+        detail,
+        time: new Date().toISOString()
+    });
+
+    trialHistory = trialHistory.slice(0, 100);
+
+    try {
+        localStorage.setItem(historyKey, JSON.stringify(trialHistory));
+    } catch (error) {
+        console.warn("Could not save trial history in this browser.", error);
+    }
+
+    renderHistory();
+}
+
+document.querySelector("#clear-history").addEventListener("click", () => {
+    trialHistory = [];
+    localStorage.removeItem(historyKey);
+    renderHistory();
+});
+
+renderHistory();
+const balanceDuration = document.querySelector("#balance-duration");
+const balanceTimer = document.querySelector("#balance-timer");
+const startBalance = document.querySelector("#start-balance");
+const resetBalance = document.querySelector("#reset-balance");
+const weightInstruction = document.querySelector("#weight-instruction");
+const balanceTargets = document.querySelectorAll(".weight-target");
+
+let balanceInterval = null;
+let balanceRemaining = Number(balanceDuration.value);
+let balanceElapsed = 0;
+let balanceScore = 0;
+let leftShare = 50;
+let requestedSide = "LEFT";
+
+function formatBalanceTime(seconds) {
+    return `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
+}
+
+function updateBalanceDisplay() {
+    document.querySelector("#balance-score").textContent =
+        balanceScore ? `${balanceScore}%` : "—";
+    document.querySelector("#weight-split").textContent =
+        `${leftShare}% / ${100 - leftShare}%`;
+    document.querySelector("#center-deviation").textContent =
+        `${(Math.abs(50 - leftShare) * 0.16).toFixed(1)} cm`;
+    document.querySelector("#balance-elapsed").textContent =
+        formatBalanceTime(balanceElapsed);
+}
+
+function finishBalanceTest() {
+    clearInterval(balanceInterval);
+    balanceInterval = null;
+    balanceTargets.forEach((target) => target.disabled = true);
+
+    document.querySelector("#feedback-title").textContent = "BALANCE TEST COMPLETE";
+    document.querySelector("#feedback-summary").textContent =
+        `Simulated balance score: ${balanceScore}%. Final weight distribution: ${leftShare}% left and ${100 - leftShare}% right.`;
+    feedbackDialog.showModal();
+}
+
+balanceDuration.addEventListener("change", () => {
+    balanceRemaining = Number(balanceDuration.value);
+    balanceTimer.textContent = formatBalanceTime(balanceRemaining);
+});
+
+startBalance.addEventListener("click", () => {
+    clearInterval(balanceInterval);
+    balanceRemaining = Number(balanceDuration.value);
+    balanceElapsed = 0;
+    balanceScore = 0;
+    leftShare = 50;
+
+    balanceTargets.forEach((target) => target.disabled = false);
+    requestedSide = Math.random() < 0.5 ? "LEFT" : "RIGHT";
+    weightInstruction.textContent = `Shift your weight toward the ${requestedSide.toLowerCase()} target.`;
+    balanceTimer.textContent = formatBalanceTime(balanceRemaining);
+    updateBalanceDisplay();
+
+    balanceInterval = window.setInterval(() => {
+        balanceRemaining -= 1;
+        balanceElapsed += 1;
+        balanceTimer.textContent = formatBalanceTime(balanceRemaining);
+        updateBalanceDisplay();
+
+        if (balanceRemaining <= 0) {
+            balanceRemaining = 0;
+            balanceTimer.textContent = "00:00";
+            finishBalanceTest();
+        }
+    }, 1000);
+});
+
+balanceTargets.forEach((target) => {
+    target.addEventListener("click", () => {
+        if (!balanceInterval || target.disabled) return;
+
+        const side = target.dataset.side;
+        leftShare = Math.max(35, Math.min(65, leftShare + (side === "LEFT" ? 4 : -4)));
+
+        if (side === requestedSide) {
+            balanceScore = Math.min(100, balanceScore + 8);
+        } else {
+            balanceScore = Math.max(0, balanceScore - 3);
+        }
+
+        requestedSide = Math.random() < 0.5 ? "LEFT" : "RIGHT";
+        weightInstruction.textContent =
+            `Shift your weight toward the ${requestedSide.toLowerCase()} target.`;
+        updateBalanceDisplay();
+    });
+});
+
+resetBalance.addEventListener("click", () => {
+    clearInterval(balanceInterval);
+    balanceInterval = null;
+    balanceRemaining = Number(balanceDuration.value);
+    balanceElapsed = 0;
+    balanceScore = 0;
+    leftShare = 50;
+
+    balanceTargets.forEach((target) => target.disabled = true);
+    balanceTimer.textContent = formatBalanceTime(balanceRemaining);
+    weightInstruction.textContent = "Choose a duration, then start the test.";
+    updateBalanceDisplay();
+});
+
+// Select the game type and update the target ball
+document.querySelectorAll(".exercise-type").forEach((button) => {
+    button.addEventListener("click", () => {
+        if (sessionActive) return;
+
+        document.querySelectorAll(".exercise-type").forEach((item) => {
+            item.setAttribute("aria-pressed", "false");
+        });
+
+        button.setAttribute("aria-pressed", "true");
+        selectedType = button.textContent.trim();
+        targetButton.style.setProperty(
+            "--target-color",
+            exerciseTypes[selectedType].color
+        );
+        exerciseInstruction.textContent = exerciseTypes[selectedType].instruction;
+    });
+});
+
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainder = seconds % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(remainder).padStart(2, "0")}`;
+}
+
+durationSelect.addEventListener("change", () => {
+    startButton.disabled = !durationSelect.value;
+    timerDisplay.textContent = durationSelect.value
+        ? formatTime(Number(durationSelect.value))
+        : "--:--";
+});
+
+function finishSession() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    stopTargetMotion();
+    sessionActive = false;
+    sessionPaused = false;
+
+    targetButton.disabled = true;
+    durationSelect.disabled = false;
+    startButton.disabled = false;
+    startButton.textContent = "▶ START AGAIN";
+    pauseButton.disabled = true;
+    pauseButton.textContent = "PAUSE";
+    exerciseInstruction.textContent = "Session complete.";
+
+    document.querySelector("#feedback-summary").textContent =
+        `You completed ${repetitions} target hits in a ${durationSelect.value}-second ${selectedType.toLowerCase()} session.`;
+
+    feedbackDialog.showModal();
+}
+
+function tickSession() {
+    secondsRemaining -= 1;
+    timerDisplay.textContent = formatTime(secondsRemaining);
+
+    if (secondsRemaining <= 0) {
+        secondsRemaining = 0;
+        timerDisplay.textContent = formatTime(0);
+        finishSession();
+    }
+}
+
+startButton.addEventListener("click", () => {
+    const duration = Number(durationSelect.value);
+    if (!duration) return;
+
+    clearInterval(timerInterval);
+    stopTargetMotion();
+
+    repetitions = 0;
+    directionIndex = 0;
+    secondsRemaining = duration;
+    sessionActive = true;
+    sessionPaused = false;
+
+    repetitionsDisplay.textContent = "0";
+    timerDisplay.textContent = formatTime(secondsRemaining);
+    targetButton.disabled = false;
+    durationSelect.disabled = true;
+    startButton.disabled = true;
+    pauseButton.disabled = false;
+    pauseButton.textContent = "PAUSE";
+
+    exerciseInstruction.textContent = exerciseTypes[selectedType].instruction;
+    startTargetMotion();
+    timerInterval = window.setInterval(tickSession, 1000);
+});
+
+pauseButton.addEventListener("click", () => {
+    if (!sessionActive) return;
+
+    if (!sessionPaused) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        sessionPaused = true;
+        stopTargetMotion();
+        targetButton.disabled = true;
+        pauseButton.textContent = "RESUME";
+        exerciseInstruction.textContent = "Session paused.";
+    } else {
+        sessionPaused = false;
+        targetButton.disabled = false;
+        pauseButton.textContent = "PAUSE";
+        exerciseInstruction.textContent = exerciseTypes[selectedType].instruction;
+        startTargetMotion();
+        timerInterval = window.setInterval(tickSession, 1000);
+    }
+});
+
+resetButton.addEventListener("click", () => {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    stopTargetMotion();
+
+    sessionActive = false;
+    sessionPaused = false;
+    repetitions = 0;
+    directionIndex = 0;
+    secondsRemaining = Number(durationSelect.value) || 0;
+
+    repetitionsDisplay.textContent = "0";
+    timerDisplay.textContent = secondsRemaining
+        ? formatTime(secondsRemaining)
+        : "--:--";
+
+    targetButton.disabled = true;
+    durationSelect.disabled = false;
+    startButton.disabled = !durationSelect.value;
+    startButton.textContent = "▶ START EXERCISE";
+    pauseButton.disabled = true;
+    pauseButton.textContent = "PAUSE";
+    exerciseInstruction.textContent = exerciseTypes[selectedType].instruction;
+});
+
+targetButton.addEventListener("click", () => {
+    if (!sessionActive || sessionPaused || targetButton.disabled) return;
+
+    repetitions += 1;
+    repetitionsDisplay.textContent = repetitions;
+
+    const angle = Math.floor(35 + Math.random() * 55);
+    const speed = (0.2 + Math.random() * 0.6).toFixed(2);
+    const accuracy = Math.min(100, 80 + Math.floor(Math.random() * 20));
+
+    document.querySelector("#angle-value").textContent = `${angle}°`;
+    document.querySelector("#angle-fill").style.width = `${angle / 1.8}%`;
+    document.querySelector("#speed-value").textContent = `${speed} m/s`;
+    document.querySelector("#speed-fill").style.width = `${Number(speed) / 1.5 * 100}%`;
+    document.querySelector("#accuracy-value").textContent = `${accuracy}%`;
+    document.querySelector("#accuracy-fill").style.width = `${accuracy}%`;
+
+    if (selectedType === "REACH") {
+        setTargetPosition(20 + Math.random() * 60, 20 + Math.random() * 48);
+    } else if (selectedType === "DIRECTION") {
+        directionIndex += 1;
+        showDirectionPrompt();
+    }
+});
+
+document.querySelector("#close-feedback").addEventListener("click", () => {
+    feedbackDialog.close();
+});
+
+document.querySelector("#retry-session").addEventListener("click", () => {
+    feedbackDialog.close();
+    startButton.click();
+});
+    </script>
+</body>
+</html>

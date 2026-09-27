@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REHABO-SG</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&display=swap");
+
+        :root {
+            color-scheme: dark;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            background:
+                radial-gradient(circle at 73% 52%, rgba(0, 119, 255, 0.2), transparent 28%),
+                radial-gradient(circle at 14% 48%, rgba(0, 89, 177, 0.13), transparent 32%),
+                linear-gradient(135deg, #020a17 0%, #061a33 52%, #041127 100%);
+            color: #f2f7fb;
+            font-family: "Orbitron", sans-serif;
+        }
+
+        .brand-logo {
+            position: absolute;
+            top: clamp(0.5rem, 1.5vw, 1rem);
+            left: clamp(0.5rem, 1.5vw, 1.25rem);
+            z-index: 1;
+            width: clamp(6rem, 12vw, 10rem);
+            max-width: calc(100vw - 2rem);
+            height: auto;
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.28)) drop-shadow(0 0 10px rgba(137, 210, 238, 0.18));
+            transform-origin: top left;
+            transition: filter 220ms ease, transform 220ms ease;
+        }
+
+        .brand-logo:hover {
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.28)) drop-shadow(0 0 18px rgba(137, 210, 238, 0.5));
+            transform: scale(1.04);
+        }
+
+        h1 {
+            margin: 0;
+            color: transparent;
+            background: linear-gradient(180deg, #ffffff 0%, #edf6fb 42%, #91b4c9 76%, #eaf7ff 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            font-size: clamp(2.8rem, 6.5vw, 7.6rem);
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            line-height: 0.94;
+            white-space: nowrap;
+            animation: title-glow 3.5s ease-in-out infinite;
+        }
+
+        @keyframes title-glow {
+            0%,
+            100% {
+                filter: drop-shadow(0 0 6px rgba(137, 210, 238, 0.16));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 18px rgba(137, 210, 238, 0.42));
+            }
+        }
+
+        main {
+            position: relative;
+            order: 1;
+            z-index: 2;
+            width: min(100% - 4rem, 72rem);
+            min-height: 100vh;
+            margin: 0 auto;
+        }
+
+        .top-nav {
+            position: absolute;
+            top: 1.15rem;
+            left: 17rem;
+            display: flex;
+            gap: clamp(1.3rem, 3.2vw, 3.3rem);
+            align-items: center;
+            color: #7fabc9;
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+        }
+
+        .top-nav a {
+            position: relative;
+            color: inherit;
+            text-decoration: none;
+            transition: color 180ms ease;
+        }
+
+        .top-nav a:hover,
+        .top-nav a:focus-visible,
+        .top-nav a[aria-current="page"] {
+            color: #eefaff;
+        }
+
+        .top-nav a[aria-current="page"]::after {
+            position: absolute;
+            right: 0;
+            bottom: -0.55rem;
+            left: 0;
+            height: 2px;
+            background: #39a9ff;
+            box-shadow: 0 0 10px #248eff;
+            content: "";
+        }
+
+        .system-status {
+            position: absolute;
+            top: 0.75rem;
+            right: 0;
+            padding: 0.55rem 0.85rem;
+            border: 1px solid rgba(46, 143, 224, 0.6);
+            background: rgba(2, 18, 39, 0.72);
+            color: #83b9d9;
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 0.55rem;
+            height: 0.55rem;
+            margin-right: 0.4rem;
+            border-radius: 50%;
+            background: #00f0b4;
+            box-shadow: 0 0 10px #00f0b4;
+        }
+
+        .system-status small {
+            display: block;
+            margin-top: 0.18rem;
+            padding-left: 1rem;
+            color: #426e91;
+            font-size: 0.52rem;
+            letter-spacing: 0.08em;
+        }
+
+        .hero-copy {
+            position: absolute;
+            top: 27%;
+            left: -2rem;
+            width: min(70%, 58rem);
+        }
+
+        .eyebrow {
+            margin: 0 0 1.2rem;
+            color: #65c8ff;
+            font-size: clamp(0.58rem, 1vw, 0.8rem);
+            font-weight: 700;
+            letter-spacing: 0.34em;
+        }
+
+        .hero-subtitle {
+            max-width: 35rem;
+            margin: 1.25rem 0 0;
+            color: #eef7fc;
+            font-size: clamp(0.82rem, 1.3vw, 1.1rem);
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            line-height: 1.55;
+        }
+
+        .hero-tagline {
+            margin: 1.1rem 0 0;
+            color: #58bfff;
+            font-size: clamp(0.75rem, 1.25vw, 1rem);
+            letter-spacing: 0.13em;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 2.25rem 0 1.8rem;
+        }
+
+        .features-portal {
+            position: relative;
+            order: 4;
+            min-height: 100vh;
+            padding: 8rem max(2rem, 8vw);
+            box-sizing: border-box;
+            background:
+                radial-gradient(circle at 70% 30%, rgba(0, 129, 255, 0.16), transparent 30%),
+                linear-gradient(180deg, #062442 0%, #031126 100%);
+            scroll-margin-top: 1rem;
+        }
+
+        .features-content {
+            width: min(100%, 68rem);
+            margin: 0 auto;
+        }
+
+        .features-kicker {
+            margin: 0 0 1.25rem;
+            color: #5bc5ff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.32em;
+        }
+
+        .features-portal h2 {
+            margin: 0;
+            color: #f4faff;
+            font-size: clamp(2rem, 5vw, 4.5rem);
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            line-height: 1;
+        }
+
+        .feature-details {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+            margin-top: 3.5rem;
+        }
+
+        .feature-detail {
+            position: relative;
+            min-height: 10rem;
+            padding: 1.5rem 1.5rem 1.5rem 5rem;
+            border: 1px solid rgba(59, 165, 237, 0.52);
+            background: rgba(2, 16, 37, 0.62);
+            box-shadow: inset 0 0 20px rgba(26, 121, 202, 0.08);
+            box-sizing: border-box;
+        }
+
+        .feature-number {
+            position: absolute;
+            top: 1.45rem;
+            left: 1.35rem;
+            color: #45baff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+        }
+
+        .feature-detail h3 {
+            margin: 0 0 0.9rem;
+            color: #edf8fd;
+            font-size: 0.92rem;
+            letter-spacing: 0.1em;
+            line-height: 1.35;
+        }
+
+        .feature-detail p {
+            margin: 0;
+            color: #b5d6e8;
+            font-family: "Segoe UI", sans-serif;
+            font-size: 1rem;
+            line-height: 1.65;
+        }
+
+        .research-portal {
+            position: relative;
+            order: 5;
+            min-height: 100vh;
+            padding: 8rem max(2rem, 8vw);
+            box-sizing: border-box;
+            background:
+                radial-gradient(circle at 25% 35%, rgba(0, 129, 255, 0.14), transparent 30%),
+                linear-gradient(180deg, #031126 0%, #020a17 100%);
+            scroll-margin-top: 1rem;
+        }
+
+        .research-content {
+            width: min(100%, 68rem);
+            margin: 0 auto;
+        }
+
+        .research-kicker {
+            margin: 0 0 1.25rem;
+            color: #5bc5ff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.32em;
+        }
+
+        .research-portal h2 {
+            margin: 0;
+            color: #f4faff;
+            font-size: clamp(2rem, 5vw, 4.5rem);
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            line-height: 1;
+        }
+
+        .research-block {
+            max-width: 58rem;
+            margin-top: 3.5rem;
+            padding-left: 1.5rem;
+            border-left: 2px solid #2eabff;
+        }
+
+        .research-block h3 {
+            margin: 0 0 1rem;
+            color: #62c8ff;
+            font-size: clamp(1rem, 1.8vw, 1.35rem);
+            letter-spacing: 0.16em;
+        }
+
+        .research-block p {
+            margin: 0;
+            color: #dceef7;
+            font-family: "Segoe UI", sans-serif;
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
+            line-height: 1.8;
+        }
+
+        .research-block + .research-block {
+            margin-top: 2.8rem;
+        }
+
+        .research-flow {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 0.7rem;
+            margin-top: 1.5rem;
+        }
+
+        .flow-step {
+            min-height: 8rem;
+            padding: 1rem;
+            border: 1px solid rgba(59, 165, 237, 0.52);
+            background: rgba(2, 16, 37, 0.62);
+            box-shadow: inset 0 0 20px rgba(26, 121, 202, 0.08);
+        }
+
+        .flow-step h4 {
+            margin: 0 0 0.8rem;
+            color: #8fddff;
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+        }
+
+        .flow-step p {
+            color: #eff8fd;
+            font-family: "Orbitron", sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            line-height: 1.6;
+        }
+
+        .flow-step:not(:last-child)::after {
+            display: block;
+            margin-top: 0.75rem;
+            color: #45baff;
+            content: ">";
+            font-size: 1.1rem;
+            text-align: right;
+        }
+
+        .feature {
+            min-width: 0;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(52, 163, 244, 0.72);
+            color: #d8ecf7;
+            font-size: clamp(0.54rem, 0.8vw, 0.68rem);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            line-height: 1.55;
+            text-align: center;
+        }
+
+        .feature::before {
+            display: block;
+            width: 1.8rem;
+            height: 1.8rem;
+            margin: 0 auto 0.5rem;
+            border: 1px solid #188eff;
+            border-radius: 0.35rem;
+            box-shadow: 0 0 12px rgba(24, 142, 255, 0.45);
+            color: #52c5ff;
+            content: "+";
+            font-size: 1.2rem;
+            line-height: 1.65rem;
+        }
+
+        .feature:nth-child(2)::before {
+            content: "|";
+        }
+
+        .feature:nth-child(3)::before {
+            content: "*";
+        }
+
+        .enter-button {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            margin-top: 0;
+            padding: 1rem 3.6rem 1rem 2.8rem;
+            border: 1px solid rgba(222, 235, 243, 0.8);
+            border-radius: 0;
+            background: linear-gradient(135deg, rgba(225, 237, 243, 0.16), rgba(7, 31, 56, 0.72));
+            color: #f4f8fb;
+            font-family: "Orbitron", sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-decoration: none;
+            text-transform: uppercase;
+            box-shadow: inset 0 0 0 1px rgba(112, 178, 207, 0.16), 0 0 0 rgba(120, 205, 235, 0);
+            transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+        }
+
+        .scroll-prompt {
+            position: absolute;
+            bottom: 2.15rem;
+            left: 50%;
+            color: #85a8bf;
+            font-size: 0.52rem;
+            letter-spacing: 0.1em;
+            text-align: center;
+            transform: translateX(-50%);
+        }
+
+        .scroll-prompt::after {
+            display: block;
+            margin-top: 0.65rem;
+            color: #42bfff;
+            content: "v";
+            font-size: 1.2rem;
+        }
+
+        .footer-left,
+        .footer-right {
+            position: absolute;
+            bottom: 0.8rem;
+            color: #436b88;
+            font-size: 0.42rem;
+            letter-spacing: 0.08em;
+        }
+
+        .footer-left {
+            left: 0;
+        }
+
+        .footer-right {
+            right: 0;
+        }
+
+        .system-portal {
+            position: relative;
+            order: 3;
+            min-height: 100vh;
+            padding: 8rem max(2rem, 8vw);
+            box-sizing: border-box;
+            background:
+                radial-gradient(circle at 18% 35%, rgba(0, 129, 255, 0.16), transparent 30%),
+                linear-gradient(180deg, #031126 0%, #062442 100%);
+            scroll-margin-top: 1rem;
+        }
+
+        .system-content {
+            width: min(100%, 68rem);
+            margin: 0 auto;
+        }
+
+        .system-kicker {
+            margin: 0 0 1.25rem;
+            color: #5bc5ff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.32em;
+        }
+
+        .system-portal h2 {
+            margin: 0;
+            color: #f4faff;
+            font-size: clamp(2rem, 5vw, 4.5rem);
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            line-height: 1;
+        }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+            margin-top: 3.5rem;
+        }
+
+        .module {
+            padding: 1.5rem;
+            border: 1px solid rgba(59, 165, 237, 0.52);
+            background: rgba(2, 16, 37, 0.62);
+            box-shadow: inset 0 0 20px rgba(26, 121, 202, 0.08);
+        }
+
+        .module:last-child {
+            grid-column: 1 / -1;
+        }
+
+        .module h3 {
+            margin: 0 0 0.7rem;
+            color: #8fddff;
+            font-size: 1rem;
+            letter-spacing: 0.16em;
+        }
+
+        .module strong {
+            display: block;
+            margin-bottom: 1rem;
+            color: #eef8fd;
+            font-size: 0.82rem;
+            letter-spacing: 0.08em;
+        }
+
+        .module p {
+            margin: 0 0 0.55rem;
+            color: #63c8ff;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .module ul {
+            display: grid;
+            gap: 0.45rem;
+            margin: 0;
+            padding-left: 1.15rem;
+            color: #d9edf7;
+            font-family: "Segoe UI", sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .portal-back {
+            display: inline-block;
+            margin-top: 3rem;
+            color: #8bd8ff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .portal-back:hover,
+        .portal-back:focus-visible {
+            color: #ffffff;
+        }
+
+        .about-portal {
+            position: relative;
+            order: 2;
+            display: flex;
+            min-height: 100vh;
+            align-items: center;
+            padding: 8rem max(2rem, 8vw);
+            box-sizing: border-box;
+            background:
+                radial-gradient(circle at 80% 45%, rgba(0, 129, 255, 0.2), transparent 34%),
+                linear-gradient(180deg, #041127 0%, #031126 100%);
+            scroll-margin-top: 1rem;
+        }
+
+        .about-content {
+            width: min(100%, 58rem);
+            margin: 0 auto;
+        }
+
+        .about-kicker {
+            margin: 0 0 1.25rem;
+            color: #5bc5ff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.32em;
+        }
+
+        .about-portal h2 {
+            margin: 0;
+            color: #f4faff;
+            font-size: clamp(2rem, 5vw, 4.5rem);
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            line-height: 1;
+        }
+
+        .about-lead {
+            max-width: 52rem;
+            margin: 2rem 0 5rem;
+            color: #c9e4f3;
+            font-family: "Orbitron", sans-serif;
+            font-size: clamp(0.9rem, 1.5vw, 1.25rem);
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            line-height: 1.8;
+        }
+
+        .problem-block {
+            max-width: 48rem;
+            padding-left: 1.5rem;
+            border-left: 2px solid #2eabff;
+        }
+
+        .problem-block h3 {
+            margin: 0 0 1rem;
+            color: #62c8ff;
+            font-size: clamp(1.15rem, 2vw, 1.7rem);
+            letter-spacing: 0.18em;
+        }
+
+        .problem-block p {
+            margin: 0;
+            color: #e4f1f8;
+            font-family: "Segoe UI", sans-serif;
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
+            letter-spacing: 0.02em;
+            line-height: 1.8;
+        }
+
+        .approach-image {
+            display: block;
+            width: min(100%, 54rem);
+            height: auto;
+            margin-top: 3rem;
+            border: 1px solid rgba(69, 174, 239, 0.62);
+            box-shadow: 0 0 28px rgba(23, 134, 224, 0.18);
+        }
+
+        .about-back {
+            display: inline-block;
+            margin-top: 3rem;
+            color: #8bd8ff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .about-back:hover,
+        .about-back:focus-visible {
+            color: #ffffff;
+        }
+
+        @media (max-width: 760px) {
+            body {
+                overflow-y: auto;
+            }
+
+            main {
+                width: min(100% - 2rem, 40rem);
+            }
+
+            .top-nav {
+                top: 4.2rem;
+                left: 0;
+                right: 0;
+                justify-content: center;
+                gap: 0.9rem;
+                font-size: 0.47rem;
+            }
+
+            .system-status {
+                top: 0.65rem;
+                right: 0;
+            }
+
+            .hero-copy {
+                position: relative;
+                top: auto;
+                left: auto;
+                width: 100%;
+                padding-top: 15rem;
+            }
+
+            h1 {
+                font-size: clamp(2.8rem, 13vw, 5rem);
+            }
+
+            .feature-list {
+                gap: 0.5rem;
+            }
+
+            .module-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-details {
+                grid-template-columns: 1fr;
+            }
+
+            .research-flow {
+                grid-template-columns: 1fr;
+            }
+
+            .flow-step:not(:last-child)::after {
+                content: "v";
+                text-align: center;
+            }
+
+            .module:last-child {
+                grid-column: auto;
+            }
+
+            .footer-left,
+            .footer-right {
+                display: none;
+            }
+
+            .scroll-prompt {
+                position: relative;
+                bottom: auto;
+                left: auto;
+                margin-top: 4rem;
+                transform: none;
+            }
+        }
+
+        .enter-button::before {
+            position: absolute;
+            top: 0;
+            left: -30%;
+            width: 18%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.42);
+            content: "";
+            transform: skewX(-24deg);
+            transition: left 450ms ease;
+        }
+
+        .enter-button::after {
+            position: absolute;
+            right: 1.2rem;
+            content: ">";
+            color: #9edaf1;
+            font-size: 1.1rem;
+            transition: transform 180ms ease;
+        }
+
+        .enter-button:hover,
+        .enter-button:focus-visible {
+            background: linear-gradient(135deg, rgba(225, 237, 243, 0.28), rgba(15, 74, 103, 0.85));
+            box-shadow: inset 0 0 0 1px rgba(191, 230, 244, 0.3), 0 0 24px rgba(120, 205, 235, 0.34);
+            transform: translateY(-2px);
+        }
+
+        .enter-button:hover::before,
+        .enter-button:focus-visible::before {
+            left: 115%;
+        }
+
+        .enter-button:hover::after,
+        .enter-button:focus-visible::after {
+            transform: translateX(4px);
+        }
+
+        .enter-button:focus-visible {
+            outline: 2px solid #b9e8f7;
+            outline-offset: 4px;
+        }
+    </style>
+</head>
+<body>
+    <img class="brand-logo" src="REHABO-SG%20LOGO.png" alt="REHABO-SG logo">
+    <main id="home">
+        <nav class="top-nav" aria-label="Primary navigation">
+            <a href="#" aria-current="page">HOME</a>
+            <a href="#about">ABOUT</a>
+            <a href="#system">SYSTEM</a>
+            <a href="#features">FEATURES</a>
+            <a href="#research">RESEARCH</a>
+            <a href="#team">TEAM</a>
+        </nav>
+
+        <div class="system-status">
+            <span class="status-dot"></span>SYSTEM ONLINE
+            <small>v1.0.0</small>
+        </div>
+
+        <section class="hero-copy" aria-labelledby="hero-title">
+            <p class="eyebrow">MOBILE REHABILITATION SYSTEM</p>
+            <h1 id="hero-title">REHABO-SG</h1>
+            <p class="hero-subtitle">MOBILE POST-STROKE REHABILITATION<br>&amp; BALANCE MONITORING</p>
+            <p class="hero-tagline">Rehabilitate. Monitor. Recover.</p>
+
+            <div class="feature-list" id="feature-highlights">
+                <div class="feature">GUIDED<br>EXERCISES</div>
+                <div class="feature">REAL-TIME<br>MONITORING</div>
+                <div class="feature">TRACK<br>PROGRESS</div>
+            </div>
+
+            <a class="enter-button" href="system.html">Initialize REHABO-SG</a>
+        </section>
+
+        <p class="scroll-prompt">SCROLL TO EXPLORE</p>
+        <p class="footer-left">REHABO-SG&nbsp;&nbsp;|&nbsp;&nbsp;ENGINEERING FOR A STRONGER TOMORROW</p>
+        <p class="footer-right">MEDICAL ROBOTICS&nbsp;&nbsp;|&nbsp;&nbsp;REHABILITATION&nbsp;&nbsp;|&nbsp;&nbsp;INNOVATION</p>
+    </main>
+
+    <section class="system-portal" id="system" aria-labelledby="system-title">
+        <div class="system-content">
+            <p class="system-kicker">REHABO-SG / SYSTEM ARCHITECTURE</p>
+            <h2 id="system-title">HOW REHABO-SG WORKS</h2>
+
+            <div class="module-grid">
+                <article class="module">
+                    <h3>MOVEMENT MODULE</h3>
+                    <strong>MPU6050 / IMU</strong>
+                    <p>Measures:</p>
+                    <ul>
+                        <li>acceleration</li>
+                        <li>angular movement</li>
+                        <li>movement patterns</li>
+                        <li>arm motion</li>
+                    </ul>
+                </article>
+
+                <article class="module">
+                    <h3>BALANCE MODULE</h3>
+                    <strong>Pressure sensing platform</strong>
+                    <p>Measures:</p>
+                    <ul>
+                        <li>weight distribution</li>
+                        <li>left/right loading</li>
+                        <li>pressure distribution</li>
+                        <li>postural stability indicators</li>
+                    </ul>
+                </article>
+
+                <article class="module">
+                    <h3>FORCE MODULE</h3>
+                    <strong>Load cells</strong>
+                    <p>Measures:</p>
+                    <ul>
+                        <li>applied force</li>
+                        <li>left/right force distribution</li>
+                        <li>exercise performance</li>
+                    </ul>
+                </article>
+
+                <article class="module">
+                    <h3>CONTROL MODULE</h3>
+                    <strong>ESP32</strong>
+                    <p>Handles:</p>
+                    <ul>
+                        <li>sensor acquisition</li>
+                        <li>processing</li>
+                        <li>communication</li>
+                        <li>system coordination</li>
+                    </ul>
+                </article>
+
+                <article class="module">
+                    <h3>INTERFACE</h3>
+                    <strong>Tablet</strong>
+                    <p>Displays:</p>
+                    <ul>
+                        <li>exercise instructions</li>
+                        <li>sensor readings</li>
+                        <li>performance feedback</li>
+                        <li>session results</li>
+                    </ul>
+                </article>
+            </div>
+
+            <a class="portal-back" href="#">&lt; Return to home</a>
+        </div>
+    </section>
+
+    <section class="about-portal" id="about" aria-labelledby="about-title">
+        <div class="about-content">
+            <p class="about-kicker">REHABO-SG / SYSTEM PROFILE</p>
+            <h2 id="about-title">ABOUT REHABO-SG</h2>
+            <p class="about-lead">A student-developed mobile robotic system designed to support post-stroke rehabilitation through guided exercises and non-invasive movement monitoring.</p>
+
+            <div class="problem-block">
+                <h3>THE PROBLEM</h3>
+                <p>Stroke can affect a person's ability to move, maintain balance, and perform coordinated upper-limb activities. Rehabilitation requires repeated exercises and continuous assessment of movement performance.</p>
+            </div>
+
+            <img class="approach-image" src="APPROACH.png" alt="REHABO-SG approach overview">
+
+            <a class="about-back" href="#">&lt; Return to home</a>
+        </div>
+    </section>
+
+    <section class="features-portal" id="features" aria-labelledby="features-title">
+        <div class="features-content">
+            <p class="features-kicker">REHABO-SG / CAPABILITIES</p>
+            <h2 id="features-title">FEATURES</h2>
+
+            <div class="feature-details">
+                <article class="feature-detail">
+                    <span class="feature-number">01</span>
+                    <h3>GUIDED REHABILITATION</h3>
+                    <p>Provides visual instructions and targets for upper-limb exercises.</p>
+                </article>
+
+                <article class="feature-detail">
+                    <span class="feature-number">02</span>
+                    <h3>MOVEMENT MONITORING</h3>
+                    <p>Records movement characteristics using wearable inertial sensing.</p>
+                </article>
+
+                <article class="feature-detail">
+                    <span class="feature-number">03</span>
+                    <h3>BALANCE</h3>
+                    <p>Evaluates weight distribution and postural stability using the sensing platform.</p>
+                </article>
+
+                <article class="feature-detail">
+                    <span class="feature-number">04</span>
+                    <h3>REAL-TIME FEEDBACK</h3>
+                    <p>Provides immediate visual feedback through the tablet interface.</p>
+                </article>
+
+                <article class="feature-detail">
+                    <span class="feature-number">05</span>
+                    <h3>PROGRESS TRACKING</h3>
+                    <p>Allows performance measurements to be compared across rehabilitation sessions.</p>
+                </article>
+
+                <article class="feature-detail">
+                    <span class="feature-number">06</span>
+                    <h3>MOBILE ROBOTIC PLATFORM</h3>
+                    <p>Integrates rehabilitation monitoring into a mobile robotic platform designed for flexible use.</p>
+                </article>
+            </div>
+
+            <a class="portal-back" href="#">&lt; Return to home</a>
+        </div>
+    </section>
+
+    <section class="research-portal" id="research" aria-labelledby="research-title">
+        <div class="research-content">
+            <p class="research-kicker">REHABO-SG / STUDY FRAMEWORK</p>
+            <h2 id="research-title">RESEARCH</h2>
+
+            <div class="research-block">
+                <h3>RESEARCH QUESTION</h3>
+                <p>Can an integrated mobile robotic system provide consistent monitoring and feedback of upper-limb movement, and postural stability during rehabilitation exercises?</p>
+            </div>
+
+            <div class="research-block">
+                <h3>RESEARCH GAP</h3>
+                <p>Existing rehabilitation technologies can provide exercise guidance or monitor individual aspects of movement. REHABO-SG explores the integration of guided upper-limb rehabilitation with simultaneous balance, and movement monitoring within a single mobile robotic platform.</p>
+            </div>
+
+            <div class="research-block">
+                <h3>RESEARCH VARIABLES</h3>
+                <div class="research-flow">
+                    <article class="flow-step">
+                        <h4>INPUT</h4>
+                        <p>User movement</p>
+                    </article>
+                    <article class="flow-step">
+                        <h4>SENSOR DATA</h4>
+                        <p>IMU<br>Pressure<br>Force</p>
+                    </article>
+                    <article class="flow-step">
+                        <h4>COMPUTATION</h4>
+                        <p>ESP32</p>
+                    </article>
+                    <article class="flow-step">
+                        <h4>OUTPUT</h4>
+                        <p>Movement metrics<br>Balance metrics<br>Gait-related metrics<br>Exercise performance</p>
+                    </article>
+                    <article class="flow-step">
+                        <h4>FEEDBACK</h4>
+                        <p>Tablet interface</p>
+                    </article>
+                </div>
+            </div>
+
+            <a class="portal-back" href="#">&lt; Return to home</a>
+        </div>
+    </section>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach((link) => {
+            link.addEventListener("click", (event) => {
+                const targetId = link.getAttribute("href");
+                const target = targetId === "#"
+                    ? document.body
+                    : document.querySelector(targetId);
+
+                if (!target) {
+                    return;
+                }
+
+                event.preventDefault();
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+                history.replaceState(null, "", targetId);
+            });
+        });
+    </script>
+</body>
+</html>
