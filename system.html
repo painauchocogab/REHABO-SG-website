@@ -1768,6 +1768,8 @@
     CONNECT RIGHT SENSOR
 </button>
 
+    </div>
+
     <div class="live-data-table">
 
         <div class="live-row live-header">
@@ -2499,23 +2501,32 @@ document.querySelector("#retry-session").addEventListener("click", () => {
     startButton.click();
 });
     </script>
-    <script>
 
 <script>
 let leftPort = null;
 let rightPort = null;
 
+const sensorBuffers = {
+    LEFT: "",
+    RIGHT: ""
+};
+
+const sensorDecoders = {
+    LEFT: new TextDecoder(),
+    RIGHT: new TextDecoder()
+};
+
 async function connectSensor(side) {
-
     try {
+        if (!("serial" in navigator)) {
+            alert("Web Serial is not supported. Please use Google Chrome.");
+            return;
+        }
 
-        // IMPORTANT:
-        // requestPort() must happen directly from the button click.
+        // Must be called directly from the user click handler.
         const port = await navigator.serial.requestPort();
 
-        await port.open({
-            baudRate: 115200
-        });
+        await port.open({ baudRate: 115200 });
 
         if (side === "LEFT") {
             leftPort = port;
@@ -2523,79 +2534,107 @@ async function connectSensor(side) {
             rightPort = port;
         }
 
-        document.getElementById("serial-status").textContent =
-            "● " + side + " SENSOR CONNECTED";
-
+        updateConnectionStatus();
         readSensorData(port, side);
-
     } catch (error) {
-
-        console.error(error);
-
-        document.getElementById("serial-status").textContent =
-            "● " + side + " SENSOR ERROR: " + error.message;
+        console.error(side + " connection error:", error);
+        const status = document.getElementById("serial-status");
+        if (status) {
+            status.textContent = "● " + side + " SENSOR ERROR";
+        }
     }
 }
-</script>
-    <script>
-        
-</script>
-    <script>
-async function testPortPicker() {
-    try {
-        alert("1. Button works. Calling requestPort() now...");
 
-        const port = await navigator.serial.requestPort();
+function updateConnectionStatus() {
+    const status = document.getElementById("serial-status");
+    if (!status) return;
 
-        alert("2. Port selected successfully!");
-
-        await port.open({
-            baudRate: 115200
-        });
-
-        alert("3. Port opened successfully at 115200!");
-
-        await port.close();
-
-    } catch (error) {
-        alert(
-            "REQUEST PORT ERROR\n\n" +
-            "Name: " + error.name + "\n" +
-            "Message: " + error.message
-        );
-
-        console.error("Web Serial error:", error);
+    if (leftPort && rightPort) {
+        status.textContent = "● LEFT + RIGHT SENSORS CONNECTED";
+    } else if (leftPort) {
+        status.textContent = "● LEFT SENSOR CONNECTED";
+    } else if (rightPort) {
+        status.textContent = "● RIGHT SENSOR CONNECTED";
+    } else {
+        status.textContent = "● SENSORS DISCONNECTED";
     }
 }
-</script>
-    <script>
-async function testPortPicker() {
 
+async function readSensorData(port, side) {
+    const reader = port.readable.getReader();
     try {
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            if (!value) continue;
 
-        alert("SERIAL PICKER TEST: calling requestPort()");
+            sensorBuffers[side] += sensorDecoders[side].decode(value, { stream: true });
+            const lines = sensorBuffers[side].split("\n");
+            sensorBuffers[side] = lines.pop();
 
-        const port = await navigator.serial.requestPort();
+            for (const line of lines) {
+                const text = line.trim();
+                if (!text || !text.startsWith("{")) continue;
 
-        alert("PORT SELECTED!");
+                try {
+                    const data = JSON.parse(text);
+                    updateLiveDashboard(data);
 
-        await port.open({
-            baudRate: 115200
-        });
+                    const debugBox = document.getElementById("sensor-data");
+                    if (debugBox) {
+                        debugBox.textContent = JSON.stringify(data, null, 2);
+                    }
 
-        alert("PORT OPENED SUCCESSFULLY!");
-
-        await port.close();
-
+                    const status = document.getElementById("serial-status");
+                    if (status) {
+                        status.textContent = "● " + side + " SENSOR: RECEIVING DATA";
+                    }
+                } catch (error) {
+                    console.warn("Invalid JSON from " + side + ":", text);
+                }
+            }
+        }
     } catch (error) {
+        console.error(side + " serial read error:", error);
+        const status = document.getElementById("serial-status");
+        if (status) {
+            status.textContent = "● " + side + " SENSOR READ ERROR";
+        }
+    }
+}
 
-        alert(
-            "SERIAL ERROR\n\n" +
-            "Name: " + error.name +
-            "\nMessage: " + error.message
-        );
+function updateLiveDashboard(data) {
+    if (!data || !data.side) return;
 
-        console.error(error);
+    const side = String(data.side).toUpperCase();
+    if (side !== "LEFT" && side !== "RIGHT") return;
+
+    const prefix = side === "LEFT" ? "left" : "right";
+
+    const angle = document.getElementById(prefix + "-angle");
+    const angular = document.getElementById(prefix + "-angular");
+    const acceleration = document.getElementById(prefix + "-acceleration");
+    const direction = document.getElementById(prefix + "-direction");
+    const state = document.getElementById(prefix + "-state");
+
+    if (angle && Number.isFinite(Number(data.angle))) {
+        angle.textContent = Number(data.angle).toFixed(1) + "°";
+    }
+
+    if (angular && Number.isFinite(Number(data.angularVelocity))) {
+        angular.textContent = Number(data.angularVelocity).toFixed(2) + " °/s";
+    }
+
+    if (acceleration && Number.isFinite(Number(data.acceleration))) {
+        acceleration.textContent = Number(data.acceleration).toFixed(2) + " m/s²";
+    }
+
+    if (direction) {
+        direction.textContent = data.direction ?? "Neutral";
+    }
+
+    if (state) {
+        state.textContent = data.state ?? "Idle";
     }
 }
 </script>
