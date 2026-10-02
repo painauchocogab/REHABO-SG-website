@@ -1757,7 +1757,7 @@
         <button
     id="connect-left"
     type="button"
-    onclick="testPortPicker()">
+    onclick="connectSensor('LEFT')">
     CONNECT LEFT SENSOR
 </button>
 
@@ -2502,33 +2502,15 @@ document.querySelector("#retry-session").addEventListener("click", () => {
     <script>
 
 <script>
-
 let leftPort = null;
 let rightPort = null;
 
-const sensorState = {
-    LEFT: {
-        buffer: "",
-        decoder: new TextDecoder()
-    },
-    RIGHT: {
-        buffer: "",
-        decoder: new TextDecoder()
-    }
-};
-
-
 async function connectSensor(side) {
-
-    alert("BUTTON WORKS: " + side);
 
     try {
 
-        if (!("serial" in navigator)) {
-            alert("Web Serial is not supported. Please use Google Chrome.");
-            return;
-        }
-
+        // IMPORTANT:
+        // requestPort() must happen directly from the button click.
         const port = await navigator.serial.requestPort();
 
         await port.open({
@@ -2537,170 +2519,23 @@ async function connectSensor(side) {
 
         if (side === "LEFT") {
             leftPort = port;
-        }
-
-        if (side === "RIGHT") {
+        } else {
             rightPort = port;
         }
 
-        updateConnectionStatus();
+        document.getElementById("serial-status").textContent =
+            "● " + side + " SENSOR CONNECTED";
 
         readSensorData(port, side);
 
     } catch (error) {
 
-        console.error(side + " connection error:", error);
+        console.error(error);
 
         document.getElementById("serial-status").textContent =
-            "● " + side + " SENSOR CONNECTION ERROR";
-    }
-
-}
-
-
-function updateConnectionStatus() {
-
-    if (leftPort && rightPort) {
-
-        document.getElementById("serial-status").textContent =
-            "● LEFT + RIGHT SENSORS CONNECTED";
-
-    } else if (leftPort) {
-
-        document.getElementById("serial-status").textContent =
-            "● LEFT SENSOR CONNECTED";
-
-    } else if (rightPort) {
-
-        document.getElementById("serial-status").textContent =
-            "● RIGHT SENSOR CONNECTED";
-
-    } else {
-
-        document.getElementById("serial-status").textContent =
-            "● SENSORS DISCONNECTED";
-    }
-
-}
-
-
-async function readSensorData(port, side) {
-
-    const reader = port.readable.getReader();
-
-    try {
-
-        while (true) {
-
-            const { value, done } = await reader.read();
-
-            if (done) {
-                break;
-            }
-
-            if (!value) {
-                continue;
-            }
-
-            sensorState[side].buffer +=
-                sensorState[side].decoder.decode(value, {
-                    stream: true
-                });
-
-            const lines =
-                sensorState[side].buffer.split("\n");
-
-            sensorState[side].buffer =
-                lines.pop();
-
-            for (const line of lines) {
-
-                const text = line.trim();
-
-                if (!text.startsWith("{")) {
-                    continue;
-                }
-
-                try {
-
-                    const data = JSON.parse(text);
-
-                    console.log(side + " DATA:", data);
-
-                    updateLiveDashboard(data);
-
-                    document.getElementById("sensor-data").textContent =
-                        JSON.stringify(data, null, 2);
-
-                } catch (error) {
-
-                    console.warn(
-                        "Invalid JSON:",
-                        text
-                    );
-
-                }
-
-            }
-        }
-
-    } catch (error) {
-
-        console.error(side + " read error:", error);
-
-        document.getElementById("serial-status").textContent =
-            "● " + side + " SENSOR READ ERROR";
-
+            "● " + side + " SENSOR ERROR: " + error.message;
     }
 }
-
-
-function updateLiveDashboard(data) {
-
-    if (!data.side) {
-        return;
-    }
-
-    const side = data.side.toUpperCase();
-
-    if (side !== "LEFT" && side !== "RIGHT") {
-        return;
-    }
-
-    const prefix =
-        side === "LEFT" ? "left" : "right";
-
-
-    document.getElementById(
-        prefix + "-angle"
-    ).textContent =
-        Number(data.angle).toFixed(1) + "°";
-
-
-    document.getElementById(
-        prefix + "-angular"
-    ).textContent =
-        Number(data.angularVelocity).toFixed(2) + " °/s";
-
-
-    document.getElementById(
-        prefix + "-acceleration"
-    ).textContent =
-        Number(data.acceleration).toFixed(2) + " m/s²";
-
-
-    document.getElementById(
-        prefix + "-direction"
-    ).textContent =
-        data.direction;
-
-
-    document.getElementById(
-        prefix + "-state"
-    ).textContent =
-        data.state;
-}
-
 </script>
     <script>
         
