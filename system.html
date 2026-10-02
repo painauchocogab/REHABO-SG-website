@@ -1630,6 +1630,12 @@
     background: #062442;
     font: inherit;
 }
+        #connect-left {
+    position: relative;
+    z-index: 99999;
+    pointer-events: auto;
+    cursor: pointer;
+}
     </style>
 </head>
 <body>
@@ -1751,7 +1757,7 @@
         <button
     id="connect-left"
     type="button"
-    onclick="connectSensor('LEFT')">
+    onclick="alert('LEFT BUTTON WORKS')">
     CONNECT LEFT SENSOR
 </button>
 
