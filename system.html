@@ -2472,10 +2472,11 @@ async function readSensorData(port, side) {
 
                     const data = JSON.parse(text);
 
-                    console.log(side + " SENSOR:", data);
+                   document.getElementById("sensor-data").textContent =
+    JSON.stringify(data, null, 2);
 
-                    document.getElementById("sensor-data").textContent =
-                        JSON.stringify(data, null, 2);
+document.getElementById("serial-status").textContent =
+    side + " SENSOR: RECEIVING DATA";
 
                 } catch (error) {
 
