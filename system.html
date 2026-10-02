@@ -2438,10 +2438,6 @@ async function readSensorData(port, side) {
 
     const reader = port.readable.getReader();
 
-    const decoder = new TextDecoder();
-
-    let buffer = "";
-
     try {
 
         while (true) {
@@ -2449,6 +2445,7 @@ async function readSensorData(port, side) {
             const { value, done } = await reader.read();
 
             if (done) {
+                console.log(side + " reader closed");
                 break;
             }
 
@@ -2456,71 +2453,22 @@ async function readSensorData(port, side) {
                 continue;
             }
 
-            buffer += decoder.decode(value, {
-                stream: true
-            });
+            const text = new TextDecoder().decode(value);
 
-            const lines = buffer.split("\n");
+            console.log("RAW FROM " + side + ":", text);
 
-            buffer = lines.pop();
+            document.getElementById("sensor-data").textContent = text;
 
-            for (const line of lines) {
-
-                const text = line.trim();
-
-                if (text === "") {
-                    continue;
-                }
-
-                console.log("RAW DATA:", text);
-
-                if (!text.startsWith("{")) {
-                    continue;
-                }
-
-                try {
-
-                    const data = JSON.parse(text);
-
-                    console.log(
-                        side + " SENSOR DATA:",
-                        data
-                    );
-
-                    document.getElementById(
-                        "sensor-data"
-                    ).textContent =
-                        JSON.stringify(data, null, 2);
-
-                    document.getElementById(
-                        "serial-status"
-                    ).textContent =
-                        side + " SENSOR: RECEIVING DATA";
-
-                } catch (error) {
-
-                    console.log(
-                        "JSON PARSE ERROR:",
-                        text
-                    );
-
-                }
-
-            }
+            document.getElementById("serial-status").textContent =
+                side + " SENSOR: RECEIVING DATA";
         }
 
     } catch (error) {
 
-        console.error(
-            side + " SERIAL READ ERROR:",
-            error
-        );
+        console.error(side + " READ ERROR:", error);
 
-        document.getElementById(
-            "serial-status"
-        ).textContent =
+        document.getElementById("serial-status").textContent =
             side + " SENSOR: READ ERROR";
-
     }
 }
 
