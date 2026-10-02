@@ -1553,6 +1553,63 @@
         grid-template-columns: 1fr;
     }
 }
+        .live-data-table {
+    margin-top: 1.25rem;
+    border-top: 1px solid rgba(141, 204, 237, 0.28);
+}
+
+.live-row {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.9rem 0.25rem;
+    border-bottom: 1px solid rgba(141, 204, 237, 0.18);
+    color: #e8f5ff;
+    font-size: 0.78rem;
+}
+
+.live-row span:nth-child(2),
+.live-row span:nth-child(3) {
+    text-align: center;
+}
+
+.live-header {
+    color: #8fdcff;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+}
+
+#sensor-data {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    max-height: 120px;
+    overflow: auto;
+    border: 1px solid rgba(141, 204, 237, 0.2);
+    background: #04152a;
+    color: #63efc1;
+    font-size: 0.7rem;
+}
+
+.sensor-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.sensor-buttons button {
+    padding: 0.55rem 0.8rem;
+    border: 1px solid #8fdcff;
+    color: #e8f5ff;
+    background: #062442;
+    font: inherit;
+    cursor: pointer;
+}
+
+.sensor-buttons button:hover {
+    background: #10466a;
+}
     </style>
 </head>
 <body>
@@ -1659,12 +1716,14 @@
             </div>
         </section>
 
-        <aside class="monitor-panel" aria-labelledby="monitor-title">
-            <h3 class="monitor-title" id="monitor-title">LIVE MONITORING</h3>
-           <div id="sensor-test">
+       <aside class="monitor-panel" aria-labelledby="monitor-title">
 
-    <p id="serial-status">
-        SENSORS: DISCONNECTED
+    <h3 class="monitor-title" id="monitor-title">
+        LIVE MONITORING
+    </h3>
+
+    <p class="monitor-status" id="serial-status">
+        ● SENSORS DISCONNECTED
     </p>
 
     <div class="sensor-buttons">
@@ -1679,24 +1738,49 @@
 
     </div>
 
+    <div class="live-data-table">
+
+        <div class="live-row live-header">
+            <span>DATA</span>
+            <span>LEFT ARM</span>
+            <span>RIGHT ARM</span>
+        </div>
+
+        <div class="live-row">
+            <span>Arm Angle</span>
+            <span id="left-angle">0°</span>
+            <span id="right-angle">0°</span>
+        </div>
+
+        <div class="live-row">
+            <span>Angular Velocity</span>
+            <span id="left-angular">0.00 °/s</span>
+            <span id="right-angular">0.00 °/s</span>
+        </div>
+
+        <div class="live-row">
+            <span>Acceleration</span>
+            <span id="left-acceleration">0.00 m/s²</span>
+            <span id="right-acceleration">0.00 m/s²</span>
+        </div>
+
+        <div class="live-row">
+            <span>Movement Direction</span>
+            <span id="left-direction">Neutral</span>
+            <span id="right-direction">Neutral</span>
+        </div>
+
+        <div class="live-row">
+            <span>Movement State</span>
+            <span id="left-state">Idle</span>
+            <span id="right-state">Idle</span>
+        </div>
+
+    </div>
+
     <pre id="sensor-data">WAITING FOR SENSOR DATA...</pre>
 
-</div>
-
-            <div class="metric">
-                <div class="metric-label"><span>ARM ANGLE</span><span id="angle-value">0°</span></div>
-                <div class="metric-track"><div class="metric-fill" id="angle-fill"></div></div>
-            </div>
-            <div class="metric">
-                <div class="metric-label"><span>MOVEMENT SPEED</span><span id="speed-value">0.00 m/s</span></div>
-                <div class="metric-track"><div class="metric-fill" id="speed-fill"></div></div>
-            </div>
-            <div class="metric">
-                <div class="metric-label"><span>TARGET ACCURACY</span><span id="accuracy-value">0%</span></div>
-                <div class="metric-track"><div class="metric-fill" id="accuracy-fill"></div></div>
-            </div>
-            <p class="metric-note">Demo values are simulated, not readings from a real device.</p>
-        </aside>
+</aside>
     </div>
 
     <section class="exercise-dock" aria-label="Exercise controls">
@@ -2364,11 +2448,8 @@ targetButton.addEventListener("click", () => {
     const speed = (0.2 + Math.random() * 0.6).toFixed(2);
     const accuracy = Math.min(100, 80 + Math.floor(Math.random() * 20));
 
-    document.querySelector("#angle-value").textContent = `${angle}°`;
     document.querySelector("#angle-fill").style.width = `${angle / 1.8}%`;
-    document.querySelector("#speed-value").textContent = `${speed} m/s`;
     document.querySelector("#speed-fill").style.width = `${Number(speed) / 1.5 * 100}%`;
-    document.querySelector("#accuracy-value").textContent = `${accuracy}%`;
     document.querySelector("#accuracy-fill").style.width = `${accuracy}%`;
 
     if (selectedType === "REACH") {
@@ -2390,8 +2471,22 @@ document.querySelector("#retry-session").addEventListener("click", () => {
     </script>
     <script>
 
+<script>
+
 let leftPort = null;
 let rightPort = null;
+
+const sensorState = {
+    LEFT: {
+        buffer: "",
+        decoder: new TextDecoder()
+    },
+    RIGHT: {
+        buffer: "",
+        decoder: new TextDecoder()
+    }
+};
+
 
 async function connectSensor(side) {
 
@@ -2416,19 +2511,44 @@ async function connectSensor(side) {
             rightPort = port;
         }
 
-        document.getElementById("serial-status").textContent =
-            side + " SENSOR: CONNECTED";
+        updateConnectionStatus();
 
         readSensorData(port, side);
 
     } catch (error) {
 
-        console.error("Connection error:", error);
+        console.error(side + " connection error:", error);
 
         document.getElementById("serial-status").textContent =
-            side + " SENSOR: CONNECTION ERROR";
-
+            "● " + side + " SENSOR CONNECTION ERROR";
     }
+
+}
+
+
+function updateConnectionStatus() {
+
+    if (leftPort && rightPort) {
+
+        document.getElementById("serial-status").textContent =
+            "● LEFT + RIGHT SENSORS CONNECTED";
+
+    } else if (leftPort) {
+
+        document.getElementById("serial-status").textContent =
+            "● LEFT SENSOR CONNECTED";
+
+    } else if (rightPort) {
+
+        document.getElementById("serial-status").textContent =
+            "● RIGHT SENSOR CONNECTED";
+
+    } else {
+
+        document.getElementById("serial-status").textContent =
+            "● SENSORS DISCONNECTED";
+    }
+
 }
 
 
@@ -2443,7 +2563,6 @@ async function readSensorData(port, side) {
             const { value, done } = await reader.read();
 
             if (done) {
-                console.log(side + " reader closed");
                 break;
             }
 
@@ -2451,23 +2570,103 @@ async function readSensorData(port, side) {
                 continue;
             }
 
-            const text = new TextDecoder().decode(value);
+            sensorState[side].buffer +=
+                sensorState[side].decoder.decode(value, {
+                    stream: true
+                });
 
-            console.log("RAW FROM " + side + ":", text);
+            const lines =
+                sensorState[side].buffer.split("\n");
 
-            document.getElementById("sensor-data").textContent = text;
+            sensorState[side].buffer =
+                lines.pop();
 
-            document.getElementById("serial-status").textContent =
-                side + " SENSOR: RECEIVING DATA";
+            for (const line of lines) {
+
+                const text = line.trim();
+
+                if (!text.startsWith("{")) {
+                    continue;
+                }
+
+                try {
+
+                    const data = JSON.parse(text);
+
+                    console.log(side + " DATA:", data);
+
+                    updateLiveDashboard(data);
+
+                    document.getElementById("sensor-data").textContent =
+                        JSON.stringify(data, null, 2);
+
+                } catch (error) {
+
+                    console.warn(
+                        "Invalid JSON:",
+                        text
+                    );
+
+                }
+
+            }
         }
 
     } catch (error) {
 
-        console.error(side + " READ ERROR:", error);
+        console.error(side + " read error:", error);
 
         document.getElementById("serial-status").textContent =
-            side + " SENSOR: READ ERROR";
+            "● " + side + " SENSOR READ ERROR";
+
     }
+}
+
+
+function updateLiveDashboard(data) {
+
+    if (!data.side) {
+        return;
+    }
+
+    const side = data.side.toUpperCase();
+
+    if (side !== "LEFT" && side !== "RIGHT") {
+        return;
+    }
+
+    const prefix =
+        side === "LEFT" ? "left" : "right";
+
+
+    document.getElementById(
+        prefix + "-angle"
+    ).textContent =
+        Number(data.angle).toFixed(1) + "°";
+
+
+    document.getElementById(
+        prefix + "-angular"
+    ).textContent =
+        Number(data.angularVelocity).toFixed(2) + " °/s";
+
+
+    document.getElementById(
+        prefix + "-acceleration"
+    ).textContent =
+        Number(data.acceleration).toFixed(2) + " m/s²";
+
+
+    document.getElementById(
+        prefix + "-direction"
+    ).textContent =
+        data.direction;
+
+
+    document.getElementById(
+        prefix + "-state"
+    ).textContent =
+        data.state;
 }
 
 
