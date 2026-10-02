@@ -2386,5 +2386,134 @@ document.querySelector("#retry-session").addEventListener("click", () => {
     startButton.click();
 });
     </script>
+    <script>
+let leftPort = null;
+let rightPort = null;
+
+async function connectSensor(side) {
+
+    try {
+
+        // Check Web Serial support
+        if (!("serial" in navigator)) {
+            alert("Web Serial is not supported. Please use Google Chrome.");
+            return;
+        }
+
+        // Ask the browser to select a serial device
+        const port = await navigator.serial.requestPort();
+
+        // Open ESP32-C3 connection
+        await port.open({
+            baudRate: 115200
+        });
+
+        // Save the port
+        if (side === "LEFT") {
+            leftPort = port;
+        }
+
+        if (side === "RIGHT") {
+            rightPort = port;
+        }
+
+        document.getElementById("serial-status").textContent =
+            side + " SENSOR: CONNECTED";
+
+        readSensorData(port, side);
+
+    } catch (error) {
+
+        console.error(error);
+
+        document.getElementById("serial-status").textContent =
+            side + " SENSOR: CONNECTION ERROR";
+    }
+}
+
+
+async function readSensorData(port, side) {
+
+    const decoder = new TextDecoderStream();
+
+    port.readable.pipeTo(decoder.writable);
+
+    const reader = decoder.readable.getReader();
+
+    let buffer = "";
+
+    try {
+
+        while (true) {
+
+            const { value, done } = await reader.read();
+
+            if (done) {
+                break;
+            }
+
+            buffer += value;
+
+            const lines = buffer.split("\n");
+
+            // Keep incomplete line
+            buffer = lines.pop();
+
+            for (const line of lines) {
+
+                const text = line.trim();
+
+                // Ignore non-JSON lines
+                if (!text.startsWith("{")) {
+                    continue;
+                }
+
+                try {
+
+                    const data = JSON.parse(text);
+
+                    console.log(side + " SENSOR:", data);
+
+                    document.getElementById("sensor-data").textContent =
+                        JSON.stringify(data, null, 2);
+
+                } catch (error) {
+
+                    console.warn(
+                        "Invalid JSON received:",
+                        text
+                    );
+
+                }
+            }
+        }
+
+    } catch (error) {
+
+        console.error(
+            side + " serial read error:",
+            error
+        );
+
+    }
+}
+
+
+// LEFT button
+document
+    .getElementById("connect-left")
+    .addEventListener("click", function () {
+        connectSensor("LEFT");
+    });
+
+
+// RIGHT button
+document
+    .getElementById("connect-right")
+    .addEventListener("click", function () {
+        connectSensor("RIGHT");
+    });
+
+</script>
 </body>
 </html>
