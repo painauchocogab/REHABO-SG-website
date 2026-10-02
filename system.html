@@ -2703,13 +2703,7 @@ function updateLiveDashboard(data) {
 
 </script>
     <script>
-function checkSerial() {
-    alert(
-        "Secure context: " + window.isSecureContext +
-        "\nWeb Serial available: " + ("serial" in navigator) +
-        "\nSerial object: " + navigator.serial
-    );
-}
+        
 </script>
     <script>
 async function testPortPicker() {
@@ -2736,6 +2730,37 @@ async function testPortPicker() {
         );
 
         console.error("Web Serial error:", error);
+    }
+}
+</script>
+    <script>
+async function testPortPicker() {
+
+    try {
+
+        alert("SERIAL PICKER TEST: calling requestPort()");
+
+        const port = await navigator.serial.requestPort();
+
+        alert("PORT SELECTED!");
+
+        await port.open({
+            baudRate: 115200
+        });
+
+        alert("PORT OPENED SUCCESSFULLY!");
+
+        await port.close();
+
+    } catch (error) {
+
+        alert(
+            "SERIAL ERROR\n\n" +
+            "Name: " + error.name +
+            "\nMessage: " + error.message
+        );
+
+        console.error(error);
     }
 }
 </script>
