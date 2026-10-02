@@ -2391,6 +2391,7 @@ document.querySelector("#retry-session").addEventListener("click", () => {
 });
     </script>
     <script>
+
 let leftPort = null;
 let rightPort = null;
 
@@ -2398,21 +2399,17 @@ async function connectSensor(side) {
 
     try {
 
-        // Check Web Serial support
         if (!("serial" in navigator)) {
             alert("Web Serial is not supported. Please use Google Chrome.");
             return;
         }
 
-        // Ask the browser to select a serial device
         const port = await navigator.serial.requestPort();
 
-        // Open ESP32-C3 connection
         await port.open({
             baudRate: 115200
         });
 
-        // Save the port
         if (side === "LEFT") {
             leftPort = port;
         }
@@ -2428,21 +2425,20 @@ async function connectSensor(side) {
 
     } catch (error) {
 
-        console.error(error);
+        console.error("Connection error:", error);
 
         document.getElementById("serial-status").textContent =
             side + " SENSOR: CONNECTION ERROR";
+
     }
 }
 
 
 async function readSensorData(port, side) {
 
-    const decoder = new TextDecoderStream();
+    const reader = port.readable.getReader();
 
-    port.readable.pipeTo(decoder.writable);
-
-    const reader = decoder.readable.getReader();
+    const decoder = new TextDecoder();
 
     let buffer = "";
 
@@ -2456,18 +2452,28 @@ async function readSensorData(port, side) {
                 break;
             }
 
-            buffer += value;
+            if (!value) {
+                continue;
+            }
+
+            buffer += decoder.decode(value, {
+                stream: true
+            });
 
             const lines = buffer.split("\n");
 
-            // Keep incomplete line
             buffer = lines.pop();
 
             for (const line of lines) {
 
                 const text = line.trim();
 
-                // Ignore non-JSON lines
+                if (text === "") {
+                    continue;
+                }
+
+                console.log("RAW DATA:", text);
+
                 if (!text.startsWith("{")) {
                     continue;
                 }
@@ -2476,47 +2482,64 @@ async function readSensorData(port, side) {
 
                     const data = JSON.parse(text);
 
-                   document.getElementById("sensor-data").textContent =
-    JSON.stringify(data, null, 2);
+                    console.log(
+                        side + " SENSOR DATA:",
+                        data
+                    );
 
-document.getElementById("serial-status").textContent =
-    side + " SENSOR: RECEIVING DATA";
+                    document.getElementById(
+                        "sensor-data"
+                    ).textContent =
+                        JSON.stringify(data, null, 2);
+
+                    document.getElementById(
+                        "serial-status"
+                    ).textContent =
+                        side + " SENSOR: RECEIVING DATA";
 
                 } catch (error) {
 
-                    console.warn(
-                        "Invalid JSON received:",
+                    console.log(
+                        "JSON PARSE ERROR:",
                         text
                     );
 
                 }
+
             }
         }
 
     } catch (error) {
 
         console.error(
-            side + " serial read error:",
+            side + " SERIAL READ ERROR:",
             error
         );
+
+        document.getElementById(
+            "serial-status"
+        ).textContent =
+            side + " SENSOR: READ ERROR";
 
     }
 }
 
 
-// LEFT button
 document
     .getElementById("connect-left")
     .addEventListener("click", function () {
+
         connectSensor("LEFT");
+
     });
 
 
-// RIGHT button
 document
     .getElementById("connect-right")
     .addEventListener("click", function () {
+
         connectSensor("RIGHT");
+
     });
 
 </script>
