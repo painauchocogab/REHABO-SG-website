@@ -1757,7 +1757,7 @@
         <button
     id="connect-left"
     type="button"
-    onclick="checkSerial()">
+    onclick="testPortPicker()">
     CONNECT LEFT SENSOR
 </button>
 
@@ -2709,6 +2709,34 @@ function checkSerial() {
         "\nWeb Serial available: " + ("serial" in navigator) +
         "\nSerial object: " + navigator.serial
     );
+}
+</script>
+    <script>
+async function testPortPicker() {
+    try {
+        alert("1. Button works. Calling requestPort() now...");
+
+        const port = await navigator.serial.requestPort();
+
+        alert("2. Port selected successfully!");
+
+        await port.open({
+            baudRate: 115200
+        });
+
+        alert("3. Port opened successfully at 115200!");
+
+        await port.close();
+
+    } catch (error) {
+        alert(
+            "REQUEST PORT ERROR\n\n" +
+            "Name: " + error.name + "\n" +
+            "Message: " + error.message
+        );
+
+        console.error("Web Serial error:", error);
+    }
 }
 </script>
 </body>
