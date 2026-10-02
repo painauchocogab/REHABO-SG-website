@@ -1610,6 +1610,26 @@
 .sensor-buttons button:hover {
     background: #10466a;
 }
+        .sensor-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    position: relative;
+    z-index: 9999;
+    pointer-events: auto;
+}
+
+.sensor-buttons button {
+    position: relative;
+    z-index: 9999;
+    pointer-events: auto;
+    cursor: pointer;
+    padding: 0.7rem 1rem;
+    border: 1px solid #8fdcff;
+    color: #e8f5ff;
+    background: #062442;
+    font: inherit;
+}
     </style>
 </head>
 <body>
@@ -1728,15 +1748,19 @@
 
     <div class="sensor-buttons">
 
-        <button id="connect-left" type="button">
-            CONNECT LEFT SENSOR
-        </button>
+        <button
+    id="connect-left"
+    type="button"
+    onclick="connectSensor('LEFT')">
+    CONNECT LEFT SENSOR
+</button>
 
-        <button id="connect-right" type="button">
-            CONNECT RIGHT SENSOR
-        </button>
-
-    </div>
+        <button
+    id="connect-right"
+    type="button"
+    onclick="connectSensor('RIGHT')">
+    CONNECT RIGHT SENSOR
+</button>
 
     <div class="live-data-table">
 
@@ -2490,6 +2514,8 @@ const sensorState = {
 
 async function connectSensor(side) {
 
+    alert("BUTTON WORKS: " + side);
+
     try {
 
         if (!("serial" in navigator)) {
@@ -2668,24 +2694,6 @@ function updateLiveDashboard(data) {
     ).textContent =
         data.state;
 }
-
-
-document
-    .getElementById("connect-left")
-    .addEventListener("click", function () {
-
-        connectSensor("LEFT");
-
-    });
-
-
-document
-    .getElementById("connect-right")
-    .addEventListener("click", function () {
-
-        connectSensor("RIGHT");
-
-    });
 
 </script>
 </body>
