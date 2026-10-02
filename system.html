@@ -1757,7 +1757,7 @@
         <button
     id="connect-left"
     type="button"
-    onclick="connectSensor('LEFT')">
+    onclick="checkSerial()">
     CONNECT LEFT SENSOR
 </button>
 
@@ -2701,6 +2701,15 @@ function updateLiveDashboard(data) {
         data.state;
 }
 
+</script>
+    <script>
+function checkSerial() {
+    alert(
+        "Secure context: " + window.isSecureContext +
+        "\nWeb Serial available: " + ("serial" in navigator) +
+        "\nSerial object: " + navigator.serial
+    );
+}
 </script>
 </body>
 </html>
