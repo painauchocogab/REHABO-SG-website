@@ -1661,7 +1661,27 @@
 
         <aside class="monitor-panel" aria-labelledby="monitor-title">
             <h3 class="monitor-title" id="monitor-title">LIVE MONITORING</h3>
-            <p class="monitor-status">● SIMULATED SESSION</p>
+            <div id="sensor-test">
+
+    <p id="serial-status">
+        SENSORS: DISCONNECTED
+    </p>
+
+    <div class="sensor-buttons">
+
+        <button id="connect-left" type="button">
+            CONNECT LEFT SENSOR
+        </button>
+
+        <button id="connect-right" type="button">
+            CONNECT RIGHT SENSOR
+        </button>
+
+    </div>
+
+    <pre id="sensor-data">No sensor data yet.</pre>
+
+</div>
 
             <div class="metric">
                 <div class="metric-label"><span>ARM ANGLE</span><span id="angle-value">0°</span></div>
