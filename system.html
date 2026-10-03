@@ -1952,6 +1952,44 @@
     font-weight: 500;
 }
 
+.game-target-panel {
+    margin-top: 0.85rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid rgba(63, 190, 255, 0.22);
+}
+
+.game-target-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 0.65rem;
+}
+
+.game-target-header .subpanel-title {
+    margin-bottom: 0;
+}
+
+.game-target-formula {
+    color: #63efc1;
+    font-size: 0.55rem;
+    letter-spacing: 0.07em;
+    white-space: nowrap;
+}
+
+.target-card {
+    border-color: rgba(99, 239, 193, 0.30);
+}
+
+.target-card.complete {
+    border-color: rgba(99, 239, 193, 0.65);
+    box-shadow: inset 0 0 12px rgba(99, 239, 193, 0.04);
+}
+
+.target-card strong {
+    color: #63efc1;
+}
+
 .manual-calibration-button {
     width: 100%;
     margin-top: 0.8rem;
@@ -2728,6 +2766,32 @@
                             </div>
                         </div>
                     </div>
+                    <div class="game-target-panel">
+                        <div class="game-target-header">
+                            <h4 class="subpanel-title">PERSONALIZED GAME TARGETS // 80%</h4>
+                            <span class="game-target-formula">COMFORTABLE PEAK × 0.80</span>
+                        </div>
+                        <div class="two-wrist-results game-target-results">
+                            <div class="wrist-result-column">
+                                <h5>LEFT WRIST</h5>
+                                <div class="peak-grid">
+                                    <div class="peak-card target-card" id="target-left-up-card"><span>↑ UP</span><strong id="target-left-up">—</strong><small id="target-left-up-status">PENDING</small></div>
+                                    <div class="peak-card target-card" id="target-left-down-card"><span>↓ DOWN</span><strong id="target-left-down">—</strong><small id="target-left-down-status">PENDING</small></div>
+                                    <div class="peak-card target-card" id="target-left-left-card"><span>← LEFT</span><strong id="target-left-left">—</strong><small id="target-left-left-status">PENDING</small></div>
+                                    <div class="peak-card target-card" id="target-left-right-card"><span>→ RIGHT</span><strong id="target-left-right">—</strong><small id="target-left-right-status">PENDING</small></div>
+                                </div>
+                            </div>
+                            <div class="wrist-result-column">
+                                <h5>RIGHT WRIST</h5>
+                                <div class="peak-grid">
+                                    <div class="peak-card target-card" id="target-right-up-card"><span>↑ UP</span><strong id="target-right-up">—</strong><small id="target-right-up-status">PENDING</small></div>
+                                    <div class="peak-card target-card" id="target-right-down-card"><span>↓ DOWN</span><strong id="target-right-down">—</strong><small id="target-right-down-status">PENDING</small></div>
+                                    <div class="peak-card target-card" id="target-right-left-card"><span>← LEFT</span><strong id="target-right-left">—</strong><small id="target-right-left-status">PENDING</small></div>
+                                    <div class="peak-card target-card" id="target-right-right-card"><span>→ RIGHT</span><strong id="target-right-right">—</strong><small id="target-right-right-status">PENDING</small></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <button class="manual-calibration-button" id="manual-calibrate-button" type="button">▶ START CALIBRATION</button>
                     <p class="manual-calibration-note" id="manual-calibration-note">CLICK START CALIBRATION TO BEGIN. CONNECTED SENSORS WILL BE MEASURED.</p>
                 </section>
@@ -2843,26 +2907,6 @@
                 <p class="progress-dots" aria-label="Calibration progress">
                     <i class="active"></i><i></i><i></i><i></i><i></i>
                 </p>
-            </section>
-
-            <section class="info-card">
-                <h4>CALIBRATION RESULTS // COMFORTABLE PEAK</h4>
-                <div class="result-grid">
-                    <div class="result-item"><span>↑ UP</span><strong id="result-up">—</strong></div>
-                    <div class="result-item"><span>↓ DOWN</span><strong id="result-down">—</strong></div>
-                    <div class="result-item"><span>← LEFT</span><strong id="result-left">—</strong></div>
-                    <div class="result-item"><span>→ RIGHT</span><strong id="result-right">—</strong></div>
-                </div>
-            </section>
-
-            <section class="info-card game-targets">
-                <h4>GAME TARGETS // 80%</h4>
-                <div class="result-grid">
-                    <div class="result-item"><span>↑ UP</span><strong id="target-up">—</strong></div>
-                    <div class="result-item"><span>↓ DOWN</span><strong id="target-down">—</strong></div>
-                    <div class="result-item"><span>← LEFT</span><strong id="target-left">—</strong></div>
-                    <div class="result-item"><span>→ RIGHT</span><strong id="target-right">—</strong></div>
-                </div>
             </section>
 
             <div class="calibration-controls">
@@ -4494,6 +4538,25 @@ requestAnimationFrame(cursorAnimationLoop);
             const card = document.getElementById(peakId + "-card");
             if (card) card.classList.add("complete");
         }
+        updatePersonalizedTargetCards();
+    }
+
+    function updatePersonalizedTargetCards() {
+        for (const side of ["LEFT", "RIGHT"]) {
+            for (const d of directions) {
+                const sideKey = side.toLowerCase();
+                const dirKey = d.key.toLowerCase();
+                const peak = Number(peaks[side][d.key] ?? 0);
+                const target = +(peak * TARGET_RATIO).toFixed(1);
+                const id = `target-${sideKey}-${dirKey}`;
+                const cardId = `${id}-card`;
+                const statusId = `${id}-status`;
+                setText(id, target.toFixed(1) + "°");
+                setText(statusId, peak > 0 ? "80% TARGET" : "PENDING");
+                const card = document.getElementById(cardId);
+                if (card) card.classList.toggle("complete", peak > 0);
+            }
+        }
     }
 
     function finishCalibration() {
@@ -4521,6 +4584,7 @@ requestAnimationFrame(cursorAnimationLoop);
         for (const side of ["LEFT","RIGHT"]) {
             for (const d of directions) record.targets80[side][d.key] = +(peaks[side][d.key] * TARGET_RATIO).toFixed(1);
         }
+        updatePersonalizedTargetCards();
         window.__rehaboCalibrationRecord = record;
 
         // Ensure every final value is written to the permanent BOTH-WRISTS table.
