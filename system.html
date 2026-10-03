@@ -12,7 +12,7 @@
             box-sizing: border-box;
         }
         
-        body {
+      body {
     min-height: 100vh;
     margin: 0;
     display: block;
@@ -2043,14 +2043,20 @@
 
 .peak-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.55rem;
+    min-width: 0;
 }
 
 .two-wrist-results {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.8rem;
+    min-width: 0;
+}
+
+.wrist-result-column {
+    min-width: 0;
 }
 
 .wrist-result-column h5 {
@@ -2066,7 +2072,18 @@
     }
 }
 
+@media (max-width: 430px) {
+    .peak-card {
+        padding: 0.5rem;
+    }
+
+    .peak-card strong {
+        font-size: 0.78rem;
+    }
+}
+
 .peak-card {
+    min-width: 0;
     min-height: 78px;
     padding: 0.65rem;
     border: 1px solid rgba(63, 190, 255, 0.28);
@@ -2089,7 +2106,7 @@
     margin-top: 0.25rem;
     color: #e8f5ff;
     font-family: "Orbitron", sans-serif;
-    font-size: 1rem;
+    font-size: clamp(0.72rem, 2.2vw, 1rem);
 }
 
 .peak-card small {
