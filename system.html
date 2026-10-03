@@ -1680,88 +1680,136 @@
     pointer-events: auto;
     cursor: pointer;
 }
+    
 
+/* ==========================================================
+   REHABO-SG WRIST REHABILITATION UI — NEW LAYOUT
+   Visual redesign for personalized wrist calibration/game.
+   Existing sensor/game JavaScript IDs are intentionally retained.
+   ========================================================== */
 .training-workspace {
-    width: min(1100px, calc(100% - 2rem));
-    margin: 4rem auto;
-    padding: clamp(1rem, 3vw, 1.75rem);
-    border: 1px solid rgba(63, 190, 255, 0.55);
-    background: linear-gradient(145deg, rgba(3, 22, 44, 0.98), rgba(2, 12, 29, 0.98));
-    box-shadow: 0 0 35px rgba(0, 153, 255, 0.12);
-    scroll-margin-top: 2rem;
-}
-
-.training-workspace[hidden] {
-    display: none;
+    width: min(1500px, calc(100% - 2rem));
+    margin: 3rem auto;
+    padding: 1rem;
+    border: 1px solid rgba(63, 190, 255, 0.58);
+    background:
+        radial-gradient(ellipse at 35% 25%, rgba(0, 145, 255, 0.10), transparent 42%),
+        linear-gradient(145deg, rgba(3, 22, 44, 0.98), rgba(2, 10, 24, 0.99));
+    box-shadow: 0 0 42px rgba(0, 153, 255, 0.12), inset 0 0 35px rgba(0, 103, 171, 0.06);
+    scroll-margin-top: 1.5rem;
 }
 
 .training-topbar {
+    min-height: 58px;
+    margin-bottom: 0.85rem;
+    padding: 0.7rem 1rem;
+    border: 1px solid rgba(63, 190, 255, 0.40);
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.25rem;
+    background: rgba(2, 15, 33, 0.88);
+    position: relative;
+    overflow: hidden;
+}
+
+.training-topbar::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 34%;
+    height: 2px;
+    background: #42caff;
+    box-shadow: 0 0 12px rgba(66, 202, 255, 0.75);
 }
 
 .training-heading {
     margin: 0;
-    color: #8fdcff;
+    color: #65d9ff;
     font-family: "Orbitron", sans-serif;
-    font-size: clamp(1rem, 3vw, 1.35rem);
-    letter-spacing: 0.08em;
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
 }
 
 .session-badge {
-    padding: 0.55rem 0.8rem;
-    border: 1px solid rgba(99, 239, 193, 0.4);
+    padding: 0.5rem 0.9rem;
+    border: 1px solid rgba(99, 239, 193, 0.45);
     color: #63efc1;
+    background: rgba(3, 31, 45, 0.55);
     font-size: 0.72rem;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.12em;
 }
 
 .training-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1.7fr) minmax(230px, 0.8fr);
-    gap: 1rem;
+    grid-template-columns: minmax(0, 1.65fr) minmax(360px, 0.85fr);
+    gap: 0.9rem;
+    align-items: stretch;
 }
 
 .exercise-panel,
 .monitor-panel {
     min-width: 0;
-    padding: 1rem;
-    border: 1px solid rgba(80, 164, 213, 0.38);
-    background: rgba(3, 17, 37, 0.82);
+    padding: 0.95rem;
+    border: 1px solid rgba(63, 190, 255, 0.40);
+    background: rgba(2, 15, 33, 0.86);
 }
 
 .exercise-title,
 .monitor-title {
     margin: 0;
-    color: #c7edff;
-    font-size: 0.8rem;
+    color: #bcecff;
+    font-size: 0.82rem;
     font-weight: 400;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
+}
+
+.exercise-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(255px, 0.75fr);
+    grid-template-rows: auto 1fr;
+    gap: 0.85rem;
+}
+
+.exercise-title {
+    grid-column: 1 / -1;
+    padding-bottom: 0.1rem;
 }
 
 .exercise-stage {
     position: relative;
-    min-height: 340px;
-    margin-top: 0.9rem;
+    min-height: 535px;
+    margin: 0;
     overflow: hidden;
-    border: 1px solid rgba(43, 175, 255, 0.55);
+    border: 1px solid rgba(43, 175, 255, 0.60);
     background:
-        radial-gradient(ellipse at 65% 40%, rgba(0, 171, 255, 0.18), transparent 35%),
+        radial-gradient(ellipse at 55% 42%, rgba(0, 171, 255, 0.16), transparent 38%),
         linear-gradient(rgba(30, 136, 190, 0.08) 1px, transparent 1px),
         linear-gradient(90deg, rgba(30, 136, 190, 0.08) 1px, transparent 1px),
         #04152b;
     background-size: auto, 30px 30px, 30px 30px, auto;
 }
 
-.exercise-stage::after {
-    position: absolute;
-    inset: 12px;
-    border: 1px solid rgba(82, 183, 235, 0.12);
+.exercise-stage::before {
     content: "";
+    position: absolute;
+    inset: 14px;
+    border: 1px solid rgba(82, 183, 235, 0.10);
+    pointer-events: none;
+}
+
+.exercise-stage::after {
+    content: "";
+    position: absolute;
+    width: 190px;
+    height: 190px;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(66, 202, 255, 0.22);
+    border-radius: 50%;
+    box-shadow: 0 0 35px rgba(0, 153, 255, 0.08);
     pointer-events: none;
 }
 
@@ -1770,76 +1818,196 @@
     right: 1rem;
     bottom: 1rem;
     left: 1rem;
-    z-index: 1;
+    z-index: 6;
     margin: 0;
-    padding: 0.8rem;
+    padding: 0.9rem 1rem;
     border: 1px solid rgba(65, 178, 244, 0.42);
     color: #d8f3ff;
-    background: rgba(2, 15, 33, 0.9);
-    font-size: 0.8rem;
+    background: rgba(2, 15, 33, 0.92);
+    font-size: 0.82rem;
     line-height: 1.5;
     text-align: center;
 }
 
-.target-button {
+/* Direction labels and calibration visuals. */
+.exercise-stage::marker { display: none; }
+
+.calibration-axis {
     position: absolute;
-    top: 50%;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.calibration-axis .axis-line-h,
+.calibration-axis .axis-line-v {
+    position: absolute;
+    background: rgba(66, 202, 255, 0.25);
+}
+
+.calibration-axis .axis-line-h {
+    width: 62%;
+    height: 1px;
+    left: 19%;
+    top: 45%;
+}
+
+.calibration-axis .axis-line-v {
+    width: 1px;
+    height: 62%;
     left: 50%;
-    z-index: 1;
-    width: 30px;
-    height: 30px;
-    border: 2px solid #63efc1;
-    border-radius: 50%;
-    background: #39dfa9;
-    box-shadow: 0 0 10px #63efc1, 0 0 28px rgba(63, 255, 190, 0.65);
+    top: 14%;
+}
+
+.calibration-axis span {
+    position: absolute;
+    color: #62d7ff;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+}
+
+.calibration-axis .up { left: 50%; top: 17%; transform: translateX(-50%); }
+.calibration-axis .down { left: 50%; top: 72%; transform: translateX(-50%); }
+.calibration-axis .left { left: 19%; top: 43%; transform: translate(-100%, -50%); }
+.calibration-axis .right { right: 19%; top: 43%; transform: translate(100%, -50%); }
+
+.calibration-center {
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    width: 22px;
+    height: 22px;
     transform: translate(-50%, -50%);
-    cursor: pointer;
-}
-
-.target-button:disabled {
-    display: none;
-}
-
-#game-cursor {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 24px;
-    height: 24px;
     border: 3px solid #42caff;
     border-radius: 50%;
-    background: rgba(66, 202, 255, 0.25);
-    box-shadow: 0 0 10px #42caff, 0 0 22px rgba(66, 202, 255, 0.75);
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 5;
-    transition: none;
+    background: rgba(66, 202, 255, 0.24);
+    box-shadow: 0 0 12px #42caff, 0 0 28px rgba(66, 202, 255, 0.70);
+    z-index: 4;
 }
 
-#game-cursor::after {
+.calibration-center::after {
     content: "";
     position: absolute;
-    top: 50%;
-    left: 50%;
     width: 6px;
     height: 6px;
-    border-radius: 50%;
-    background: #ffffff;
+    left: 50%;
+    top: 50%;
     transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: #fff;
+}
+
+.target-button,
+#game-cursor {
+    display: none !important;
+}
+
+.calibration-side-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    min-width: 0;
+}
+
+.current-movement-card,
+.peak-card-panel {
+    border: 1px solid rgba(63, 190, 255, 0.35);
+    background: rgba(4, 21, 42, 0.76);
+    padding: 0.85rem;
+}
+
+.subpanel-title {
+    margin: 0 0 0.7rem;
+    color: #69d8ff;
+    font-size: 0.73rem;
+    letter-spacing: 0.10em;
+}
+
+.axis-readout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+}
+
+.axis-value {
+    padding: 0.75rem;
+    border: 1px solid rgba(63, 190, 255, 0.26);
+    background: rgba(3, 17, 37, 0.85);
+}
+
+.axis-value span {
+    display: block;
+    color: #88b8cf;
+    font-size: 0.65rem;
+    letter-spacing: 0.07em;
+}
+
+.axis-value strong {
+    display: block;
+    margin-top: 0.35rem;
+    color: #42caff;
+    font-family: "Orbitron", sans-serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.peak-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.55rem;
+}
+
+.peak-card {
+    min-height: 78px;
+    padding: 0.65rem;
+    border: 1px solid rgba(63, 190, 255, 0.28);
+    background: rgba(3, 17, 37, 0.80);
+}
+
+.peak-card.complete {
+    border-color: rgba(99, 239, 193, 0.55);
+}
+
+.peak-card span {
+    display: block;
+    color: #83b7d0;
+    font-size: 0.64rem;
+    letter-spacing: 0.06em;
+}
+
+.peak-card strong {
+    display: block;
+    margin-top: 0.25rem;
+    color: #e8f5ff;
+    font-family: "Orbitron", sans-serif;
+    font-size: 1rem;
+}
+
+.peak-card small {
+    color: #63efc1;
+    font-size: 0.58rem;
 }
 
 .session-setup {
+    grid-column: 1 / -1;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.75rem;
-    margin-top: 1rem;
-    color: #bce9ff;
-    font-size: 0.8rem;
+    gap: 0.65rem;
+    margin: 0;
+    padding: 0.75rem;
+    border: 1px solid rgba(63, 190, 255, 0.30);
+    background: rgba(3, 17, 37, 0.76);
+}
+
+.session-setup label {
+    color: #83b7d0;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
 }
 
 .session-setup select {
-    padding: 0.65rem;
+    padding: 0.55rem 0.7rem;
     border: 1px solid rgba(80, 164, 213, 0.55);
     color: #e8f5ff;
     background: #04152b;
@@ -1849,24 +2017,20 @@
 .session-timer {
     margin-left: auto;
     color: #63efc1;
-    font-size: 1.1rem;
+    font-family: "Orbitron", sans-serif;
+    font-size: 1rem;
 }
 
 .exercise-controls {
-    margin-top: 1rem;
-}
-
-.repetition-count {
-    padding: 0.8rem;
-    border: 1px solid rgba(80, 164, 213, 0.27);
-    color: #8fdcff;
-    font-size: 0.78rem;
+    display: none;
 }
 
 .monitor-panel {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.8rem;
+    position: relative;
+    z-index: 1000;
 }
 
 .monitor-title {
@@ -1877,25 +2041,49 @@
 
 .monitor-status {
     margin: 0;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid rgba(99, 239, 193, 0.28);
     color: #63efc1;
-    font-size: 0.7rem;
+    background: rgba(3, 31, 45, 0.50);
+    font-size: 0.68rem;
     letter-spacing: 0.08em;
 }
 
+.sensor-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.55rem;
+    margin: 0;
+}
+
+.sensor-buttons button {
+    padding: 0.65rem 0.7rem;
+    border: 1px solid #42caff;
+    color: #dff7ff;
+    background: linear-gradient(90deg, rgba(6, 52, 83, 0.95), rgba(5, 36, 63, 0.95));
+    font: inherit;
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+}
+
+.sensor-buttons button:hover {
+    background: #0b4168;
+}
+
 .live-data-table {
-    margin-top: 1.25rem;
+    margin-top: 0;
     border-top: 1px solid rgba(141, 204, 237, 0.28);
 }
 
 .live-row {
     display: grid;
-    grid-template-columns: 1.3fr 1fr 1fr;
-    gap: 0.5rem;
+    grid-template-columns: 1.25fr 0.9fr 0.9fr;
+    gap: 0.35rem;
     align-items: center;
-    padding: 0.9rem 0.25rem;
-    border-bottom: 1px solid rgba(141, 204, 237, 0.18);
+    padding: 0.62rem 0.2rem;
+    border-bottom: 1px solid rgba(141, 204, 237, 0.14);
     color: #e8f5ff;
-    font-size: 0.78rem;
+    font-size: 0.67rem;
 }
 
 .live-row span:nth-child(2),
@@ -1904,120 +2092,323 @@
 }
 
 .live-header {
-    color: #8fdcff;
+    color: #69d8ff;
     font-weight: 600;
+    letter-spacing: 0.07em;
+}
+
+.sensor-data-shell {
+    padding: 0.7rem;
+    border: 1px solid rgba(63, 190, 255, 0.24);
+    background: rgba(2, 13, 30, 0.78);
+}
+
+.sensor-data-shell .sensor-data-heading {
+    margin: 0 0 0.45rem;
+    color: #6f9eb5;
+    font-size: 0.61rem;
     letter-spacing: 0.08em;
 }
 
 #sensor-data {
-    margin-top: 1rem;
-    padding: 0.75rem;
-    max-height: 120px;
+    margin: 0;
+    padding: 0;
+    max-height: 80px;
     overflow: auto;
-    border: 1px solid rgba(141, 204, 237, 0.2);
-    background: #04152a;
+    border: 0;
+    background: transparent;
     color: #63efc1;
-    font-size: 0.7rem;
+    font-size: 0.60rem;
 }
 
-.sensor-buttons {
+.wrist-card {
+    padding: 0.75rem;
+    border: 1px solid rgba(63, 190, 255, 0.35);
+    background: rgba(4, 21, 42, 0.76);
+}
+
+.wrist-card-header {
     display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.65rem;
 }
 
-.sensor-buttons button {
-    padding: 0.7rem 1rem;
-    border: 1px solid #8fdcff;
-    color: #e8f5ff;
-    background: #062442;
-    font: inherit;
-    cursor: pointer;
-}
-
-.sensor-buttons button:hover {
-    background: #10466a;
-}
-
-.exercise-dock {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 1.25rem;
-    margin-top: 1rem;
-    padding: 1rem;
-    border: 1px solid rgba(80, 164, 213, 0.4);
-    background: rgba(3, 17, 37, 0.88);
-}
-
-.dock-heading {
-    margin: 0 0 0.75rem;
-    color: #8fdcff;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-}
-
-.dock-buttons,
-.exercise-type-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-}
-
-.dock-button,
-.exercise-type {
-    min-height: 44px;
-    padding: 0.7rem 0.9rem;
-    border: 1px solid rgba(80, 164, 213, 0.55);
-    color: #e8f5ff;
-    background: #061b33;
-    font: inherit;
-    cursor: pointer;
-}
-
-.dock-button:hover,
-.exercise-type:hover,
-.exercise-type[aria-pressed="true"] {
-    border-color: #42caff;
-    background: #0b3760;
-    box-shadow: 0 0 12px rgba(47, 189, 255, 0.2);
-}
-
-.dock-button:disabled {
-    cursor: not-allowed;
-    opacity: 0.45;
-}
-
-.start-exercise {
-    border-color: #27baff;
-    background: linear-gradient(90deg, #075ba5, #0879bd);
+.wrist-card-header strong {
+    color: #bcecff;
+    font-family: "Orbitron", sans-serif;
+    font-size: 0.78rem;
     letter-spacing: 0.08em;
 }
 
-.start-exercise:hover,
-.start-exercise:focus-visible {
+.wrist-card-header span {
+    padding: 0.25rem 0.45rem;
+    border: 1px solid rgba(99, 239, 193, 0.40);
+    color: #63efc1;
+    font-size: 0.56rem;
+}
+
+.wrist-readout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.45rem;
+}
+
+.wrist-readout div {
+    padding: 0.5rem;
+    border-bottom: 1px solid rgba(141, 204, 237, 0.12);
+}
+
+.wrist-readout span {
+    display: block;
+    color: #739bb0;
+    font-size: 0.57rem;
+}
+
+.wrist-readout strong {
+    color: #e8f5ff;
+    font-size: 0.72rem;
+}
+
+.axis-diagram {
+    position: relative;
+    height: 118px;
+    margin-top: 0.5rem;
+    border: 1px solid rgba(63, 190, 255, 0.15);
+    background: radial-gradient(circle at center, rgba(0, 153, 255, 0.08), transparent 65%);
+}
+
+.axis-diagram::before,
+.axis-diagram::after {
+    content: "";
+    position: absolute;
+    background: rgba(66, 202, 255, 0.35);
+}
+
+.axis-diagram::before {
+    width: 65%;
+    height: 1px;
+    left: 17.5%;
+    top: 50%;
+}
+
+.axis-diagram::after {
+    width: 1px;
+    height: 75%;
+    left: 50%;
+    top: 12.5%;
+}
+
+.axis-diagram .axis-center {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid #42caff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(66, 202, 255, 0.65);
+}
+
+.axis-diagram .axis-label {
+    position: absolute;
+    color: #63cfff;
+    font-size: 0.52rem;
+}
+
+.axis-diagram .axis-up { top: 5%; left: 50%; transform: translateX(-50%); }
+.axis-diagram .axis-down { bottom: 4%; left: 50%; transform: translateX(-50%); }
+.axis-diagram .axis-left { left: 3%; top: 50%; transform: translateY(-50%); }
+.axis-diagram .axis-right { right: 3%; top: 50%; transform: translateY(-50%); }
+
+.calibration-footer {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 0.85fr 1.5fr 1.5fr;
+    gap: 0.8rem;
+    margin-top: 0.1rem;
+}
+
+.info-card {
+    padding: 0.8rem;
+    border: 1px solid rgba(63, 190, 255, 0.30);
+    background: rgba(3, 17, 37, 0.82);
+}
+
+.info-card h4 {
+    margin: 0 0 0.6rem;
+    color: #69d8ff;
+    font-size: 0.66rem;
+    letter-spacing: 0.09em;
+}
+
+.info-card p {
+    margin: 0;
+    color: #b9d9e9;
+    font-size: 0.66rem;
+    line-height: 1.5;
+}
+
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.35rem;
+}
+
+.result-item {
+    text-align: center;
+    padding: 0.45rem 0.25rem;
+    border: 1px solid rgba(63, 190, 255, 0.20);
+}
+
+.result-item span {
+    display: block;
+    color: #779bad;
+    font-size: 0.54rem;
+}
+
+.result-item strong {
+    display: block;
+    margin-top: 0.2rem;
+    color: #e8f5ff;
+    font-size: 0.76rem;
+}
+
+.game-targets .result-item strong {
+    color: #63efc1;
+}
+
+.calibration-controls {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    border: 1px solid rgba(63, 190, 255, 0.30);
+    background: rgba(3, 17, 37, 0.86);
+}
+
+.calibration-progress-text {
+    color: #83b7d0;
+    font-size: 0.64rem;
+    letter-spacing: 0.07em;
+}
+
+.progress-dots {
+    display: inline-flex;
+    gap: 0.35rem;
+    margin-left: 0.55rem;
+}
+
+.progress-dots i {
+    width: 7px;
+    height: 7px;
+    border: 1px solid #42caff;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.progress-dots i.active {
+    background: #42caff;
+    box-shadow: 0 0 8px rgba(66, 202, 255, 0.75);
+}
+
+.calibration-action {
+    min-height: 40px;
+    padding: 0.65rem 1rem;
+    border: 1px solid #42caff;
+    color: #e8f5ff;
+    background: linear-gradient(90deg, #075ba5, #0879bd);
+    font: inherit;
+    letter-spacing: 0.07em;
+    cursor: pointer;
+}
+
+.calibration-action:hover {
     background: #1195d9;
 }
 
-.start-exercise:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
+.exercise-dock {
+    display: none;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 1050px) {
     .training-layout {
         grid-template-columns: 1fr;
     }
 
-    .exercise-stage {
-        min-height: 270px;
+    .monitor-panel {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
     }
 
-    .exercise-dock {
+    .monitor-title,
+    .monitor-status,
+    .sensor-buttons,
+    .live-data-table,
+    .sensor-data-shell {
+        grid-column: 1 / -1;
+    }
+
+    .wrist-card {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 760px) {
+    .exercise-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .calibration-footer {
+        grid-template-columns: 1fr;
+    }
+
+    .calibration-side-panel,
+    .session-setup,
+    .exercise-title {
+        grid-column: 1;
+    }
+
+    .exercise-stage {
+        min-height: 430px;
+    }
+
+    .monitor-panel {
+        display: flex;
+    }
+
+    .sensor-buttons {
         grid-template-columns: 1fr;
     }
 }
+
+@media (max-width: 520px) {
+    .training-workspace {
+        width: min(100%, calc(100% - 0.75rem));
+        padding: 0.55rem;
+    }
+
+    .training-heading {
+        font-size: 0.86rem;
+    }
+
+    .peak-grid,
+    .result-grid,
+    .axis-readout,
+    .wrist-readout {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .exercise-stage {
+        min-height: 380px;
+    }
+}
+
 </style>
-    </style>
 </head>
 <body>
     <a href="index.html" aria-label="Return to REHABO-SG home">
@@ -2093,15 +2484,69 @@
 
     <div class="training-layout">
         <section class="exercise-panel" aria-labelledby="exercise-title">
-            <h3 class="exercise-title" id="exercise-title">Game Visualization Area</h3>
+            <h3 class="exercise-title" id="exercise-title">WRIST REHABILITATION</h3>
 
-            <div class="exercise-stage">
+            <div class="exercise-stage" aria-label="Wrist calibration area">
+                <div class="calibration-axis" aria-hidden="true">
+                    <span class="up">UP</span>
+                    <span class="down">DOWN</span>
+                    <span class="left">LEFT</span>
+                    <span class="right">RIGHT</span>
+                    <span class="axis-line-h"></span>
+                    <span class="axis-line-v"></span>
+                </div>
+                <div class="calibration-center" aria-hidden="true"></div>
+
                 <p class="stage-instruction" id="exercise-instruction">
-                    Choose a duration, then start the exercise.
+                    Place your wrist in a comfortable neutral position to begin calibration.
                 </p>
+
+                <!-- Retained for existing JavaScript compatibility; hidden by the new UI. -->
                 <button class="target-button" type="button"
-                        aria-label="Reach for the target" disabled></button>
+                        aria-label="Rehabilitation target" disabled></button>
                 <div id="game-cursor" aria-hidden="true"></div>
+            </div>
+
+            <div class="calibration-side-panel">
+                <section class="current-movement-card">
+                    <h4 class="subpanel-title">CURRENT MOVEMENT</h4>
+                    <div class="axis-readout">
+                        <div class="axis-value">
+                            <span>PITCH (UP / DOWN)</span>
+                            <strong id="calibration-pitch">0.0°</strong>
+                        </div>
+                        <div class="axis-value">
+                            <span>ROLL (LEFT / RIGHT)</span>
+                            <strong id="calibration-roll">0.0°</strong>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="peak-card-panel">
+                    <h4 class="subpanel-title">COMFORTABLE PEAK ANGLES</h4>
+                    <div class="peak-grid">
+                        <div class="peak-card" id="peak-up-card">
+                            <span>↑ UP</span>
+                            <strong id="peak-up">—</strong>
+                            <small id="peak-up-status">PENDING</small>
+                        </div>
+                        <div class="peak-card" id="peak-down-card">
+                            <span>↓ DOWN</span>
+                            <strong id="peak-down">—</strong>
+                            <small id="peak-down-status">PENDING</small>
+                        </div>
+                        <div class="peak-card" id="peak-left-card">
+                            <span>← LEFT</span>
+                            <strong id="peak-left">—</strong>
+                            <small id="peak-left-status">PENDING</small>
+                        </div>
+                        <div class="peak-card" id="peak-right-card">
+                            <span>→ RIGHT</span>
+                            <strong id="peak-right">—</strong>
+                            <small id="peak-right-status">PENDING</small>
+                        </div>
+                    </div>
+                </section>
             </div>
 
             <div class="session-setup">
@@ -2116,105 +2561,139 @@
                 </select>
                 <span class="session-timer" id="session-timer" aria-live="polite">--:--</span>
             </div>
-
-            <div class="exercise-controls">
-                <span class="repetition-count">
-                    REPETITIONS: <span id="repetitions">0</span>
-                </span>
-            </div>
         </section>
 
-       <aside class="monitor-panel" aria-labelledby="monitor-title">
+        <aside class="monitor-panel" aria-labelledby="monitor-title">
+            <h3 class="monitor-title" id="monitor-title">LIVE MONITORING</h3>
 
-    <h3 class="monitor-title" id="monitor-title">
-        LIVE MONITORING
-    </h3>
+            <p class="monitor-status" id="serial-status">● SENSORS DISCONNECTED</p>
 
-    <p class="monitor-status" id="serial-status">
-        ● SENSORS DISCONNECTED
-    </p>
+            <div class="sensor-buttons">
+                <button id="connect-left" type="button">CONNECT LEFT SENSOR</button>
+                <button id="connect-right" type="button">CONNECT RIGHT SENSOR</button>
+            </div>
 
-   <div class="sensor-buttons">
+            <div class="live-data-table">
+                <div class="live-row live-header">
+                    <span>DATA</span>
+                    <span>LEFT WRIST</span>
+                    <span>RIGHT WRIST</span>
+                </div>
+                <div class="live-row">
+                    <span>Angle</span>
+                    <span id="left-angle">0°</span>
+                    <span id="right-angle">0°</span>
+                </div>
+                <div class="live-row">
+                    <span>Angular Velocity</span>
+                    <span id="left-angular">0.00 °/s</span>
+                    <span id="right-angular">0.00 °/s</span>
+                </div>
+                <div class="live-row">
+                    <span>Acceleration</span>
+                    <span id="left-acceleration">0.00 m/s²</span>
+                    <span id="right-acceleration">0.00 m/s²</span>
+                </div>
+                <div class="live-row">
+                    <span>Direction</span>
+                    <span id="left-direction">Neutral</span>
+                    <span id="right-direction">Neutral</span>
+                </div>
+                <div class="live-row">
+                    <span>Movement State</span>
+                    <span id="left-state">Idle</span>
+                    <span id="right-state">Idle</span>
+                </div>
+            </div>
 
-    <button
-    id="connect-left"
-    type="button">
-    CONNECT LEFT SENSOR
-</button>
+            <section class="wrist-card" aria-label="Left wrist sensor details">
+                <div class="wrist-card-header">
+                    <strong>LEFT WRIST</strong>
+                    <span id="left-sensor-chip">READY</span>
+                </div>
+                <div class="wrist-readout">
+                    <div><span>Pitch</span><strong id="left-pitch-live">0.0°</strong></div>
+                    <div><span>Roll</span><strong id="left-roll-live">0.0°</strong></div>
+                    <div><span>Direction</span><strong id="left-direction-live">Neutral</strong></div>
+                    <div><span>State</span><strong id="left-state-live">Idle</strong></div>
+                </div>
+                <div class="axis-diagram" aria-hidden="true">
+                    <span class="axis-label axis-up">UP (+)</span>
+                    <span class="axis-label axis-down">DOWN (-)</span>
+                    <span class="axis-label axis-left">LEFT (-)</span>
+                    <span class="axis-label axis-right">RIGHT (+)</span>
+                    <span class="axis-center"></span>
+                </div>
+            </section>
 
-<button
-    id="connect-right"
-    type="button">
-    CONNECT RIGHT SENSOR
-</button>
+            <section class="wrist-card" aria-label="Right wrist sensor details">
+                <div class="wrist-card-header">
+                    <strong>RIGHT WRIST</strong>
+                    <span id="right-sensor-chip">READY</span>
+                </div>
+                <div class="wrist-readout">
+                    <div><span>Pitch</span><strong id="right-pitch-live">0.0°</strong></div>
+                    <div><span>Roll</span><strong id="right-roll-live">0.0°</strong></div>
+                    <div><span>Direction</span><strong id="right-direction-live">Neutral</strong></div>
+                    <div><span>State</span><strong id="right-state-live">Idle</strong></div>
+                </div>
+                <div class="axis-diagram" aria-hidden="true">
+                    <span class="axis-label axis-up">UP (+)</span>
+                    <span class="axis-label axis-down">DOWN (-)</span>
+                    <span class="axis-label axis-left">LEFT (-)</span>
+                    <span class="axis-label axis-right">RIGHT (+)</span>
+                    <span class="axis-center"></span>
+                </div>
+            </section>
 
-</div>
+            <div class="sensor-data-shell">
+                <p class="sensor-data-heading">RAW SENSOR STREAM</p>
+                <pre id="sensor-data">WAITING FOR SENSOR DATA...</pre>
+            </div>
+        </aside>
 
-    <div class="live-data-table">
+        <div class="calibration-footer">
+            <section class="info-card">
+                <h4>CALIBRATION STATUS</h4>
+                <p><strong id="calibration-step">1 / 5</strong> — NEUTRAL</p>
+                <p class="progress-dots" aria-label="Calibration progress">
+                    <i class="active"></i><i></i><i></i><i></i><i></i>
+                </p>
+            </section>
 
-        <div class="live-row live-header">
-            <span>DATA</span>
-            <span>LEFT ARM</span>
-            <span>RIGHT ARM</span>
-        </div>
+            <section class="info-card">
+                <h4>CALIBRATION RESULTS // COMFORTABLE PEAK</h4>
+                <div class="result-grid">
+                    <div class="result-item"><span>↑ UP</span><strong id="result-up">—</strong></div>
+                    <div class="result-item"><span>↓ DOWN</span><strong id="result-down">—</strong></div>
+                    <div class="result-item"><span>← LEFT</span><strong id="result-left">—</strong></div>
+                    <div class="result-item"><span>→ RIGHT</span><strong id="result-right">—</strong></div>
+                </div>
+            </section>
 
-        <div class="live-row">
-            <span>Arm Angle</span>
-            <span id="left-angle">0°</span>
-            <span id="right-angle">0°</span>
-        </div>
+            <section class="info-card game-targets">
+                <h4>GAME TARGETS // 80%</h4>
+                <div class="result-grid">
+                    <div class="result-item"><span>↑ UP</span><strong id="target-up">—</strong></div>
+                    <div class="result-item"><span>↓ DOWN</span><strong id="target-down">—</strong></div>
+                    <div class="result-item"><span>← LEFT</span><strong id="target-left">—</strong></div>
+                    <div class="result-item"><span>→ RIGHT</span><strong id="target-right">—</strong></div>
+                </div>
+            </section>
 
-        <div class="live-row">
-            <span>Angular Velocity</span>
-            <span id="left-angular">0.00 °/s</span>
-            <span id="right-angular">0.00 °/s</span>
-        </div>
-
-        <div class="live-row">
-            <span>Acceleration</span>
-            <span id="left-acceleration">0.00 m/s²</span>
-            <span id="right-acceleration">0.00 m/s²</span>
-        </div>
-
-        <div class="live-row">
-            <span>Movement Direction</span>
-            <span id="left-direction">Neutral</span>
-            <span id="right-direction">Neutral</span>
-        </div>
-
-        <div class="live-row">
-            <span>Movement State</span>
-            <span id="left-state">Idle</span>
-            <span id="right-state">Idle</span>
-        </div>
-
-    </div>
-
-    <pre id="sensor-data">WAITING FOR SENSOR DATA...</pre>
-
-</aside>
-    </div>
-
-    <section class="exercise-dock" aria-label="Exercise controls">
-        <div>
-            <h3 class="dock-heading">EXERCISE CONTROLS</h3>
-            <div class="dock-buttons">
-                <button class="dock-button start-exercise" type="button" disabled>▶ START EXERCISE</button>
-                <button class="dock-button" id="pause-exercise" type="button" disabled>PAUSE</button>
-                <button class="dock-button" id="reset-exercise" type="button">RESET</button>
+            <div class="calibration-controls">
+                <span class="calibration-progress-text">
+                    CALIBRATION <span id="calibration-progress">1 / 5</span>
+                    <span class="progress-dots" aria-hidden="true">
+                        <i class="active"></i><i></i><i></i><i></i><i></i>
+                    </span>
+                </span>
+                <button class="calibration-action start-exercise" type="button" disabled>
+                    ▶ BEGIN CALIBRATION
+                </button>
             </div>
         </div>
-
-        <div>
-            <h3 class="dock-heading">EXERCISE TYPE</h3>
-            <div class="exercise-type-list">
-                <button class="exercise-type" type="button" aria-pressed="true">REACH</button>
-                <button class="exercise-type" type="button" aria-pressed="false">DIRECTION</button>
-                <button class="exercise-type" type="button" aria-pressed="false">CIRCULAR</button>
-                <button class="exercise-type" type="button" aria-pressed="false">FOLLOW</button>
-            </div>
-        </div>
-    </section>
+    </div>
 </section>
 <section class="balance-workspace" id="balance-workspace" aria-labelledby="balance-title" hidden>
     <header class="balance-header">
@@ -2865,7 +3344,9 @@ document.querySelector("#retry-session").addEventListener("click", () => {
     feedbackDialog.close();
     startButton.click();
 });
-
+        // ==========================================
+// SENSOR BUTTON CONNECTION
+// ==========================================
 
 document.getElementById("connect-left").addEventListener("click", () => {
     console.log("LEFT SENSOR BUTTON CLICKED");
@@ -2938,6 +3419,11 @@ async function connectSensor(side) {
 function updateConnectionStatus() {
     const status = document.getElementById("serial-status");
     if (!status) return;
+
+    const leftChip = document.getElementById("left-sensor-chip");
+    const rightChip = document.getElementById("right-sensor-chip");
+    if (leftChip) leftChip.textContent = leftPort ? "CONNECTED" : "READY";
+    if (rightChip) rightChip.textContent = rightPort ? "CONNECTED" : "READY";
 
     if (leftPort && rightPort) {
         status.textContent = "● LEFT + RIGHT SENSORS CONNECTED";
@@ -3030,53 +3516,92 @@ function updateLiveDashboard(data) {
         state.textContent = data.state ?? "Idle";
     }
 
+    const pitchLive = document.getElementById(prefix + "-pitch-live");
+    const rollLive = document.getElementById(prefix + "-roll-live");
+    const directionLive = document.getElementById(prefix + "-direction-live");
+    const stateLive = document.getElementById(prefix + "-state-live");
 
+    if (pitchLive && Number.isFinite(Number(data.pitch))) {
+        pitchLive.textContent = Number(data.pitch).toFixed(1) + "°";
+    }
+    if (rollLive && Number.isFinite(Number(data.roll))) {
+        rollLive.textContent = Number(data.roll).toFixed(1) + "°";
+    }
+    if (directionLive) {
+        directionLive.textContent = data.direction ?? "Neutral";
+    }
+    if (stateLive) {
+        stateLive.textContent = data.state ?? "Idle";
+    }
+
+    // ==============================
+    // LEFT WRIST GAME CONTROL
+    // ==============================
     if (side === "LEFT") {
-        if (Number.isFinite(Number(data.pitch))) {
-            leftPitch = Number(data.pitch);
-        }
 
-        if (Number.isFinite(Number(data.roll))) {
-            leftRoll = Number(data.roll);
-        }
+    if (Number.isFinite(Number(data.pitch))) {
+        leftPitch = Number(data.pitch);
+    }
+
+    if (Number.isFinite(Number(data.roll))) {
+        leftRoll = Number(data.roll);
     }
 }
+
+// CLOSE updateLiveDashboard()
+}
+// ==========================================
+// SMOOTH CURSOR VARIABLES
+// ==========================================
+    
+// ==========================================
+// CURSOR CONTROL
+// ==========================================
 
 let smoothHorizontal = 0;
 let smoothVertical = 0;
 
 function updateGameCursor() {
 
+    if (!sessionActive || sessionPaused) return;
+
     const cursor = document.getElementById("game-cursor");
     if (!cursor) return;
 
+    // ==========================================
+    // CURSOR SETTINGS
+    // ==========================================
 
+    // Small deadzone so tiny sensor noise does not move the cursor
+    const HORIZONTAL_DEADZONE = 0.5;
+    const VERTICAL_DEADZONE = 0.8;
 
-    const HORIZONTAL_DEADZONE = 0.3;
-    const VERTICAL_DEADZONE = 0.3;
-
-    // Roll = LEFT / RIGHT
+    // Sensitivity for each axis
+    // Roll  = LEFT / RIGHT
     // Pitch = UP / DOWN
-    const HORIZONTAL_SENSITIVITY = 2.5;
-    const VERTICAL_SENSITIVITY = 2.0;
+    const HORIZONTAL_SENSITIVITY = 2.0;
+    const VERTICAL_SENSITIVITY = 1.5;
 
-    // 0.25 = smoother
-    // 0.40 = faster response
-    const SMOOTHING = 0.35;
+    // Higher = faster response
+    // Lower = smoother
+    const SMOOTHING = 0.40;
 
-    const CURSOR_SPEED = 1.5;
+    // Overall cursor speed
+    const CURSOR_SPEED = 1.2;
 
-    //READ SENSOR VALUES
+
+    // ==========================================
+    // GET MPU6050 MOVEMENT
+    // ==========================================
 
     let horizontal = Number(leftRoll);
     let vertical = Number(leftPitch);
 
-// READ SENSOR VALUE
-    // Safety check
-    if (!Number.isFinite(horizontal)) horizontal = 0;
-    if (!Number.isFinite(vertical)) vertical = 0;
 
-// DEADZONE
+    // ==========================================
+    // DEADZONE
+    // ==========================================
+
     if (Math.abs(horizontal) < HORIZONTAL_DEADZONE) {
         horizontal = 0;
     }
@@ -3086,12 +3611,17 @@ function updateGameCursor() {
     }
 
 
- // DEADZONE
+    // ==========================================
+    // SENSITIVITY
+    // ==========================================
+
     horizontal *= HORIZONTAL_SENSITIVITY;
     vertical *= VERTICAL_SENSITIVITY;
 
 
-    
+    // ==========================================
+    // SMOOTHING
+    // ==========================================
 
     smoothHorizontal +=
         (horizontal - smoothHorizontal) * SMOOTHING;
@@ -3099,7 +3629,11 @@ function updateGameCursor() {
     smoothVertical +=
         (vertical - smoothVertical) * SMOOTHING;
 
-// MOVE CURSOR
+
+    // ==========================================
+    // MOVE CURSOR
+    // ==========================================
+
     gameCursorX +=
         smoothHorizontal * CURSOR_SPEED * 0.10;
 
@@ -3107,7 +3641,10 @@ function updateGameCursor() {
         smoothVertical * CURSOR_SPEED * 0.10;
 
 
-// MOVE CURSOR
+    // ==========================================
+    // KEEP CURSOR INSIDE GAME
+    // ==========================================
+
     gameCursorX = Math.max(
         GAME_MIN_X,
         Math.min(GAME_MAX_X, gameCursorX)
@@ -3118,16 +3655,20 @@ function updateGameCursor() {
         Math.min(GAME_MAX_Y, gameCursorY)
     );
 
-// DISPLAY CURSOR
+
+    // ==========================================
+    // UPDATE CURSOR POSITION
+    // ==========================================
 
     cursor.style.left = `${gameCursorX}%`;
     cursor.style.top = `${gameCursorY}%`;
 
 
-// DISPLAY CURSOR
-    if (sessionActive && !sessionPaused) {
-        checkTargetCollision();
-    }
+    // ==========================================
+    // CHECK TARGET
+    // ==========================================
+
+    checkTargetCollision();
 }
 function checkTargetCollision() {
 
@@ -3164,12 +3705,18 @@ function registerSensorHit() {
 
     targetHitCooldown = true;
 
-    // INCREASE REPETITION 
+    // ==========================================
+    // INCREASE REPETITION
+    // ==========================================
 
     repetitions += 1;
     repetitionsDisplay.textContent = repetitions;
 
-    // CALCULATE SENSOR RESULT
+
+    // ==========================================
+    // CALCULATE SENSOR RESULTS
+    // ==========================================
+
     const angle = Math.min(
         180,
         Math.round(
@@ -3200,7 +3747,10 @@ function registerSensorHit() {
     );
 
 
-// UPDATE PERFORMANCE BARS
+    // ==========================================
+    // UPDATE PERFORMANCE BARS
+    // ==========================================
+
     document.querySelector("#angle-fill").style.width =
         `${Math.min(100, angle / 1.8)}%`;
 
@@ -3210,12 +3760,17 @@ function registerSensorHit() {
     document.querySelector("#accuracy-fill").style.width =
         `${accuracy}%`;
 
-// UPDATE PERFORMANCE BARS
+
+    // ==========================================
+    // HIDE CURRENT GREEN BALL
+    // ==========================================
 
     targetButton.style.visibility = "hidden";
 
 
-// CREATE NEXT TARGET    
+    // ==========================================
+    // CREATE NEXT TARGET
+    // ==========================================
 
     setTimeout(() => {
 
@@ -3267,9 +3822,9 @@ function distanceFromTarget() {
 }
 
 
-
+// ==========================================
 // CONTINUOUS CURSOR UPDATE
-
+// ==========================================
 
 function cursorAnimationLoop() {
     updateGameCursor();
