@@ -11,7 +11,7 @@
         * {
             box-sizing: border-box;
         }
-        
+
       body {
     min-height: 100vh;
     margin: 0;
@@ -1991,6 +1991,25 @@
     gap: 0.55rem;
 }
 
+.two-wrist-results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+}
+
+.wrist-result-column h5 {
+    margin: 0 0 0.45rem;
+    color: #63cfff;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+}
+
+@media (max-width: 760px) {
+    .two-wrist-results {
+        grid-template-columns: 1fr;
+    }
+}
+
 .peak-card {
     min-height: 78px;
     padding: 0.65rem;
@@ -2687,28 +2706,26 @@
                     </div>
                 </section>
 
-                <section class="peak-card-panel">
-                    <h4 class="subpanel-title">COMFORTABLE PEAK ANGLES</h4>
-                    <div class="peak-grid">
-                        <div class="peak-card" id="peak-up-card">
-                            <span>↑ UP</span>
-                            <strong id="peak-up">—</strong>
-                            <small id="peak-up-status">PENDING</small>
+                <section class="peak-card-panel two-wrist-peak-panel">
+                    <h4 class="subpanel-title">COMFORTABLE PEAK ANGLES // BOTH WRISTS</h4>
+                    <div class="two-wrist-results">
+                        <div class="wrist-result-column">
+                            <h5>LEFT WRIST</h5>
+                            <div class="peak-grid">
+                                <div class="peak-card" id="peak-left-up-card"><span>↑ UP</span><strong id="peak-left-up">—</strong><small id="peak-left-up-status">PENDING</small></div>
+                                <div class="peak-card" id="peak-left-down-card"><span>↓ DOWN</span><strong id="peak-left-down">—</strong><small id="peak-left-down-status">PENDING</small></div>
+                                <div class="peak-card" id="peak-left-left-card"><span>← LEFT</span><strong id="peak-left-left">—</strong><small id="peak-left-left-status">PENDING</small></div>
+                                <div class="peak-card" id="peak-left-right-card"><span>→ RIGHT</span><strong id="peak-left-right">—</strong><small id="peak-left-right-status">PENDING</small></div>
+                            </div>
                         </div>
-                        <div class="peak-card" id="peak-down-card">
-                            <span>↓ DOWN</span>
-                            <strong id="peak-down">—</strong>
-                            <small id="peak-down-status">PENDING</small>
-                        </div>
-                        <div class="peak-card" id="peak-left-card">
-                            <span>← LEFT</span>
-                            <strong id="peak-left">—</strong>
-                            <small id="peak-left-status">PENDING</small>
-                        </div>
-                        <div class="peak-card" id="peak-right-card">
-                            <span>→ RIGHT</span>
-                            <strong id="peak-right">—</strong>
-                            <small id="peak-right-status">PENDING</small>
+                        <div class="wrist-result-column">
+                            <h5>RIGHT WRIST</h5>
+                            <div class="peak-grid">
+                                <div class="peak-card" id="peak-right-up-card"><span>↑ UP</span><strong id="peak-right-up">—</strong><small id="peak-right-up-status">PENDING</small></div>
+                                <div class="peak-card" id="peak-right-down-card"><span>↓ DOWN</span><strong id="peak-right-down">—</strong><small id="peak-right-down-status">PENDING</small></div>
+                                <div class="peak-card" id="peak-right-left-card"><span>← LEFT</span><strong id="peak-right-left">—</strong><small id="peak-right-left-status">PENDING</small></div>
+                                <div class="peak-card" id="peak-right-right-card"><span>→ RIGHT</span><strong id="peak-right-right">—</strong><small id="peak-right-right-status">PENDING</small></div>
+                            </div>
                         </div>
                     </div>
                     <button class="manual-calibration-button" id="manual-calibrate-button" type="button">▶ START CALIBRATION</button>
@@ -3736,7 +3753,11 @@ async function readSensorData(port, side) {
                 if (!text || !text.startsWith("{")) continue;
 
                 try {
-                    const data = JSON.parse(text);
+                    const parsed = JSON.parse(text);
+                    // The CONNECT button determines which wrist this serial stream belongs to.
+                    // This prevents a missing/wrong side field in the ESP32 JSON from sending
+                    // RIGHT-wrist readings into the LEFT calibration bucket.
+                    const data = { ...parsed, side };
                     updateLiveDashboard(data);
 
                     const debugBox = document.getElementById("sensor-data");
@@ -4227,17 +4248,60 @@ requestAnimationFrame(cursorAnimationLoop);
                 neutral[side].pitch = Number(latest[side].pitch);
                 neutral[side].roll = Number(latest[side].roll);
             } else {
-                // Allow calibration to start even if this wrist has no live data.
-                // That wrist will simply record 0° until valid data becomes available.
                 neutral[side].pitch = null;
                 neutral[side].roll = null;
             }
         }
     }
 
+    // Capture a short neutral window for EACH wrist independently.
+    // One wrist can arrive a little later than the other without cancelling calibration.
+    function captureNeutralWindow(done) {
+        const samples = { LEFT: [], RIGHT: [] };
+        const start = performance.now();
+        const windowMs = 500;
+        phase = "NEUTRAL";
+        message.textContent = "Hold BOTH wrists in a comfortable neutral position. Preparing the baseline...";
+
+        function sample(now) {
+            if (!running) return;
+
+            for (const side of ["LEFT", "RIGHT"]) {
+                const data = latest[side];
+                if (data && Number.isFinite(Number(data.pitch)) && Number.isFinite(Number(data.roll))) {
+                    samples[side].push({
+                        pitch: Number(data.pitch),
+                        roll: Number(data.roll)
+                    });
+                }
+            }
+
+            if (now - start >= windowMs) {
+                for (const side of ["LEFT", "RIGHT"]) {
+                    if (samples[side].length) {
+                        neutral[side].pitch = samples[side].reduce((sum, v) => sum + v.pitch, 0) / samples[side].length;
+                        neutral[side].roll = samples[side].reduce((sum, v) => sum + v.roll, 0) / samples[side].length;
+                    } else {
+                        neutral[side].pitch = null;
+                        neutral[side].roll = null;
+                    }
+                }
+                done();
+                return;
+            }
+            requestAnimationFrame(sample);
+        }
+        requestAnimationFrame(sample);
+    }
+
     function directionalMovement(side, direction) {
         const data = latest[side];
-        if (!data || neutral[side].pitch === null) return 0;
+        if (!data || !Number.isFinite(Number(data.pitch)) || !Number.isFinite(Number(data.roll))) return 0;
+        if (neutral[side].pitch === null || neutral[side].roll === null) {
+            neutral[side].pitch = Number(data.pitch);
+            neutral[side].roll = Number(data.roll);
+            return 0;
+        }
         const raw = direction.axis === "pitch"
             ? Number(data.pitch) - neutral[side].pitch
             : Number(data.roll) - neutral[side].roll;
@@ -4288,7 +4352,8 @@ requestAnimationFrame(cursorAnimationLoop);
         resultGrid.hidden = true;
         resultMessage.textContent = "";
         resetLivePanel();
-        countdown(PREP_SECONDS, () => startMeasurement(direction));
+        // Get a fresh neutral baseline immediately before every 5-second direction test.
+        captureNeutralWindow(() => startMeasurement(direction));
     }
 
     function startMeasurement(direction) {
@@ -4360,11 +4425,31 @@ requestAnimationFrame(cursorAnimationLoop);
 
     function updateStaticResult(direction) {
         const map = {
-            LEFT: {UP:"result-left-up",DOWN:"result-left-down",LEFT:"result-left-left",RIGHT:"result-left-right"},
-            RIGHT:{UP:"result-right-up",DOWN:"result-right-down",LEFT:"result-right-left",RIGHT:"result-right-right"}
+            LEFT: {
+                UP: ["result-left-up", "peak-left-up"],
+                DOWN: ["result-left-down", "peak-left-down"],
+                LEFT: ["result-left-left", "peak-left-left"],
+                RIGHT: ["result-left-right", "peak-left-right"]
+            },
+            RIGHT: {
+                UP: ["result-right-up", "peak-right-up"],
+                DOWN: ["result-right-down", "peak-right-down"],
+                LEFT: ["result-right-left", "peak-right-left"],
+                RIGHT: ["result-right-right", "peak-right-right"]
+            }
         };
-        for (const side of ["LEFT","RIGHT"]) {
-            setText(map[side][direction.key], peaks[side][direction.key].toFixed(1) + "°");
+
+        for (const side of ["LEFT", "RIGHT"]) {
+            const value = Number(peaks[side][direction.key] ?? 0);
+            const text = value.toFixed(1) + "°";
+            const resultId = map[side][direction.key][0];
+            const peakId = map[side][direction.key][1];
+            setText(resultId, text);
+            setText(peakId, text);
+            setText(peakId + "-status", "RECORDED");
+
+            const card = document.getElementById(peakId + "-card");
+            if (card) card.classList.add("complete");
         }
     }
 
@@ -4393,6 +4478,20 @@ requestAnimationFrame(cursorAnimationLoop);
             for (const d of directions) record.targets80[side][d.key] = +(peaks[side][d.key] * TARGET_RATIO).toFixed(1);
         }
         window.__rehaboCalibrationRecord = record;
+
+        // Ensure every final value is written to the permanent BOTH-WRISTS table.
+        for (const side of ["LEFT", "RIGHT"]) {
+            for (const d of directions) {
+                const key = d.key.toLowerCase();
+                const value = Number(peaks[side][d.key] ?? 0);
+                const text = value.toFixed(1) + "°";
+                setText("peak-" + side.toLowerCase() + "-" + key, text);
+                setText("peak-" + side.toLowerCase() + "-" + key + "-status", "RECORDED");
+                const card = document.getElementById("peak-" + side.toLowerCase() + "-" + key + "-card");
+                if (card) card.classList.add("complete");
+            }
+        }
+
         try { localStorage.setItem("rehabo-sg-latest-calibration", JSON.stringify(record)); }
         catch (error) { console.warn("Could not save calibration.", error); }
 
@@ -4443,13 +4542,12 @@ requestAnimationFrame(cursorAnimationLoop);
         manualCalibrationNote.textContent = "CALIBRATION RUNNING — BOTH WRISTS ARE MEASURED AT THE SAME TIME.";
         manualCalibrationNote.style.color = "#63efc1";
 
-        // Capture a fresh neutral position immediately before the first 5-second test.
-        // Do not require either sensor to pass a connection/freshness check here.
+        // Give both serial streams a short opportunity to provide a neutral reading.
+        // LEFT and RIGHT are captured independently; neither one can block the other.
         setTimeout(() => {
             if (!running) return;
-            captureNeutral();
-            prepareDirection(directions[0]);
-        }, 150);
+            captureNeutralWindow(() => prepareDirection(directions[0]));
+        }, 100);
     }
 
     // Called by the sensor stream after every valid JSON packet.
