@@ -1680,6 +1680,343 @@
     pointer-events: auto;
     cursor: pointer;
 }
+
+.training-workspace {
+    width: min(1100px, calc(100% - 2rem));
+    margin: 4rem auto;
+    padding: clamp(1rem, 3vw, 1.75rem);
+    border: 1px solid rgba(63, 190, 255, 0.55);
+    background: linear-gradient(145deg, rgba(3, 22, 44, 0.98), rgba(2, 12, 29, 0.98));
+    box-shadow: 0 0 35px rgba(0, 153, 255, 0.12);
+    scroll-margin-top: 2rem;
+}
+
+.training-workspace[hidden] {
+    display: none;
+}
+
+.training-topbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.training-heading {
+    margin: 0;
+    color: #8fdcff;
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(1rem, 3vw, 1.35rem);
+    letter-spacing: 0.08em;
+}
+
+.session-badge {
+    padding: 0.55rem 0.8rem;
+    border: 1px solid rgba(99, 239, 193, 0.4);
+    color: #63efc1;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+}
+
+.training-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(230px, 0.8fr);
+    gap: 1rem;
+}
+
+.exercise-panel,
+.monitor-panel {
+    min-width: 0;
+    padding: 1rem;
+    border: 1px solid rgba(80, 164, 213, 0.38);
+    background: rgba(3, 17, 37, 0.82);
+}
+
+.exercise-title,
+.monitor-title {
+    margin: 0;
+    color: #c7edff;
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+}
+
+.exercise-stage {
+    position: relative;
+    min-height: 340px;
+    margin-top: 0.9rem;
+    overflow: hidden;
+    border: 1px solid rgba(43, 175, 255, 0.55);
+    background:
+        radial-gradient(ellipse at 65% 40%, rgba(0, 171, 255, 0.18), transparent 35%),
+        linear-gradient(rgba(30, 136, 190, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 136, 190, 0.08) 1px, transparent 1px),
+        #04152b;
+    background-size: auto, 30px 30px, 30px 30px, auto;
+}
+
+.exercise-stage::after {
+    position: absolute;
+    inset: 12px;
+    border: 1px solid rgba(82, 183, 235, 0.12);
+    content: "";
+    pointer-events: none;
+}
+
+.stage-instruction {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 1;
+    margin: 0;
+    padding: 0.8rem;
+    border: 1px solid rgba(65, 178, 244, 0.42);
+    color: #d8f3ff;
+    background: rgba(2, 15, 33, 0.9);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.target-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #63efc1;
+    border-radius: 50%;
+    background: #39dfa9;
+    box-shadow: 0 0 10px #63efc1, 0 0 28px rgba(63, 255, 190, 0.65);
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+.target-button:disabled {
+    display: none;
+}
+
+#game-cursor {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    border: 3px solid #42caff;
+    border-radius: 50%;
+    background: rgba(66, 202, 255, 0.25);
+    box-shadow: 0 0 10px #42caff, 0 0 22px rgba(66, 202, 255, 0.75);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 5;
+    transition: none;
+}
+
+#game-cursor::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ffffff;
+    transform: translate(-50%, -50%);
+}
+
+.session-setup {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    color: #bce9ff;
+    font-size: 0.8rem;
+}
+
+.session-setup select {
+    padding: 0.65rem;
+    border: 1px solid rgba(80, 164, 213, 0.55);
+    color: #e8f5ff;
+    background: #04152b;
+    font: inherit;
+}
+
+.session-timer {
+    margin-left: auto;
+    color: #63efc1;
+    font-size: 1.1rem;
+}
+
+.exercise-controls {
+    margin-top: 1rem;
+}
+
+.repetition-count {
+    padding: 0.8rem;
+    border: 1px solid rgba(80, 164, 213, 0.27);
+    color: #8fdcff;
+    font-size: 0.78rem;
+}
+
+.monitor-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.monitor-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.monitor-status {
+    margin: 0;
+    color: #63efc1;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+}
+
+.live-data-table {
+    margin-top: 1.25rem;
+    border-top: 1px solid rgba(141, 204, 237, 0.28);
+}
+
+.live-row {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.9rem 0.25rem;
+    border-bottom: 1px solid rgba(141, 204, 237, 0.18);
+    color: #e8f5ff;
+    font-size: 0.78rem;
+}
+
+.live-row span:nth-child(2),
+.live-row span:nth-child(3) {
+    text-align: center;
+}
+
+.live-header {
+    color: #8fdcff;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+}
+
+#sensor-data {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    max-height: 120px;
+    overflow: auto;
+    border: 1px solid rgba(141, 204, 237, 0.2);
+    background: #04152a;
+    color: #63efc1;
+    font-size: 0.7rem;
+}
+
+.sensor-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.sensor-buttons button {
+    padding: 0.7rem 1rem;
+    border: 1px solid #8fdcff;
+    color: #e8f5ff;
+    background: #062442;
+    font: inherit;
+    cursor: pointer;
+}
+
+.sensor-buttons button:hover {
+    background: #10466a;
+}
+
+.exercise-dock {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1.25rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid rgba(80, 164, 213, 0.4);
+    background: rgba(3, 17, 37, 0.88);
+}
+
+.dock-heading {
+    margin: 0 0 0.75rem;
+    color: #8fdcff;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+}
+
+.dock-buttons,
+.exercise-type-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.dock-button,
+.exercise-type {
+    min-height: 44px;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid rgba(80, 164, 213, 0.55);
+    color: #e8f5ff;
+    background: #061b33;
+    font: inherit;
+    cursor: pointer;
+}
+
+.dock-button:hover,
+.exercise-type:hover,
+.exercise-type[aria-pressed="true"] {
+    border-color: #42caff;
+    background: #0b3760;
+    box-shadow: 0 0 12px rgba(47, 189, 255, 0.2);
+}
+
+.dock-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+.start-exercise {
+    border-color: #27baff;
+    background: linear-gradient(90deg, #075ba5, #0879bd);
+    letter-spacing: 0.08em;
+}
+
+.start-exercise:hover,
+.start-exercise:focus-visible {
+    background: #1195d9;
+}
+
+.start-exercise:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+@media (max-width: 700px) {
+    .training-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .exercise-stage {
+        min-height: 270px;
+    }
+
+    .exercise-dock {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
     </style>
 </head>
 <body>
