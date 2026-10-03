@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -2741,7 +2742,154 @@
  .layout-redesigned .rehabo-game-header{flex-direction:column;}
  .layout-redesigned .sensor-buttons{grid-template-columns:1fr;}
 }
-</style></head>
+</style><style>
+/* FINAL LAYOUT OVERRIDE — clean two-column rehabilitation dashboard */
+.training-workspace.layout-redesigned-shell,
+.training-workspace {
+  width:min(1500px, calc(100% - 2rem));
+  margin:1rem auto 2rem;
+  padding:.75rem;
+  position:relative;
+  overflow:visible;
+}
+.training-workspace > .training-topbar {
+  display:flex !important;
+  min-height:58px;
+  margin-bottom:.75rem;
+  position:relative;
+  z-index:20;
+}
+.training-workspace > .training-layout.layout-redesigned {
+  display:grid !important;
+  grid-template-columns:minmax(0,1.5fr) minmax(390px,.9fr) !important;
+  grid-template-areas:"exercise monitor" "game game" "footer footer" !important;
+  gap:.8rem !important;
+  align-items:stretch !important;
+  width:100%;
+}
+.training-workspace .exercise-panel {
+  grid-area:exercise !important;
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) !important;
+  grid-template-rows:auto minmax(470px,1fr) auto auto !important;
+  gap:.7rem !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  padding:.75rem !important;
+  position:relative !important;
+  z-index:1 !important;
+  visibility:visible !important;
+}
+.training-workspace .exercise-title,
+.training-workspace .exercise-stage,
+.training-workspace .current-movement-card,
+.training-workspace .session-setup {
+  grid-column:1 !important;
+  visibility:visible !important;
+}
+.training-workspace .exercise-stage {
+  display:block !important;
+  position:relative !important;
+  width:100% !important;
+  min-width:0 !important;
+  min-height:470px !important;
+  height:100% !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  overflow:hidden !important;
+}
+.training-workspace .calibration-axis,
+.training-workspace .calibration-center,
+.training-workspace .stage-instruction {
+  visibility:visible !important;
+}
+.training-workspace .calibration-axis { display:block !important; }
+.training-workspace .calibration-center { display:block !important; }
+.training-workspace .current-movement-card {
+  display:block !important;
+  margin:0 !important;
+}
+.training-workspace .session-setup {
+  display:flex !important;
+  margin:0 !important;
+}
+.training-workspace .monitor-panel {
+  grid-area:monitor !important;
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  grid-auto-rows:auto !important;
+  align-content:start !important;
+  gap:.6rem !important;
+  min-width:0 !important;
+  padding:.75rem !important;
+  position:relative !important;
+  z-index:2 !important;
+  visibility:visible !important;
+}
+.training-workspace .monitor-panel > .monitor-title,
+.training-workspace .monitor-panel > .monitor-status,
+.training-workspace .monitor-panel > .sensor-buttons,
+.training-workspace .monitor-panel > .live-data-table,
+.training-workspace .monitor-panel > .peak-card-panel,
+.training-workspace .monitor-panel > .manual-calibration-button,
+.training-workspace .monitor-panel > .manual-calibration-note,
+.training-workspace .monitor-panel > .calibration-average-dashboard,
+.training-workspace .monitor-panel > .sensor-data-shell {
+  grid-column:1 / -1 !important;
+}
+.training-workspace .monitor-panel > .wrist-card {
+  display:block !important;
+  grid-column:span 1 !important;
+  min-width:0 !important;
+}
+.training-workspace .two-wrist-results {
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  gap:.7rem !important;
+}
+.training-workspace .peak-grid {
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  gap:.45rem !important;
+}
+.training-workspace .calibration-average-dashboard {
+  margin:0 !important;
+}
+.training-workspace .rehabo-game-panel {
+  grid-area:game !important;
+  min-width:0 !important;
+  margin:0 !important;
+}
+.training-workspace .calibration-footer {
+  grid-area:footer !important;
+  min-width:0 !important;
+}
+@media (max-width:1050px) {
+  .training-workspace > .training-layout.layout-redesigned {
+    grid-template-columns:1fr !important;
+    grid-template-areas:"exercise" "monitor" "game" "footer" !important;
+  }
+  .training-workspace .monitor-panel {
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  }
+}
+@media (max-width:650px) {
+  .training-workspace {
+    width:calc(100% - .7rem) !important;
+    padding:.5rem !important;
+  }
+  .training-workspace .monitor-panel,
+  .training-workspace .two-wrist-results {
+    grid-template-columns:1fr !important;
+  }
+  .training-workspace .monitor-panel > .wrist-card {
+    grid-column:1 !important;
+  }
+  .training-workspace .exercise-stage { min-height:400px !important; }
+}
+</style>
+
+</head>
 <body>
 <a aria-label="Return to REHABO-SG home" href="index.html">
 <img alt="REHABO-SG logo" class="brand-logo" src="REHABO-SG%20LOGO.png"/>
