@@ -4621,5 +4621,52 @@ requestAnimationFrame(cursorAnimationLoop);
 #game-cursor { display: none !important; }
 
 </style>
+
+<style>
+/* FINAL FIX: keep both-wrist calibration cards inside their panel. */
+.two-wrist-results {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.8rem;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.wrist-result-column {
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.wrist-result-column .peak-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.wrist-result-column .peak-card {
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.wrist-result-column .peak-card strong,
+.wrist-result-column .peak-card span,
+.wrist-result-column .peak-card small {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+    .two-wrist-results {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
 </body>
 </html>
