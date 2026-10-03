@@ -2695,18 +2695,15 @@ function updateLiveDashboard(data) {
 
 
     if (side === "LEFT") {
+        if (Number.isFinite(Number(data.pitch))) {
+            leftPitch = Number(data.pitch);
+        }
 
-    if (Number.isFinite(Number(data.pitch))) {
-        leftPitch = Number(data.pitch);
-    }
-
-    if (Number.isFinite(Number(data.roll))) {
-        leftRoll = Number(data.roll);
+        if (Number.isFinite(Number(data.roll))) {
+            leftRoll = Number(data.roll);
+        }
     }
 }
-
-
-
 
 let smoothHorizontal = 0;
 let smoothVertical = 0;
