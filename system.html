@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +11,7 @@
         * {
             box-sizing: border-box;
         }
-        
+
       body {
     min-height: 100vh;
     margin: 0;
@@ -2711,7 +2712,7 @@
                         </div>
                     </div>
                     <button class="manual-calibration-button" id="manual-calibrate-button" type="button">▶ START CALIBRATION</button>
-                    <p class="manual-calibration-note" id="manual-calibration-note">Both wrist sensors must be connected before starting.</p>
+                    <p class="manual-calibration-note" id="manual-calibration-note">CLICK START CALIBRATION TO BEGIN. CONNECTED SENSORS WILL BE MEASURED.</p>
                 </section>
             </div>
 
@@ -4222,8 +4223,15 @@ requestAnimationFrame(cursorAnimationLoop);
 
     function captureNeutral() {
         for (const side of ["LEFT", "RIGHT"]) {
-            neutral[side].pitch = Number(latest[side].pitch);
-            neutral[side].roll = Number(latest[side].roll);
+            if (sensorFresh(side)) {
+                neutral[side].pitch = Number(latest[side].pitch);
+                neutral[side].roll = Number(latest[side].roll);
+            } else {
+                // Allow calibration to start even if this wrist has no live data.
+                // That wrist will simply record 0° until valid data becomes available.
+                neutral[side].pitch = null;
+                neutral[side].roll = null;
+            }
         }
     }
 
@@ -4284,10 +4292,10 @@ requestAnimationFrame(cursorAnimationLoop);
     }
 
     function startMeasurement(direction) {
-        if (!running || !bothSensorsOnline()) {
-            finishBecauseSensorLost();
-            return;
-        }
+        // Manual calibration is allowed to run regardless of sensor connection state.
+        // Each wrist is measured independently; a missing wrist records 0° rather than
+        // preventing the other wrist from being calibrated.
+        if (!running) return;
         phase = "MEASURE";
         measureStart = performance.now();
         peaks.LEFT[direction.key] = 0;
@@ -4418,12 +4426,6 @@ requestAnimationFrame(cursorAnimationLoop);
     function startManualCalibration() {
         if (running) return;
 
-        if (!bothSensorsOnline()) {
-            manualCalibrationNote.textContent = "CONNECT BOTH LEFT AND RIGHT WRIST SENSORS FIRST.";
-            manualCalibrationNote.style.color = "#ffb86b";
-            return;
-        }
-
         waitingForBoth = false;
         calibrationCompleted = false;
         running = true;
@@ -4444,7 +4446,6 @@ requestAnimationFrame(cursorAnimationLoop);
         // Capture a fresh neutral position immediately before the first 5-second test.
         setTimeout(() => {
             if (!running) return;
-            if (!bothSensorsOnline()) { finishBecauseSensorLost(); return; }
             captureNeutral();
             prepareDirection(directions[0]);
         }, 150);
@@ -4462,21 +4463,11 @@ requestAnimationFrame(cursorAnimationLoop);
         }
     };
 
-    // Keep the manual calibration button available only when BOTH wrist sensors
-    // are actively sending valid pitch/roll readings. No automatic calibration.
-    setInterval(() => {
-        const online = bothSensorsOnline();
-        if (!running) {
-            manualCalibrationButton.disabled = !online;
-            if (online) {
-                manualCalibrationNote.textContent = "BOTH WRIST SENSORS READY. CLICK START CALIBRATION.";
-                manualCalibrationNote.style.color = "#6f9ab3";
-            } else {
-                manualCalibrationNote.textContent = "Both wrist sensors must be connected before starting.";
-                manualCalibrationNote.style.color = "#6f9ab3";
-            }
-        }
-    }, 250);
+    // The manual calibration button is always available. No sensor connection
+    // requirement is used to enable/disable the button. No automatic calibration.
+    manualCalibrationButton.disabled = false;
+    manualCalibrationNote.textContent = "CLICK START CALIBRATION TO BEGIN. CONNECTED SENSORS WILL BE MEASURED.";
+    manualCalibrationNote.style.color = "#6f9ab3";
 
     manualCalibrationButton.addEventListener("click", startManualCalibration);
 })();
