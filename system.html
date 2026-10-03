@@ -2569,8 +2569,8 @@
             <p class="monitor-status" id="serial-status">● SENSORS DISCONNECTED</p>
 
             <div class="sensor-buttons">
-                <button id="connect-left" type="button">CONNECT LEFT SENSOR</button>
-                <button id="connect-right" type="button">CONNECT RIGHT SENSOR</button>
+                <button id="connect-left" type="button" onclick="connectSensor('LEFT')">CONNECT LEFT SENSOR</button>
+                <button id="connect-right" type="button" onclick="connectSensor('RIGHT')">CONNECT RIGHT SENSOR</button>
             </div>
 
             <div class="live-data-table">
@@ -3389,6 +3389,8 @@ const sensorDecoders = {
     LEFT: new TextDecoder(),
     RIGHT: new TextDecoder()
 };
+
+window.connectSensor = connectSensor;
 
 async function connectSensor(side) {
     const button = document.getElementById(side === "LEFT" ? "connect-left" : "connect-right");
