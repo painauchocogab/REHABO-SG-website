@@ -1,1011 +1,4817 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REHABO-SG</title>
+    <title>REHABO-SG | System Initialization</title>
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&display=swap");
+        @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700&family=Share+Tech+Mono&display=swap");
 
-        :root {
-            color-scheme: dark;
+        * {
+            box-sizing: border-box;
         }
-
-        html,
-        body {
-            min-height: 100%;
-        }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-            overflow-y: auto;
-            scroll-behavior: smooth;
-            background:
-                radial-gradient(circle at 73% 52%, rgba(0, 119, 255, 0.2), transparent 28%),
-                radial-gradient(circle at 14% 48%, rgba(0, 89, 177, 0.13), transparent 32%),
-                linear-gradient(135deg, #020a17 0%, #061a33 52%, #041127 100%);
-            color: #f2f7fb;
-            font-family: "Orbitron", sans-serif;
-        }
+        
+      body {
+    min-height: 100vh;
+    margin: 0;
+    display: block;
+    padding: 9rem 1rem 4rem;
+    overflow-x: hidden;
+    color: #e8f5ff;
+    font-family: "Share Tech Mono", monospace;
+    background:
+        radial-gradient(ellipse at 50% 55%, rgba(0, 105, 181, 0.24), transparent 55%),
+        linear-gradient(145deg, #020a17 0%, #062442 55%, #031126 100%);
+}
 
         .brand-logo {
             position: absolute;
-            top: clamp(0.5rem, 1.5vw, 1rem);
-            left: clamp(0.5rem, 1.5vw, 1.25rem);
-            z-index: 1;
+            top: 1rem;
+            left: 1rem;
             width: clamp(6rem, 12vw, 10rem);
-            max-width: calc(100vw - 2rem);
             height: auto;
-            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.28)) drop-shadow(0 0 10px rgba(137, 210, 238, 0.18));
-            transform-origin: top left;
-            transition: filter 220ms ease, transform 220ms ease;
+            filter: drop-shadow(0 0 12px rgba(100, 196, 242, 0.25));
         }
 
-        .brand-logo:hover {
-            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.28)) drop-shadow(0 0 18px rgba(137, 210, 238, 0.5));
-            transform: scale(1.04);
+        .initialization-panel {
+            position: relative;
+            margin: 0 auto 4rem;
+            width: min(100%, 500px);
+            padding: clamp(1.5rem, 5vw, 2.5rem);
+            border: 1px solid rgba(141, 204, 237, 0.65);
+            background: rgba(2, 13, 30, 0.82);
+            box-shadow: 0 0 36px rgba(0, 126, 212, 0.14), inset 0 0 28px rgba(0, 103, 171, 0.08);
+        }
+
+        .initialization-panel::before,
+        .initialization-panel::after {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-color: #7bd6ff;
+            content: "";
+        }
+
+        .initialization-panel::before {
+            top: -1px;
+            left: -1px;
+            border-top: 2px solid;
+            border-left: 2px solid;
+        }
+
+        .initialization-panel::after {
+            right: -1px;
+            bottom: -1px;
+            border-right: 2px solid;
+            border-bottom: 2px solid;
+        }
+
+        .panel-heading {
+            margin: 0;
+            color: #8fdcff;
+            font-family: "Orbitron", sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-align: center;
         }
 
         h1 {
-            margin: 0;
-            color: transparent;
-            background: linear-gradient(180deg, #ffffff 0%, #edf6fb 42%, #91b4c9 76%, #eaf7ff 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            font-size: clamp(2.8rem, 6.5vw, 7.6rem);
-            font-weight: 900;
-            letter-spacing: 0.04em;
-            line-height: 0.94;
-            white-space: nowrap;
-            animation: title-glow 3.5s ease-in-out infinite;
-        }
-
-        @keyframes title-glow {
-            0%,
-            100% {
-                filter: drop-shadow(0 0 6px rgba(137, 210, 238, 0.16));
-            }
-
-            50% {
-                filter: drop-shadow(0 0 18px rgba(137, 210, 238, 0.42));
-            }
-        }
-
-        main {
-            position: relative;
-            order: 1;
-            z-index: 2;
-            width: min(100% - 4rem, 72rem);
-            min-height: 100vh;
-            margin: 0 auto;
-        }
-
-        .top-nav {
-            position: absolute;
-            top: 1.15rem;
-            left: 17rem;
-            display: flex;
-            gap: clamp(1.3rem, 3.2vw, 3.3rem);
-            align-items: center;
-            color: #7fabc9;
-            font-size: 0.58rem;
-            font-weight: 700;
-            letter-spacing: 0.06em;
-        }
-
-        .top-nav a {
-            position: relative;
-            color: inherit;
-            text-decoration: none;
-            transition: color 180ms ease;
-        }
-
-        .top-nav a:hover,
-        .top-nav a:focus-visible,
-        .top-nav a[aria-current="page"] {
-            color: #eefaff;
-        }
-
-        .top-nav a[aria-current="page"]::after {
-            position: absolute;
-            right: 0;
-            bottom: -0.55rem;
-            left: 0;
-            height: 2px;
-            background: #39a9ff;
-            box-shadow: 0 0 10px #248eff;
-            content: "";
-        }
-
-        .system-status {
-            position: absolute;
-            top: 0.75rem;
-            right: 0;
-            padding: 0.55rem 0.85rem;
-            border: 1px solid rgba(46, 143, 224, 0.6);
-            background: rgba(2, 18, 39, 0.72);
-            color: #83b9d9;
-            font-size: 0.58rem;
-            font-weight: 700;
-            letter-spacing: 0.06em;
-        }
-
-        .status-dot {
-            display: inline-block;
-            width: 0.55rem;
-            height: 0.55rem;
-            margin-right: 0.4rem;
-            border-radius: 50%;
-            background: #00f0b4;
-            box-shadow: 0 0 10px #00f0b4;
-        }
-
-        .system-status small {
-            display: block;
-            margin-top: 0.18rem;
-            padding-left: 1rem;
-            color: #426e91;
-            font-size: 0.52rem;
-            letter-spacing: 0.08em;
-        }
-
-        .hero-copy {
-            position: absolute;
-            top: 27%;
-            left: -2rem;
-            width: min(70%, 58rem);
-        }
-
-        .eyebrow {
-            margin: 0 0 1.2rem;
-            color: #65c8ff;
-            font-size: clamp(0.58rem, 1vw, 0.8rem);
-            font-weight: 700;
-            letter-spacing: 0.34em;
-        }
-
-        .hero-subtitle {
-            max-width: 35rem;
-            margin: 1.25rem 0 0;
-            color: #eef7fc;
-            font-size: clamp(0.82rem, 1.3vw, 1.1rem);
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            line-height: 1.55;
-        }
-
-        .hero-tagline {
-            margin: 1.1rem 0 0;
-            color: #58bfff;
-            font-size: clamp(0.75rem, 1.25vw, 1rem);
-            letter-spacing: 0.13em;
-        }
-
-        .feature-list {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin: 2.25rem 0 1.8rem;
-        }
-
-        .features-portal {
-            position: relative;
-            order: 4;
-            min-height: 100vh;
-            padding: 8rem max(2rem, 8vw);
-            box-sizing: border-box;
-            background:
-                radial-gradient(circle at 70% 30%, rgba(0, 129, 255, 0.16), transparent 30%),
-                linear-gradient(180deg, #062442 0%, #031126 100%);
-            scroll-margin-top: 1rem;
-        }
-
-        .features-content {
-            width: min(100%, 68rem);
-            margin: 0 auto;
-        }
-
-        .features-kicker {
-            margin: 0 0 1.25rem;
-            color: #5bc5ff;
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.32em;
-        }
-
-        .features-portal h2 {
-            margin: 0;
-            color: #f4faff;
-            font-size: clamp(2rem, 5vw, 4.5rem);
-            font-weight: 900;
-            letter-spacing: 0.05em;
-            line-height: 1;
-        }
-
-        .feature-details {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1rem;
-            margin-top: 3.5rem;
-        }
-
-        .feature-detail {
-            position: relative;
-            min-height: 10rem;
-            padding: 1.5rem 1.5rem 1.5rem 5rem;
-            border: 1px solid rgba(59, 165, 237, 0.52);
-            background: rgba(2, 16, 37, 0.62);
-            box-shadow: inset 0 0 20px rgba(26, 121, 202, 0.08);
-            box-sizing: border-box;
-        }
-
-        .feature-number {
-            position: absolute;
-            top: 1.45rem;
-            left: 1.35rem;
-            color: #45baff;
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-        }
-
-        .feature-detail h3 {
-            margin: 0 0 0.9rem;
-            color: #edf8fd;
-            font-size: 0.92rem;
-            letter-spacing: 0.1em;
-            line-height: 1.35;
-        }
-
-        .feature-detail p {
-            margin: 0;
-            color: #b5d6e8;
-            font-family: "Segoe UI", sans-serif;
-            font-size: 1rem;
-            line-height: 1.65;
-        }
-
-        .research-portal {
-            position: relative;
-            order: 5;
-            min-height: 100vh;
-            padding: 8rem max(2rem, 8vw);
-            box-sizing: border-box;
-            background:
-                radial-gradient(circle at 25% 35%, rgba(0, 129, 255, 0.14), transparent 30%),
-                linear-gradient(180deg, #031126 0%, #020a17 100%);
-            scroll-margin-top: 1rem;
-        }
-
-        .research-content {
-            width: min(100%, 68rem);
-            margin: 0 auto;
-        }
-
-        .research-kicker {
-            margin: 0 0 1.25rem;
-            color: #5bc5ff;
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.32em;
-        }
-
-        .research-portal h2 {
-            margin: 0;
-            color: #f4faff;
-            font-size: clamp(2rem, 5vw, 4.5rem);
-            font-weight: 900;
-            letter-spacing: 0.05em;
-            line-height: 1;
-        }
-
-        .research-block {
-            max-width: 58rem;
-            margin-top: 3.5rem;
-            padding-left: 1.5rem;
-            border-left: 2px solid #2eabff;
-        }
-
-        .research-block h3 {
-            margin: 0 0 1rem;
-            color: #62c8ff;
-            font-size: clamp(1rem, 1.8vw, 1.35rem);
-            letter-spacing: 0.16em;
-        }
-
-        .research-block p {
-            margin: 0;
-            color: #dceef7;
-            font-family: "Segoe UI", sans-serif;
-            font-size: clamp(1rem, 1.5vw, 1.2rem);
-            line-height: 1.8;
-        }
-
-        .research-block + .research-block {
-            margin-top: 2.8rem;
-        }
-
-        .research-flow {
-            display: grid;
-            grid-template-columns: repeat(5, minmax(0, 1fr));
-            gap: 0.7rem;
-            margin-top: 1.5rem;
-        }
-
-        .flow-step {
-            min-height: 8rem;
-            padding: 1rem;
-            border: 1px solid rgba(59, 165, 237, 0.52);
-            background: rgba(2, 16, 37, 0.62);
-            box-shadow: inset 0 0 20px rgba(26, 121, 202, 0.08);
-        }
-
-        .flow-step h4 {
-            margin: 0 0 0.8rem;
-            color: #8fddff;
-            font-size: 0.65rem;
-            letter-spacing: 0.1em;
-        }
-
-        .flow-step p {
-            color: #eff8fd;
+            margin: 2rem 0 1rem;
             font-family: "Orbitron", sans-serif;
-            font-size: 0.75rem;
-            font-weight: 700;
-            line-height: 1.6;
+            font-size: clamp(1.1rem, 4vw, 1.45rem);
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-align: center;
         }
 
-        .flow-step:not(:last-child)::after {
-            display: block;
-            margin-top: 0.75rem;
-            color: #45baff;
-            content: ">";
-            font-size: 1.1rem;
+        .initialization-status {
+            min-height: 1.4em;
+            margin: 0 0 1.7rem;
+            color: #76cfff;
+            font-size: 0.95rem;
+            letter-spacing: 0.12em;
+            text-align: center;
+        }
+
+        .pulse {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            margin-right: 0.5rem;
+            border: 1px solid #90e0ff;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #29baff;
+            animation: pulse 1.2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            50% {
+                opacity: 0.35;
+                box-shadow: 0 0 3px #29baff;
+            }
+        }
+
+        .system-list {
+            display: grid;
+            gap: 0.7rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .system-list li {
+            display: grid;
+            grid-template-columns: 1.2rem 1fr auto;
+            gap: 0.35rem;
+            align-items: center;
+            color: #d7eafa;
+            font-size: clamp(0.75rem, 3vw, 0.92rem);
+            letter-spacing: 0.035em;
+        }
+
+        .indicator {
+            color: #ffc96b;
+            text-align: center;
+        }
+
+        .system-list li.ready .indicator,
+        .system-list li.ready .device-state {
+            color: #63efc1;
+        }
+
+        .device-state {
+            color: #85abc4;
             text-align: right;
         }
 
-        .feature {
-            min-width: 0;
-            padding-top: 0.75rem;
-            border-top: 1px solid rgba(52, 163, 244, 0.72);
-            color: #d8ecf7;
-            font-size: clamp(0.54rem, 0.8vw, 0.68rem);
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            line-height: 1.55;
-            text-align: center;
-        }
-
-        .feature::before {
-            display: block;
-            width: 1.8rem;
-            height: 1.8rem;
-            margin: 0 auto 0.5rem;
-            border: 1px solid #188eff;
-            border-radius: 0.35rem;
-            box-shadow: 0 0 12px rgba(24, 142, 255, 0.45);
-            color: #52c5ff;
-            content: "+";
-            font-size: 1.2rem;
-            line-height: 1.65rem;
-        }
-
-        .feature:nth-child(2)::before {
-            content: "|";
-        }
-
-        .feature:nth-child(3)::before {
-            content: "*";
-        }
-
-        .enter-button {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-            margin-top: 0;
-            padding: 1rem 3.6rem 1rem 2.8rem;
-            border: 1px solid rgba(222, 235, 243, 0.8);
-            border-radius: 0;
-            background: linear-gradient(135deg, rgba(225, 237, 243, 0.16), rgba(7, 31, 56, 0.72));
-            color: #f4f8fb;
-            font-family: "Orbitron", sans-serif;
-            font-size: 0.85rem;
-            font-weight: 700;
-            letter-spacing: 0.18em;
-            text-decoration: none;
-            text-transform: uppercase;
-            box-shadow: inset 0 0 0 1px rgba(112, 178, 207, 0.16), 0 0 0 rgba(120, 205, 235, 0);
-            transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
-        }
-
-        .scroll-prompt {
-            position: absolute;
-            bottom: 2.15rem;
-            left: 50%;
-            color: #85a8bf;
-            font-size: 0.52rem;
-            letter-spacing: 0.1em;
-            text-align: center;
-            transform: translateX(-50%);
-        }
-
-        .scroll-prompt::after {
-            display: block;
-            margin-top: 0.65rem;
-            color: #42bfff;
-            content: "v";
-            font-size: 1.2rem;
-        }
-
-        .footer-left,
-        .footer-right {
-            position: absolute;
-            bottom: 0.8rem;
-            color: #436b88;
-            font-size: 0.42rem;
-            letter-spacing: 0.08em;
-        }
-
-        .footer-left {
-            left: 0;
-        }
-
-        .footer-right {
-            right: 0;
-        }
-
-        .system-portal {
-            position: relative;
-            order: 3;
-            min-height: 100vh;
-            padding: 8rem max(2rem, 8vw);
-            box-sizing: border-box;
-            background:
-                radial-gradient(circle at 18% 35%, rgba(0, 129, 255, 0.16), transparent 30%),
-                linear-gradient(180deg, #031126 0%, #062442 100%);
-            scroll-margin-top: 1rem;
-        }
-
-        .system-content {
-            width: min(100%, 68rem);
-            margin: 0 auto;
-        }
-
-        .system-kicker {
-            margin: 0 0 1.25rem;
-            color: #5bc5ff;
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.32em;
-        }
-
-        .system-portal h2 {
-            margin: 0;
-            color: #f4faff;
-            font-size: clamp(2rem, 5vw, 4.5rem);
-            font-weight: 900;
-            letter-spacing: 0.05em;
-            line-height: 1;
-        }
-
-        .module-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1rem;
-            margin-top: 3.5rem;
-        }
-
-        .module {
-            padding: 1.5rem;
-            border: 1px solid rgba(59, 165, 237, 0.52);
-            background: rgba(2, 16, 37, 0.62);
-            box-shadow: inset 0 0 20px rgba(26, 121, 202, 0.08);
-        }
-
-        .module:last-child {
-            grid-column: 1 / -1;
-        }
-
-        .module h3 {
-            margin: 0 0 0.7rem;
-            color: #8fddff;
-            font-size: 1rem;
-            letter-spacing: 0.16em;
-        }
-
-        .module strong {
-            display: block;
-            margin-bottom: 1rem;
-            color: #eef8fd;
-            font-size: 0.82rem;
-            letter-spacing: 0.08em;
-        }
-
-        .module p {
-            margin: 0 0 0.55rem;
-            color: #63c8ff;
-            font-size: 0.68rem;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-        }
-
-        .module ul {
-            display: grid;
-            gap: 0.45rem;
-            margin: 0;
-            padding-left: 1.15rem;
-            color: #d9edf7;
-            font-family: "Segoe UI", sans-serif;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        .portal-back {
-            display: inline-block;
-            margin-top: 3rem;
-            color: #8bd8ff;
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 0.16em;
-            text-decoration: none;
-            text-transform: uppercase;
-        }
-
-        .portal-back:hover,
-        .portal-back:focus-visible {
-            color: #ffffff;
-        }
-
-        .about-portal {
-            position: relative;
-            order: 2;
+        .progress-area {
             display: flex;
-            min-height: 100vh;
             align-items: center;
-            padding: 8rem max(2rem, 8vw);
-            box-sizing: border-box;
-            background:
-                radial-gradient(circle at 80% 45%, rgba(0, 129, 255, 0.2), transparent 34%),
-                linear-gradient(180deg, #041127 0%, #031126 100%);
-            scroll-margin-top: 1rem;
+            gap: 1rem;
+            margin-top: 2rem;
         }
 
-        .about-content {
-            width: min(100%, 58rem);
-            margin: 0 auto;
+        .progress-track {
+            flex: 1;
+            height: 17px;
+            overflow: hidden;
+            border: 1px solid rgba(132, 204, 237, 0.55);
+            background: #07172b;
         }
 
-        .about-kicker {
-            margin: 0 0 1.25rem;
-            color: #5bc5ff;
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.32em;
-        }
-
-        .about-portal h2 {
-            margin: 0;
-            color: #f4faff;
-            font-size: clamp(2rem, 5vw, 4.5rem);
-            font-weight: 900;
-            letter-spacing: 0.05em;
-            line-height: 1;
-        }
-
-        .about-lead {
-            max-width: 52rem;
-            margin: 2rem 0 5rem;
-            color: #c9e4f3;
-            font-family: "Orbitron", sans-serif;
-            font-size: clamp(0.9rem, 1.5vw, 1.25rem);
-            font-weight: 600;
-            letter-spacing: 0.04em;
-            line-height: 1.8;
-        }
-
-        .problem-block {
-            max-width: 48rem;
-            padding-left: 1.5rem;
-            border-left: 2px solid #2eabff;
-        }
-
-        .problem-block h3 {
-            margin: 0 0 1rem;
-            color: #62c8ff;
-            font-size: clamp(1.15rem, 2vw, 1.7rem);
-            letter-spacing: 0.18em;
-        }
-
-        .problem-block p {
-            margin: 0;
-            color: #e4f1f8;
-            font-family: "Segoe UI", sans-serif;
-            font-size: clamp(1rem, 1.5vw, 1.2rem);
-            letter-spacing: 0.02em;
-            line-height: 1.8;
-        }
-
-        .approach-image {
-            display: block;
-            width: min(100%, 54rem);
-            height: auto;
-            margin-top: 3rem;
-            border: 1px solid rgba(69, 174, 239, 0.62);
-            box-shadow: 0 0 28px rgba(23, 134, 224, 0.18);
-        }
-
-        .about-back {
-            display: inline-block;
-            margin-top: 3rem;
-            color: #8bd8ff;
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 0.16em;
-            text-decoration: none;
-            text-transform: uppercase;
-        }
-
-        .about-back:hover,
-        .about-back:focus-visible {
-            color: #ffffff;
-        }
-
-        @media (max-width: 760px) {
-            body {
-                overflow-y: auto;
-            }
-
-            main {
-                width: min(100% - 2rem, 40rem);
-            }
-
-            .top-nav {
-                top: 4.2rem;
-                left: 0;
-                right: 0;
-                justify-content: center;
-                gap: 0.9rem;
-                font-size: 0.47rem;
-            }
-
-            .system-status {
-                top: 0.65rem;
-                right: 0;
-            }
-
-            .hero-copy {
-                position: relative;
-                top: auto;
-                left: auto;
-                width: 100%;
-                padding-top: 15rem;
-            }
-
-            h1 {
-                font-size: clamp(2.8rem, 13vw, 5rem);
-            }
-
-            .feature-list {
-                gap: 0.5rem;
-            }
-
-            .module-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .feature-details {
-                grid-template-columns: 1fr;
-            }
-
-            .research-flow {
-                grid-template-columns: 1fr;
-            }
-
-            .flow-step:not(:last-child)::after {
-                content: "v";
-                text-align: center;
-            }
-
-            .module:last-child {
-                grid-column: auto;
-            }
-
-            .footer-left,
-            .footer-right {
-                display: none;
-            }
-
-            .scroll-prompt {
-                position: relative;
-                bottom: auto;
-                left: auto;
-                margin-top: 4rem;
-                transform: none;
-            }
-        }
-
-        .enter-button::before {
-            position: absolute;
-            top: 0;
-            left: -30%;
-            width: 18%;
+        .progress-fill {
+            width: 0;
             height: 100%;
-            background: rgba(255, 255, 255, 0.42);
-            content: "";
-            transform: skewX(-24deg);
-            transition: left 450ms ease;
+            background: repeating-linear-gradient(
+                90deg,
+                #e9f8ff 0 9px,
+                #acd9ef 9px 10px
+            );
+            box-shadow: 0 0 12px rgba(101, 205, 255, 0.6);
+            transition: width 80ms linear;
         }
 
-        .enter-button::after {
-            position: absolute;
-            right: 1.2rem;
-            content: ">";
-            color: #9edaf1;
-            font-size: 1.1rem;
-            transition: transform 180ms ease;
+        .progress-value {
+            min-width: 3rem;
+            color: #e8f5ff;
+            font-size: 0.95rem;
         }
 
-        .enter-button:hover,
-        .enter-button:focus-visible {
-            background: linear-gradient(135deg, rgba(225, 237, 243, 0.28), rgba(15, 74, 103, 0.85));
-            box-shadow: inset 0 0 0 1px rgba(191, 230, 244, 0.3), 0 0 24px rgba(120, 205, 235, 0.34);
-            transform: translateY(-2px);
+        .panel-footer {
+            margin: 1.5rem 0 0;
+            color: #6489a5;
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+            text-align: center;
         }
 
-        .enter-button:hover::before,
-        .enter-button:focus-visible::before {
-            left: 115%;
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
         }
+        html {
+    scroll-behavior: smooth;
+}
 
-        .enter-button:hover::after,
-        .enter-button:focus-visible::after {
-            transform: translateX(4px);
-        }
+.control-dashboard {
+    width: min(100%, 900px);
+    margin: 0 auto;
+    padding: clamp(1.5rem, 5vw, 3rem);
+    border: 1px solid rgba(141, 204, 237, 0.55);
+    background: rgba(2, 13, 30, 0.78);
+    box-shadow: 0 0 36px rgba(0, 126, 212, 0.14);
+}
 
-        .enter-button:focus-visible {
-            outline: 2px solid #b9e8f7;
-            outline-offset: 4px;
+.dashboard-header {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(141, 204, 237, 0.28);
+}
+
+.dashboard-brand {
+    margin: 0 0 0.5rem;
+    color: #8fdcff;
+    font-family: "Orbitron", sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+}
+
+.dashboard-title {
+    margin: 0;
+    font-size: clamp(1rem, 4vw, 1.35rem);
+    font-weight: 400;
+}
+
+.dashboard-status {
+    margin: 1rem 0 0;
+    color: #63efc1;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+}
+
+.dashboard-status span {
+    margin: 0 0.4rem;
+}
+
+.mode-heading {
+    margin: 2rem 0 1.25rem;
+    color: #bfeaff;
+    font-size: 0.95rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-align: center;
+}
+
+.mode-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.mode-card {
+    min-height: 170px;
+    padding: 1.2rem 0.75rem;
+    border: 1px solid rgba(141, 204, 237, 0.6);
+    color: #e8f5ff;
+    background: rgba(5, 28, 52, 0.7);
+    font: inherit;
+    cursor: pointer;
+    transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.mode-card:hover {
+    transform: translateY(-4px);
+    border-color: #7bd6ff;
+    background: rgba(17, 75, 111, 0.55);
+}
+
+.mode-card[aria-pressed="true"] {
+    border-color: #63efc1;
+    background: rgba(20, 103, 99, 0.25);
+    box-shadow: 0 0 18px rgba(99, 239, 193, 0.12);
+}
+
+.mode-icon {
+    display: block;
+    margin-bottom: 1.2rem;
+    color: #8fdcff;
+    font-size: 1.6rem;
+}
+
+.mode-name {
+    font-size: 0.8rem;
+    line-height: 1.7;
+}
+
+.mode-message {
+    min-height: 1.2em;
+    margin: 1.5rem 0 0;
+    color: #8fdcff;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.scroll-to-dashboard {
+    display: block;
+    width: fit-content;
+    margin: 2rem auto 0;
+    color: #8fdcff;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+}
+
+.scroll-to-dashboard:hover {
+    color: #fff;
+}
+
+.control-dashboard.reveal-ready {
+    opacity: 0;
+    transform: translateY(35px);
+    transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.control-dashboard.reveal-ready.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 600px) {
+    .mode-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mode-card {
+        min-height: 120px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+    }
+
+    .control-dashboard.reveal-ready {
+        opacity: 1;
+        transform: none;
+    }
+}
+.training-workspace {
+    width: min(100%, 900px);
+    margin: 4rem auto;
+    padding: clamp(1.25rem, 4vw, 2rem);
+    border: 1px solid rgba(141, 204, 237, 0.55);
+    background: rgba(2, 13, 30, 0.88);
+    scroll-margin-top: 2rem;
+}
+
+.training-workspace[hidden] {
+    display: none;
+}
+
+.training-heading {
+    margin: 0 0 1.5rem;
+    color: #8fdcff;
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(1rem, 4vw, 1.35rem);
+    letter-spacing: 0.08em;
+}
+
+.training-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(220px, 0.8fr);
+    gap: 1rem;
+}
+
+.exercise-panel,
+.monitor-panel {
+    padding: 1.25rem;
+    border: 1px solid rgba(141, 204, 237, 0.35);
+    background: rgba(5, 28, 52, 0.65);
+}
+
+.exercise-title,
+.monitor-title {
+    margin: 0 0 1rem;
+    color: #bfeaff;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+}
+
+.exercise-stage {
+    position: relative;
+    min-height: 280px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border: 1px dashed rgba(141, 204, 237, 0.45);
+    background:
+        radial-gradient(circle, rgba(0, 126, 212, 0.12), transparent 65%),
+        #04152a;
+}
+
+.stage-instruction {
+    max-width: 80%;
+    color: #c9e6f5;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.target-button {
+    position: absolute;
+    top: 28%;
+    left: 65%;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 2px solid #63efc1;
+    border-radius: 50%;
+    background: #63efc1;
+    box-shadow: 0 0 18px rgba(99, 239, 193, 0.8);
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+}
+        #game-cursor {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    border: 3px solid #42caff;
+    border-radius: 50%;
+    background: rgba(66, 202, 255, 0.25);
+    box-shadow:
+        0 0 10px #42caff,
+        0 0 22px rgba(66, 202, 255, 0.75);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 5;
+    transition: none;
+}
+
+#game-cursor::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ffffff;
+    transform: translate(-50%, -50%);
+}
+
+.target-button:disabled {
+    display: none;
+}
+
+.exercise-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.start-exercise {
+    padding: 0.8rem 1rem;
+    border: 1px solid #8fdcff;
+    color: #e8f5ff;
+    background: #062442;
+    font: inherit;
+    cursor: pointer;
+}
+
+.start-exercise:hover,
+.start-exercise:focus-visible {
+    background: #10466a;
+}
+
+.repetition-count {
+    color: #8fdcff;
+    font-size: 0.85rem;
+}
+
+.monitor-status {
+    margin: 0 0 1.5rem;
+    color: #63efc1;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+}
+
+.metric {
+    margin-top: 1.25rem;
+}
+
+.metric-label {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: #c9e6f5;
+    font-size: 0.78rem;
+}
+
+.metric-track {
+    height: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(141, 204, 237, 0.4);
+    background: #04152a;
+}
+
+.metric-fill {
+    width: 0;
+    height: 100%;
+    background: #8fdcff;
+    transition: width 250ms ease;
+}
+
+.metric-note {
+    margin: 1.5rem 0 0;
+    color: #6489a5;
+    font-size: 0.68rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 650px) {
+    .training-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .exercise-stage {
+        min-height: 230px;
+    }
+}
+.training-workspace {
+    width: min(1100px, calc(100% - 2rem));
+    margin: 4rem auto;
+    padding: clamp(1rem, 3vw, 1.75rem);
+    border: 1px solid rgba(63, 190, 255, 0.55);
+    background: linear-gradient(145deg, rgba(3, 22, 44, 0.98), rgba(2, 12, 29, 0.98));
+    box-shadow: 0 0 35px rgba(0, 153, 255, 0.12);
+    scroll-margin-top: 2rem;
+}
+
+.training-workspace[hidden] {
+    display: none;
+}
+
+.training-topbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.training-heading {
+    margin: 0;
+    color: #8fdcff;
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(1rem, 3vw, 1.35rem);
+    letter-spacing: 0.08em;
+}
+
+.session-badge {
+    padding: 0.55rem 0.8rem;
+    border: 1px solid rgba(99, 239, 193, 0.4);
+    color: #63efc1;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+}
+
+.training-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(230px, 0.8fr);
+    gap: 1rem;
+}
+
+.exercise-panel,
+.monitor-panel {
+    min-width: 0;
+    padding: 1rem;
+    border: 1px solid rgba(80, 164, 213, 0.38);
+    background: rgba(3, 17, 37, 0.82);
+}
+
+.exercise-title,
+.monitor-title {
+    margin: 0;
+    color: #c7edff;
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+}
+
+.exercise-stage {
+    position: relative;
+    min-height: 340px;
+    margin-top: 0.9rem;
+    overflow: hidden;
+    border: 1px solid rgba(43, 175, 255, 0.55);
+    background:
+        radial-gradient(ellipse at 65% 40%, rgba(0, 171, 255, 0.18), transparent 35%),
+        linear-gradient(rgba(30, 136, 190, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 136, 190, 0.08) 1px, transparent 1px),
+        #04152b;
+    background-size: auto, 30px 30px, 30px 30px, auto;
+}
+
+.exercise-stage::after {
+    position: absolute;
+    inset: 12px;
+    border: 1px solid rgba(82, 183, 235, 0.12);
+    content: "";
+    pointer-events: none;
+}
+
+.stage-instruction {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 1;
+    margin: 0;
+    padding: 0.8rem;
+    border: 1px solid rgba(65, 178, 244, 0.42);
+    color: #d8f3ff;
+    background: rgba(2, 15, 33, 0.9);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.target-button {
+    z-index: 1;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #63efc1;
+    background: #39dfa9;
+    box-shadow: 0 0 10px #63efc1, 0 0 28px rgba(63, 255, 190, 0.65);
+}
+
+.monitor-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    /* Keep the monitoring panel above other page elements */
+    position: relative;
+    z-index: 1000;
+    pointer-events: auto;
+}
+        .monitor-panel,
+.monitor-panel * {
+    pointer-events: auto;
+}
+
+.monitor-panel button {
+    position: relative;
+    z-index: 1001;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+.monitor-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.monitor-status {
+    margin: 0;
+    color: #63efc1;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+}
+
+.metric {
+    margin: 0;
+    padding: 0.85rem;
+    border: 1px solid rgba(80, 164, 213, 0.27);
+    background: rgba(6, 31, 57, 0.72);
+}
+
+.metric-label {
+    margin-bottom: 0.65rem;
+    color: #bce9ff;
+    font-size: 0.72rem;
+}
+
+.metric-label span:last-child {
+    color: #8fdcff;
+}
+
+.metric-track {
+    height: 9px;
+    border-color: rgba(80, 164, 213, 0.35);
+}
+
+.metric-fill {
+    background: linear-gradient(90deg, #148cff, #55e3ff);
+    box-shadow: 0 0 10px rgba(47, 189, 255, 0.45);
+}
+
+.repetition-count {
+    padding: 0.8rem;
+    border: 1px solid rgba(80, 164, 213, 0.27);
+    color: #8fdcff;
+    font-size: 0.78rem;
+}
+
+.exercise-controls {
+    margin-top: 1rem;
+}
+
+.start-exercise {
+    border-color: #27baff;
+    background: linear-gradient(90deg, #075ba5, #0879bd);
+    letter-spacing: 0.08em;
+}
+
+.start-exercise:hover,
+.start-exercise:focus-visible {
+    background: #1195d9;
+}
+
+.metric-note {
+    margin-top: auto;
+}
+
+@media (max-width: 700px) {
+    .training-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .exercise-stage {
+        min-height: 270px;
+    }
+}
+.session-setup {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    color: #bce9ff;
+    font-size: 0.8rem;
+}
+
+.session-setup select {
+    padding: 0.65rem;
+    border: 1px solid rgba(80, 164, 213, 0.55);
+    color: #e8f5ff;
+    background: #04152b;
+    font: inherit;
+}
+
+.session-timer {
+    margin-left: auto;
+    color: #63efc1;
+    font-size: 1.1rem;
+}
+
+.start-exercise:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.session-feedback {
+    width: min(90vw, 440px);
+    padding: 1.5rem;
+    border: 1px solid #55caff;
+    color: #e8f5ff;
+    background: #04152b;
+    box-shadow: 0 0 35px rgba(0, 153, 255, 0.3);
+    font-family: "Share Tech Mono", monospace;
+}
+
+.session-feedback::backdrop {
+    background: rgba(0, 5, 15, 0.78);
+    backdrop-filter: blur(4px);
+}
+
+.session-feedback h2 {
+    color: #8fdcff;
+    font-family: "Orbitron", sans-serif;
+    font-size: 1rem;
+}
+
+.session-feedback p {
+    line-height: 1.6;
+}
+
+.feedback-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+.exercise-dock {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1.25rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid rgba(80, 164, 213, 0.4);
+    background: rgba(3, 17, 37, 0.88);
+}
+
+.dock-heading {
+    margin: 0 0 0.75rem;
+    color: #8fdcff;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+}
+
+.dock-buttons,
+.exercise-type-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.dock-button,
+.exercise-type {
+    min-height: 44px;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid rgba(80, 164, 213, 0.55);
+    color: #e8f5ff;
+    background: #061b33;
+    font: inherit;
+    cursor: pointer;
+}
+
+.dock-button:hover,
+.exercise-type:hover,
+.exercise-type[aria-pressed="true"] {
+    border-color: #42caff;
+    background: #0b3760;
+    box-shadow: 0 0 12px rgba(47, 189, 255, 0.2);
+}
+
+.dock-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+@media (max-width: 650px) {
+    .exercise-dock {
+        grid-template-columns: 1fr;
+    }
+}
+.initialization-panel {
+    width: min(100%, 760px);
+    border-color: rgba(72, 199, 255, 0.7);
+    background:
+        linear-gradient(rgba(45, 157, 220, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45, 157, 220, 0.035) 1px, transparent 1px),
+        radial-gradient(ellipse at 50% 0%, rgba(0, 153, 255, 0.16), transparent 60%),
+        rgba(2, 13, 30, 0.96);
+    background-size: 28px 28px, 28px 28px, auto, auto;
+    box-shadow: 0 0 45px rgba(0, 153, 255, 0.16),
+                inset 0 0 35px rgba(0, 103, 171, 0.12);
+}
+
+.initialization-panel::before,
+.initialization-panel::after {
+    width: 26px;
+    height: 26px;
+    border-color: #55d9ff;
+    filter: drop-shadow(0 0 5px #168dff);
+}
+
+.initialization-panel h1 {
+    color: #f0faff;
+    text-shadow: 0 0 18px rgba(85, 217, 255, 0.35);
+}
+
+.system-list li {
+    padding: 0.55rem 0.7rem;
+    border-bottom: 1px solid rgba(85, 180, 225, 0.12);
+    background: rgba(5, 30, 54, 0.35);
+}
+
+.progress-track {
+    height: 20px;
+    border-color: rgba(85, 217, 255, 0.7);
+    box-shadow: 0 0 12px rgba(0, 153, 255, 0.18);
+}
+
+.progress-fill {
+    background: repeating-linear-gradient(
+        90deg,
+        #dff8ff 0 9px,
+        #83dfff 9px 11px
+    );
+    box-shadow: 0 0 16px rgba(85, 217, 255, 0.85);
+}
+
+.scroll-to-dashboard {
+    padding: 0.7rem 1rem;
+    border: 1px solid rgba(85, 217, 255, 0.4);
+    background: rgba(5, 42, 70, 0.45);
+    transition: background 180ms ease, box-shadow 180ms ease;
+}
+
+.scroll-to-dashboard:hover {
+    background: rgba(10, 97, 143, 0.45);
+    box-shadow: 0 0 18px rgba(85, 217, 255, 0.25);
+}
+
+@media (max-width: 600px) {
+    .initialization-panel {
+        padding: 1.5rem 1rem;
+    }
+} 
+.control-dashboard {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-color: rgba(66, 202, 255, 0.7);
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(0, 153, 255, 0.18), transparent 60%),
+        linear-gradient(145deg, rgba(4, 28, 52, 0.98), rgba(2, 13, 30, 0.98));
+    box-shadow: 0 0 40px rgba(0, 153, 255, 0.16);
+}
+
+.control-dashboard::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background:
+        linear-gradient(rgba(45, 157, 220, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45, 157, 220, 0.045) 1px, transparent 1px);
+    background-size: 28px 28px;
+    content: "";
+    pointer-events: none;
+}
+
+.dashboard-header,
+.mode-heading,
+.mode-grid,
+.mode-message {
+    position: relative;
+}
+
+.dashboard-brand {
+    text-shadow: 0 0 12px rgba(66, 202, 255, 0.65);
+}
+
+.dashboard-title {
+    font-family: "Orbitron", sans-serif;
+    text-shadow: 0 0 18px rgba(66, 202, 255, 0.2);
+}
+
+.mode-card {
+    position: relative;
+    overflow: hidden;
+    border-color: rgba(66, 202, 255, 0.45);
+    background: linear-gradient(145deg, rgba(8, 40, 70, 0.9), rgba(3, 18, 38, 0.95));
+    box-shadow: inset 0 0 22px rgba(0, 153, 255, 0.06);
+}
+
+.mode-card:hover,
+.mode-card:focus-visible {
+    transform: translateY(-6px);
+    border-color: #42caff;
+    background: linear-gradient(145deg, rgba(7, 79, 119, 0.8), rgba(3, 27, 52, 0.98));
+    box-shadow: 0 0 24px rgba(0, 174, 255, 0.22);
+}
+
+.mode-card[aria-pressed="true"] {
+    border-color: #63efc1;
+    background: linear-gradient(145deg, rgba(8, 87, 91, 0.65), rgba(3, 27, 52, 0.98));
+    box-shadow: 0 0 24px rgba(99, 239, 193, 0.2);
+}
+
+.mode-icon {
+    color: #55d9ff;
+    text-shadow: 0 0 14px rgba(66, 202, 255, 0.7);
+}
+
+.mode-message {
+    padding: 0.8rem;
+    border: 1px solid rgba(66, 202, 255, 0.28);
+    background: rgba(3, 24, 46, 0.65);
+}  
+.target-button {
+    border-color: var(--target-color, #39dfa9);
+    background: var(--target-color, #39dfa9);
+    box-shadow: 0 0 12px var(--target-color, #39dfa9),
+                0 0 26px var(--target-color, #39dfa9);
+}
+.balance-workspace {
+    width: min(1100px, 100%);
+    margin: 3rem auto;
+    padding: clamp(1rem, 3vw, 2rem);
+    border: 1px solid rgba(66, 202, 255, 0.65);
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(0, 153, 255, 0.16), transparent 60%),
+        rgba(2, 13, 30, 0.96);
+    box-shadow: 0 0 35px rgba(0, 153, 255, 0.14);
+    scroll-margin-top: 2rem;
+}
+
+.balance-workspace[hidden] {
+    display: none;
+}
+
+.balance-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(80, 164, 213, 0.35);
+}
+
+.balance-header h2 {
+    margin: 0;
+    color: #8fdcff;
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(1rem, 3vw, 1.4rem);
+}
+
+.balance-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(250px, 0.8fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.balance-stage,
+.balance-metrics {
+    padding: 1.25rem;
+    border: 1px solid rgba(80, 164, 213, 0.35);
+    background: rgba(3, 17, 37, 0.82);
+}
+
+.balance-stage h3,
+.balance-metrics h3 {
+    margin: 0 0 1rem;
+    color: #bce9ff;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+}
+
+.weight-track {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 56px;
+    gap: 0.75rem;
+    min-height: 280px;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid rgba(43, 175, 255, 0.45);
+    background:
+        linear-gradient(rgba(30, 136, 190, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 136, 190, 0.07) 1px, transparent 1px),
+        #04152b;
+    background-size: 28px 28px;
+}
+
+.weight-target {
+    min-height: 110px;
+    border: 1px solid rgba(66, 202, 255, 0.55);
+    color: #bce9ff;
+    background: rgba(4, 35, 63, 0.85);
+    font: inherit;
+    cursor: pointer;
+    transition: 180ms ease;
+}
+
+.weight-target[aria-pressed="true"],
+.weight-target:hover {
+    border-color: #63efc1;
+    color: #63efc1;
+    box-shadow: 0 0 18px rgba(99, 239, 193, 0.22);
+}
+
+.weight-ball {
+    display: block;
+    width: 18px;
+    height: 18px;
+    margin: 0 auto 0.7rem;
+    border-radius: 50%;
+    background: #42caff;
+    box-shadow: 0 0 16px #42caff;
+}
+
+.weight-target[aria-pressed="true"] .weight-ball {
+    background: #63efc1;
+    box-shadow: 0 0 18px #63efc1;
+}
+
+.weight-instruction {
+    min-height: 2.5em;
+    margin: 1rem 0 0;
+    color: #8fdcff;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.balance-setup,
+.balance-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.balance-setup label,
+.balance-metric {
+    color: #bce9ff;
+    font-size: 0.8rem;
+}
+
+.balance-setup select {
+    padding: 0.6rem;
+    border: 1px solid rgba(80, 164, 213, 0.55);
+    color: #e8f5ff;
+    background: #04152b;
+    font: inherit;
+}
+
+.balance-timer {
+    margin-left: auto;
+    color: #63efc1;
+    font-size: 1.1rem;
+}
+
+.balance-metric {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgba(80, 164, 213, 0.2);
+}
+
+.balance-metric strong {
+    color: #63efc1;
+}
+
+.balance-note {
+    color: #789bb3;
+    font-size: 0.7rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+    .balance-layout {
+        grid-template-columns: 1fr;
+    }
+}
+.weight-target {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 1rem;
+    min-height: 180px;
+    border: 0;
+    color: #42caff;
+    background: transparent;
+}
+
+.footprint-image {
+    width: clamp(90px, 14vw, 150px);
+    height: 190px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 12px #168dff);
+}
+
+
+.weight-target:hover,
+.weight-target:focus-visible {
+    color: #8feaff;
+    background: transparent;
+    box-shadow: none;
+}
+
+.weight-target:hover .footprint-image,
+.weight-target:focus-visible .footprint-image {
+    filter: brightness(0) saturate(100%) invert(84%) sepia(47%)
+            saturate(600%) hue-rotate(105deg) drop-shadow(0 0 16px #63efc1);
+}
+.pressure-legend {
+    display: flex;
+    height: 250px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.55rem;
+}
+
+.pressure-legend img {
+    width: 36px;
+    height: 190px;
+    object-fit: fill;
+}
+
+.pressure-high { color: #ff6464; }
+.pressure-low { color: #8feaff; }
+.progress-workspace {
+    width: min(1100px, 100%);
+    margin: 3rem auto;
+    padding: clamp(1rem, 3vw, 2rem);
+    border: 1px solid rgba(66, 202, 255, 0.65);
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(0, 153, 255, 0.15), transparent 60%),
+        rgba(2, 13, 30, 0.96);
+    box-shadow: 0 0 35px rgba(0, 153, 255, 0.14);
+    scroll-margin-top: 2rem;
+}
+
+.progress-workspace[hidden] {
+    display: none;
+}
+
+.progress-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(80, 164, 213, 0.35);
+}
+
+.progress-header h2 {
+    margin: 0;
+    color: #8fdcff;
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(1rem, 3vw, 1.4rem);
+}
+
+.progress-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.progress-card {
+    min-width: 0;
+    padding: 1.25rem;
+    border: 1px solid rgba(80, 164, 213, 0.35);
+    background: rgba(3, 17, 37, 0.82);
+}
+
+.progress-card h3 {
+    margin: 0 0 1rem;
+    color: #bce9ff;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+}
+
+.performance-chart {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.chart-grid {
+    stroke: rgba(80, 164, 213, 0.22);
+    stroke-width: 1;
+}
+
+.chart-axis-label,
+.chart-session-label {
+    fill: #8fb3ca;
+    font: 12px "Share Tech Mono", monospace;
+}
+
+.chart-line {
+    fill: none;
+    stroke: #42caff;
+    stroke-width: 3;
+    filter: drop-shadow(0 0 5px rgba(66, 202, 255, 0.75));
+}
+
+.chart-point {
+    fill: #63efc1;
+    stroke: #04152b;
+    stroke-width: 3;
+}
+
+.progress-stat {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(80, 164, 213, 0.2);
+    color: #bce9ff;
+    font-size: 0.82rem;
+}
+
+.progress-stat strong {
+    color: #63efc1;
+}
+
+.overall-card {
+    grid-column: 1 / -1;
+    text-align: center;
+}
+
+.overall-score {
+    margin: 1rem 0;
+    color: #8fdcff;
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(2rem, 6vw, 3rem);
+    text-shadow: 0 0 18px rgba(66, 202, 255, 0.45);
+}
+
+.progress-milestones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(0.5rem, 3vw, 2rem);
+    margin: 1.5rem 0;
+}
+
+.milestone {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--milestone-color);
+    box-shadow: 0 0 12px var(--milestone-color);
+}
+
+.progress-report {
+    margin-top: 1rem;
+    border-top: 1px solid rgba(80, 164, 213, 0.28);
+    padding-top: 1rem;
+    color: #bce9ff;
+    text-align: left;
+}
+
+.progress-report summary {
+    width: fit-content;
+    margin: 0 auto;
+    color: #8fdcff;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+}
+
+.progress-report p {
+    line-height: 1.6;
+}
+
+@media (max-width: 700px) {
+    .progress-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .overall-card {
+        grid-column: auto;
+    }
+}
+.progress-workspace {
+    position: relative;
+    overflow: hidden;
+    border-color: rgba(66, 202, 255, 0.7);
+    background:
+        linear-gradient(rgba(45, 157, 220, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45, 157, 220, 0.035) 1px, transparent 1px),
+        radial-gradient(ellipse at 50% 0%, rgba(0, 153, 255, 0.18), transparent 60%),
+        #020d1e;
+    background-size: 28px 28px, 28px 28px, auto, auto;
+    box-shadow: 0 0 40px rgba(0, 153, 255, 0.16);
+}
+
+.progress-workspace[hidden] {
+    display: none;
+}
+
+.progress-header h2 {
+    text-shadow: 0 0 16px rgba(66, 202, 255, 0.45);
+}
+
+.progress-card {
+    position: relative;
+    overflow: hidden;
+    border-color: rgba(66, 202, 255, 0.38);
+    background:
+        radial-gradient(ellipse at top left, rgba(0, 153, 255, 0.09), transparent 65%),
+        rgba(3, 17, 37, 0.94);
+    box-shadow: inset 0 0 24px rgba(0, 153, 255, 0.05);
+}
+
+.progress-card h3 {
+    color: #8fdcff;
+    text-shadow: 0 0 10px rgba(66, 202, 255, 0.25);
+}
+
+.performance-chart {
+    padding: 0.5rem;
+    border: 1px solid rgba(66, 202, 255, 0.14);
+    background: rgba(2, 13, 30, 0.55);
+}
+
+.chart-line {
+    stroke-width: 4;
+    filter: drop-shadow(0 0 7px rgba(66, 202, 255, 0.85));
+}
+
+.chart-point {
+    filter: drop-shadow(0 0 6px rgba(99, 239, 193, 0.8));
+}
+
+.progress-stat {
+    padding: 0.9rem 0;
+}
+
+.progress-stat strong {
+    text-shadow: 0 0 9px rgba(99, 239, 193, 0.45);
+}
+
+.overall-score {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    width: 150px;
+    aspect-ratio: 1;
+    place-items: center;
+    margin: 1.5rem auto;
+    border-radius: 50%;
+    background: conic-gradient(#42caff 0 82%, rgba(66, 202, 255, 0.14) 82% 100%);
+    font-size: 2.4rem;
+    font-weight: 700;
+    text-shadow: 0 0 14px rgba(66, 202, 255, 0.6);
+    filter: drop-shadow(0 0 14px rgba(0, 153, 255, 0.25));
+}
+
+.overall-score::before {
+    position: absolute;
+    z-index: -1;
+    inset: 9px;
+    border: 1px solid rgba(66, 202, 255, 0.25);
+    border-radius: inherit;
+    background: #04152b;
+    content: "";
+}
+
+.progress-milestones {
+    padding: 1rem;
+    border: 1px solid rgba(66, 202, 255, 0.16);
+    background: rgba(2, 13, 30, 0.45);
+}
+
+.progress-report summary {
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(66, 202, 255, 0.35);
+    background: rgba(5, 42, 70, 0.4);
+    transition: 180ms ease;
+}
+
+.progress-report summary:hover,
+.progress-report summary:focus-visible {
+    border-color: #42caff;
+    box-shadow: 0 0 16px rgba(66, 202, 255, 0.22);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .chart-point {
+        animation: progress-glow 2.4s ease-in-out infinite alternate;
+    }
+
+    @keyframes progress-glow {
+        to {
+            filter: drop-shadow(0 0 11px rgba(99, 239, 193, 0.95));
         }
-    </style>
+    }
+}
+.history-workspace {
+    width: min(1100px, 100%);
+    margin: 3rem auto;
+    padding: clamp(1rem, 3vw, 2rem);
+    border: 1px solid rgba(66, 202, 255, 0.65);
+    background:
+        linear-gradient(rgba(45, 157, 220, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45, 157, 220, 0.035) 1px, transparent 1px),
+        rgba(2, 13, 30, 0.96);
+    background-size: 28px 28px;
+    box-shadow: 0 0 35px rgba(0, 153, 255, 0.14);
+    scroll-margin-top: 2rem;
+}
+
+.history-workspace[hidden] {
+    display: none;
+}
+
+.history-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(80, 164, 213, 0.35);
+}
+
+.history-header h2 {
+    margin: 0;
+    color: #8fdcff;
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(1rem, 3vw, 1.4rem);
+}
+
+.history-header p {
+    color: #63efc1;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+}
+
+.history-clear {
+    padding: 0.65rem 0.8rem;
+    border: 1px solid rgba(255, 100, 120, 0.55);
+    color: #ff9aa9;
+    background: rgba(65, 15, 35, 0.35);
+    font: inherit;
+    cursor: pointer;
+}
+
+.history-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.history-summary div {
+    display: grid;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: 1px solid rgba(80, 164, 213, 0.3);
+    background: rgba(3, 17, 37, 0.8);
+}
+
+.history-summary span {
+    color: #8fb3ca;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+}
+
+.history-summary strong {
+    color: #63efc1;
+    font-size: 1.1rem;
+}
+
+.history-list {
+    display: grid;
+    gap: 0.6rem;
+    max-height: 440px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.history-entry,
+.history-empty {
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(80, 164, 213, 0.25);
+    color: #c9e6f5;
+    background: rgba(3, 17, 37, 0.8);
+    line-height: 1.5;
+}
+
+.history-entry {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+}
+
+.history-entry strong {
+    color: #8fdcff;
+}
+
+.history-entry time {
+    color: #8fb3ca;
+    font-size: 0.75rem;
+}
+
+.history-note {
+    color: #789bb3;
+    font-size: 0.72rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+    .history-summary {
+        grid-template-columns: 1fr;
+    }
+}
+        .live-data-table {
+    margin-top: 1.25rem;
+    border-top: 1px solid rgba(141, 204, 237, 0.28);
+}
+
+.live-row {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.9rem 0.25rem;
+    border-bottom: 1px solid rgba(141, 204, 237, 0.18);
+    color: #e8f5ff;
+    font-size: 0.78rem;
+}
+
+.live-row span:nth-child(2),
+.live-row span:nth-child(3) {
+    text-align: center;
+}
+
+.live-header {
+    color: #8fdcff;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+}
+
+#sensor-data {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    max-height: 120px;
+    overflow: auto;
+    border: 1px solid rgba(141, 204, 237, 0.2);
+    background: #04152a;
+    color: #63efc1;
+    font-size: 0.7rem;
+}
+
+.sensor-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.sensor-buttons button {
+    padding: 0.55rem 0.8rem;
+    border: 1px solid #8fdcff;
+    color: #e8f5ff;
+    background: #062442;
+    font: inherit;
+    cursor: pointer;
+}
+
+.sensor-buttons button:hover {
+    background: #10466a;
+}
+        .sensor-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    position: relative;
+    z-index: 9999;
+    pointer-events: auto;
+}
+
+.sensor-buttons button {
+    position: relative;
+    z-index: 9999;
+    pointer-events: auto;
+    cursor: pointer;
+    padding: 0.7rem 1rem;
+    border: 1px solid #8fdcff;
+    color: #e8f5ff;
+    background: #062442;
+    font: inherit;
+}
+        #connect-left {
+    position: relative;
+    z-index: 99999;
+    pointer-events: auto;
+    cursor: pointer;
+}
+    
+
+/* ==========================================================
+   REHABO-SG WRIST REHABILITATION UI — NEW LAYOUT
+   Visual redesign for personalized wrist calibration/game.
+   Existing sensor/game JavaScript IDs are intentionally retained.
+   ========================================================== */
+.training-workspace {
+    width: min(1500px, calc(100% - 2rem));
+    margin: 3rem auto;
+    padding: 1rem;
+    border: 1px solid rgba(63, 190, 255, 0.58);
+    background:
+        radial-gradient(ellipse at 35% 25%, rgba(0, 145, 255, 0.10), transparent 42%),
+        linear-gradient(145deg, rgba(3, 22, 44, 0.98), rgba(2, 10, 24, 0.99));
+    box-shadow: 0 0 42px rgba(0, 153, 255, 0.12), inset 0 0 35px rgba(0, 103, 171, 0.06);
+    scroll-margin-top: 1.5rem;
+}
+
+.training-topbar {
+    min-height: 58px;
+    margin-bottom: 0.85rem;
+    padding: 0.7rem 1rem;
+    border: 1px solid rgba(63, 190, 255, 0.40);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(2, 15, 33, 0.88);
+    position: relative;
+    overflow: hidden;
+}
+
+.training-topbar::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 34%;
+    height: 2px;
+    background: #42caff;
+    box-shadow: 0 0 12px rgba(66, 202, 255, 0.75);
+}
+
+.training-heading {
+    margin: 0;
+    color: #65d9ff;
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.session-badge {
+    padding: 0.5rem 0.9rem;
+    border: 1px solid rgba(99, 239, 193, 0.45);
+    color: #63efc1;
+    background: rgba(3, 31, 45, 0.55);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+}
+
+.training-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(360px, 0.85fr);
+    gap: 0.9rem;
+    align-items: stretch;
+}
+
+.exercise-panel,
+.monitor-panel {
+    min-width: 0;
+    padding: 0.95rem;
+    border: 1px solid rgba(63, 190, 255, 0.40);
+    background: rgba(2, 15, 33, 0.86);
+}
+
+.exercise-title,
+.monitor-title {
+    margin: 0;
+    color: #bcecff;
+    font-size: 0.82rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+}
+
+.exercise-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(255px, 0.75fr);
+    grid-template-rows: auto 1fr;
+    gap: 0.85rem;
+}
+
+.exercise-title {
+    grid-column: 1 / -1;
+    padding-bottom: 0.1rem;
+}
+
+.exercise-stage {
+    position: relative;
+    min-height: 535px;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid rgba(43, 175, 255, 0.60);
+    background:
+        radial-gradient(ellipse at 55% 42%, rgba(0, 171, 255, 0.16), transparent 38%),
+        linear-gradient(rgba(30, 136, 190, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 136, 190, 0.08) 1px, transparent 1px),
+        #04152b;
+    background-size: auto, 30px 30px, 30px 30px, auto;
+}
+
+.exercise-stage::before {
+    content: "";
+    position: absolute;
+    inset: 14px;
+    border: 1px solid rgba(82, 183, 235, 0.10);
+    pointer-events: none;
+}
+
+.exercise-stage::after {
+    content: "";
+    position: absolute;
+    width: 190px;
+    height: 190px;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(66, 202, 255, 0.22);
+    border-radius: 50%;
+    box-shadow: 0 0 35px rgba(0, 153, 255, 0.08);
+    pointer-events: none;
+}
+
+.stage-instruction {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 6;
+    margin: 0;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(65, 178, 244, 0.42);
+    color: #d8f3ff;
+    background: rgba(2, 15, 33, 0.92);
+    font-size: 0.82rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+/* Direction labels and calibration visuals. */
+.exercise-stage::marker { display: none; }
+
+.calibration-axis {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.calibration-axis .axis-line-h,
+.calibration-axis .axis-line-v {
+    position: absolute;
+    background: rgba(66, 202, 255, 0.25);
+}
+
+.calibration-axis .axis-line-h {
+    width: 62%;
+    height: 1px;
+    left: 19%;
+    top: 45%;
+}
+
+.calibration-axis .axis-line-v {
+    width: 1px;
+    height: 62%;
+    left: 50%;
+    top: 14%;
+}
+
+.calibration-axis span {
+    position: absolute;
+    color: #62d7ff;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+}
+
+.calibration-axis .up { left: 50%; top: 17%; transform: translateX(-50%); }
+.calibration-axis .down { left: 50%; top: 72%; transform: translateX(-50%); }
+.calibration-axis .left { left: 19%; top: 43%; transform: translate(-100%, -50%); }
+.calibration-axis .right { right: 19%; top: 43%; transform: translate(100%, -50%); }
+
+.calibration-center {
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    width: 22px;
+    height: 22px;
+    transform: translate(-50%, -50%);
+    border: 3px solid #42caff;
+    border-radius: 50%;
+    background: rgba(66, 202, 255, 0.24);
+    box-shadow: 0 0 12px #42caff, 0 0 28px rgba(66, 202, 255, 0.70);
+    z-index: 4;
+}
+
+.calibration-center::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: #fff;
+}
+
+.target-button,
+#game-cursor {
+    display: none !important;
+}
+
+.calibration-side-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    min-width: 0;
+}
+
+.current-movement-card,
+.peak-card-panel {
+    border: 1px solid rgba(63, 190, 255, 0.35);
+    background: rgba(4, 21, 42, 0.76);
+    padding: 0.85rem;
+}
+
+.subpanel-title {
+    margin: 0 0 0.7rem;
+    color: #69d8ff;
+    font-size: 0.73rem;
+    letter-spacing: 0.10em;
+}
+
+.axis-readout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+}
+
+.axis-value {
+    padding: 0.75rem;
+    border: 1px solid rgba(63, 190, 255, 0.26);
+    background: rgba(3, 17, 37, 0.85);
+}
+
+.axis-value span {
+    display: block;
+    color: #88b8cf;
+    font-size: 0.65rem;
+    letter-spacing: 0.07em;
+}
+
+.axis-value strong {
+    display: block;
+    margin-top: 0.35rem;
+    color: #42caff;
+    font-family: "Orbitron", sans-serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.manual-calibration-button {
+    width: 100%;
+    margin-top: 0.8rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid #49caff;
+    background: rgba(12, 83, 124, 0.35);
+    color: #dff8ff;
+    font-family: "Orbitron", sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.10em;
+    cursor: pointer;
+    transition: background 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+}
+
+.manual-calibration-button:hover:not(:disabled) {
+    background: rgba(20, 118, 170, 0.48);
+    box-shadow: 0 0 14px rgba(73, 202, 255, 0.22);
+}
+
+.manual-calibration-button:disabled {
+    opacity: 0.42;
+    cursor: not-allowed;
+}
+
+.manual-calibration-note {
+    margin: 0.45rem 0 0;
+    color: #6f9ab3;
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+}
+
+.peak-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.55rem;
+}
+
+.two-wrist-results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+}
+
+.wrist-result-column h5 {
+    margin: 0 0 0.45rem;
+    color: #63cfff;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+}
+
+@media (max-width: 760px) {
+    .two-wrist-results {
+        grid-template-columns: 1fr;
+    }
+}
+
+.peak-card {
+    min-height: 78px;
+    padding: 0.65rem;
+    border: 1px solid rgba(63, 190, 255, 0.28);
+    background: rgba(3, 17, 37, 0.80);
+}
+
+.peak-card.complete {
+    border-color: rgba(99, 239, 193, 0.55);
+}
+
+.peak-card span {
+    display: block;
+    color: #83b7d0;
+    font-size: 0.64rem;
+    letter-spacing: 0.06em;
+}
+
+.peak-card strong {
+    display: block;
+    margin-top: 0.25rem;
+    color: #e8f5ff;
+    font-family: "Orbitron", sans-serif;
+    font-size: 1rem;
+}
+
+.peak-card small {
+    color: #63efc1;
+    font-size: 0.58rem;
+}
+
+.session-setup {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem;
+    margin: 0;
+    padding: 0.75rem;
+    border: 1px solid rgba(63, 190, 255, 0.30);
+    background: rgba(3, 17, 37, 0.76);
+}
+
+.session-setup label {
+    color: #83b7d0;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+}
+
+.session-setup select {
+    padding: 0.55rem 0.7rem;
+    border: 1px solid rgba(80, 164, 213, 0.55);
+    color: #e8f5ff;
+    background: #04152b;
+    font: inherit;
+}
+
+.session-timer {
+    margin-left: auto;
+    color: #63efc1;
+    font-family: "Orbitron", sans-serif;
+    font-size: 1rem;
+}
+
+.exercise-controls {
+    display: none;
+}
+
+.monitor-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    position: relative;
+    z-index: 1000;
+}
+
+.monitor-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.monitor-status {
+    margin: 0;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid rgba(99, 239, 193, 0.28);
+    color: #63efc1;
+    background: rgba(3, 31, 45, 0.50);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+}
+
+.sensor-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.55rem;
+    margin: 0;
+}
+
+.sensor-buttons button {
+    padding: 0.65rem 0.7rem;
+    border: 1px solid #42caff;
+    color: #dff7ff;
+    background: linear-gradient(90deg, rgba(6, 52, 83, 0.95), rgba(5, 36, 63, 0.95));
+    font: inherit;
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+}
+
+.sensor-buttons button:hover {
+    background: #0b4168;
+}
+
+.live-data-table {
+    margin-top: 0;
+    border-top: 1px solid rgba(141, 204, 237, 0.28);
+}
+
+.live-row {
+    display: grid;
+    grid-template-columns: 1.25fr 0.9fr 0.9fr;
+    gap: 0.35rem;
+    align-items: center;
+    padding: 0.62rem 0.2rem;
+    border-bottom: 1px solid rgba(141, 204, 237, 0.14);
+    color: #e8f5ff;
+    font-size: 0.67rem;
+}
+
+.live-row span:nth-child(2),
+.live-row span:nth-child(3) {
+    text-align: center;
+}
+
+.live-header {
+    color: #69d8ff;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+}
+
+.sensor-data-shell {
+    padding: 0.7rem;
+    border: 1px solid rgba(63, 190, 255, 0.24);
+    background: rgba(2, 13, 30, 0.78);
+}
+
+.sensor-data-shell .sensor-data-heading {
+    margin: 0 0 0.45rem;
+    color: #6f9eb5;
+    font-size: 0.61rem;
+    letter-spacing: 0.08em;
+}
+
+#sensor-data {
+    margin: 0;
+    padding: 0;
+    max-height: 80px;
+    overflow: auto;
+    border: 0;
+    background: transparent;
+    color: #63efc1;
+    font-size: 0.60rem;
+}
+
+.wrist-card {
+    padding: 0.75rem;
+    border: 1px solid rgba(63, 190, 255, 0.35);
+    background: rgba(4, 21, 42, 0.76);
+}
+
+.wrist-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.65rem;
+}
+
+.wrist-card-header strong {
+    color: #bcecff;
+    font-family: "Orbitron", sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+}
+
+.wrist-card-header span {
+    padding: 0.25rem 0.45rem;
+    border: 1px solid rgba(99, 239, 193, 0.40);
+    color: #63efc1;
+    font-size: 0.56rem;
+}
+
+.wrist-readout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.45rem;
+}
+
+.wrist-readout div {
+    padding: 0.5rem;
+    border-bottom: 1px solid rgba(141, 204, 237, 0.12);
+}
+
+.wrist-readout span {
+    display: block;
+    color: #739bb0;
+    font-size: 0.57rem;
+}
+
+.wrist-readout strong {
+    color: #e8f5ff;
+    font-size: 0.72rem;
+}
+
+.axis-diagram {
+    position: relative;
+    height: 118px;
+    margin-top: 0.5rem;
+    border: 1px solid rgba(63, 190, 255, 0.15);
+    background: radial-gradient(circle at center, rgba(0, 153, 255, 0.08), transparent 65%);
+}
+
+.axis-diagram::before,
+.axis-diagram::after {
+    content: "";
+    position: absolute;
+    background: rgba(66, 202, 255, 0.35);
+}
+
+.axis-diagram::before {
+    width: 65%;
+    height: 1px;
+    left: 17.5%;
+    top: 50%;
+}
+
+.axis-diagram::after {
+    width: 1px;
+    height: 75%;
+    left: 50%;
+    top: 12.5%;
+}
+
+.axis-diagram .axis-center {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid #42caff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(66, 202, 255, 0.65);
+}
+
+.axis-diagram .axis-label {
+    position: absolute;
+    color: #63cfff;
+    font-size: 0.52rem;
+}
+
+.axis-diagram .axis-up { top: 5%; left: 50%; transform: translateX(-50%); }
+.axis-diagram .axis-down { bottom: 4%; left: 50%; transform: translateX(-50%); }
+.axis-diagram .axis-left { left: 3%; top: 50%; transform: translateY(-50%); }
+.axis-diagram .axis-right { right: 3%; top: 50%; transform: translateY(-50%); }
+
+.calibration-footer {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 0.85fr 1.5fr 1.5fr;
+    gap: 0.8rem;
+    margin-top: 0.1rem;
+}
+
+.info-card {
+    padding: 0.8rem;
+    border: 1px solid rgba(63, 190, 255, 0.30);
+    background: rgba(3, 17, 37, 0.82);
+}
+
+.info-card h4 {
+    margin: 0 0 0.6rem;
+    color: #69d8ff;
+    font-size: 0.66rem;
+    letter-spacing: 0.09em;
+}
+
+.info-card p {
+    margin: 0;
+    color: #b9d9e9;
+    font-size: 0.66rem;
+    line-height: 1.5;
+}
+
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.35rem;
+}
+
+.result-item {
+    text-align: center;
+    padding: 0.45rem 0.25rem;
+    border: 1px solid rgba(63, 190, 255, 0.20);
+}
+
+.result-item span {
+    display: block;
+    color: #779bad;
+    font-size: 0.54rem;
+}
+
+.result-item strong {
+    display: block;
+    margin-top: 0.2rem;
+    color: #e8f5ff;
+    font-size: 0.76rem;
+}
+
+.game-targets .result-item strong {
+    color: #63efc1;
+}
+
+.calibration-controls {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    border: 1px solid rgba(63, 190, 255, 0.30);
+    background: rgba(3, 17, 37, 0.86);
+}
+
+.calibration-progress-text {
+    color: #83b7d0;
+    font-size: 0.64rem;
+    letter-spacing: 0.07em;
+}
+
+.progress-dots {
+    display: inline-flex;
+    gap: 0.35rem;
+    margin-left: 0.55rem;
+}
+
+.progress-dots i {
+    width: 7px;
+    height: 7px;
+    border: 1px solid #42caff;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.progress-dots i.active {
+    background: #42caff;
+    box-shadow: 0 0 8px rgba(66, 202, 255, 0.75);
+}
+
+.calibration-action {
+    min-height: 40px;
+    padding: 0.65rem 1rem;
+    border: 1px solid #42caff;
+    color: #e8f5ff;
+    background: linear-gradient(90deg, #075ba5, #0879bd);
+    font: inherit;
+    letter-spacing: 0.07em;
+    cursor: pointer;
+}
+
+.calibration-action:hover {
+    background: #1195d9;
+}
+
+.exercise-dock {
+    display: none;
+}
+
+@media (max-width: 1050px) {
+    .training-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .monitor-panel {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+    }
+
+    .monitor-title,
+    .monitor-status,
+    .sensor-buttons,
+    .live-data-table,
+    .sensor-data-shell {
+        grid-column: 1 / -1;
+    }
+
+    .wrist-card {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 760px) {
+    .exercise-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .calibration-footer {
+        grid-template-columns: 1fr;
+    }
+
+    .calibration-side-panel,
+    .session-setup,
+    .exercise-title {
+        grid-column: 1;
+    }
+
+    .exercise-stage {
+        min-height: 430px;
+    }
+
+    .monitor-panel {
+        display: flex;
+    }
+
+    .sensor-buttons {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .training-workspace {
+        width: min(100%, calc(100% - 0.75rem));
+        padding: 0.55rem;
+    }
+
+    .training-heading {
+        font-size: 0.86rem;
+    }
+
+    .peak-grid,
+    .result-grid,
+    .axis-readout,
+    .wrist-readout {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .exercise-stage {
+        min-height: 380px;
+    }
+}
+
+</style>
+
+<style>
+/* =========================================================
+   REHABO-SG GUIDED WRIST CALIBRATION
+   ========================================================= */
+.calibration-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    display: none;
+    place-items: center;
+    padding: 1rem;
+    background: rgba(0, 5, 15, 0.82);
+    backdrop-filter: blur(7px);
+}
+.calibration-overlay.active { display: grid; }
+.calibration-dialog {
+    width: min(92vw, 650px);
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border: 1px solid #55d9ff;
+    background: linear-gradient(145deg, rgba(4, 28, 52, .98), rgba(2, 13, 30, .99));
+    box-shadow: 0 0 45px rgba(0, 153, 255, .28), inset 0 0 30px rgba(0, 103, 171, .12);
+    text-align: center;
+}
+.calibration-dialog .calibration-kicker {
+    margin: 0 0 .8rem;
+    color: #63efc1;
+    font-size: .7rem;
+    letter-spacing: .16em;
+}
+.calibration-dialog h2 {
+    margin: 0;
+    color: #e8f8ff;
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(1.05rem, 4vw, 1.5rem);
+    letter-spacing: .08em;
+}
+.calibration-dialog .calibration-message {
+    min-height: 3.2em;
+    margin: 1rem auto;
+    max-width: 520px;
+    color: #bfeaff;
+    line-height: 1.65;
+}
+.calibration-countdown {
+    min-height: 1.2em;
+    margin: .8rem 0;
+    color: #55d9ff;
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(2.2rem, 10vw, 4.2rem);
+    text-shadow: 0 0 22px rgba(85, 217, 255, .55);
+}
+.calibration-timer {
+    margin: .5rem 0 .9rem;
+    color: #63efc1;
+    font-family: "Orbitron", sans-serif;
+    font-size: 1.6rem;
+}
+.calibration-progress-track {
+    width: 100%;
+    height: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(85, 217, 255, .55);
+    background: #04152a;
+}
+.calibration-progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #42caff, #63efc1);
+    box-shadow: 0 0 16px rgba(85, 217, 255, .75);
+    transition: width 80ms linear;
+}
+.calibration-live-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .75rem;
+    margin-top: 1.2rem;
+}
+.calibration-live-cell {
+    padding: .75rem;
+    border: 1px solid rgba(80, 164, 213, .3);
+    background: rgba(6, 31, 57, .6);
+}
+.calibration-live-cell span {
+    display: block;
+    color: #6489a5;
+    font-size: .65rem;
+    letter-spacing: .08em;
+}
+.calibration-live-cell strong {
+    display: block;
+    margin-top: .3rem;
+    color: #8fdcff;
+    font-size: 1.05rem;
+}
+.calibration-direction-icon {
+    margin: .4rem 0;
+    color: #55d9ff;
+    font-size: 3rem;
+    text-shadow: 0 0 20px rgba(85, 217, 255, .5);
+}
+.calibration-result-message {
+    margin-top: 1rem;
+    color: #63efc1;
+    font-size: .85rem;
+}
+.calibration-action {
+    min-height: 48px;
+    padding: .8rem 1.1rem;
+    border: 1px solid #27baff;
+    color: #e8f5ff;
+    background: linear-gradient(90deg, #075ba5, #0879bd);
+    font: inherit;
+    letter-spacing: .08em;
+    cursor: pointer;
+}
+.calibration-action:hover,
+.calibration-action:focus-visible { background: #1195d9; }
+.calibration-action:disabled { opacity: .5; cursor: not-allowed; }
+@media (max-width: 500px) {
+    .calibration-live-grid { grid-template-columns: 1fr; }
+}
+
+.calibration-two-wrist-grid{grid-template-columns:1fr 1fr;}
+.calibration-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-top:1rem;}
+.calibration-result-grid>div{padding:.65rem;border:1px solid rgba(80,164,213,.3);background:rgba(3,25,48,.65);text-align:left;}
+.calibration-result-grid span{color:#8fb7cf;font-size:.68rem;}
+.calibration-result-grid strong{float:right;color:#63efc1;font-size:.82rem;}
+.calibration-safety-note{margin:1rem 0 0;color:#7899ad;font-size:.68rem;line-height:1.5;}
+@media(max-width:600px){.calibration-two-wrist-grid,.calibration-result-grid{grid-template-columns:1fr;}}
+</style>
+<style>
+/* ==========================================================
+   PERSONALIZED REHAB GAME
+   ========================================================== */
+.personalized-game {
+    grid-column: 1 / -1;
+    position: relative;
+    min-height: 360px;
+    margin-top: 0.9rem;
+    overflow: hidden;
+    border: 1px solid rgba(63, 190, 255, 0.45);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(rgba(2, 15, 30, 0.24), rgba(2, 15, 30, 0.24));
+}
+
+.personalized-game.level-1 {
+    background-image:
+        linear-gradient(rgba(2, 20, 30, 0.16), rgba(2, 20, 30, 0.16)),
+        url("Level1-background.png");
+}
+
+.personalized-game.level-2 {
+    background-image: linear-gradient(135deg, #10243a, #3b2b18);
+}
+
+.personalized-game.level-3 {
+    background-image: linear-gradient(135deg, #123b5d, #7ab6d9);
+}
+
+.personalized-game.level-4 {
+    background-image: linear-gradient(135deg, #070b20, #24114a);
+}
+
+.personalized-game.level-5 {
+    background-image: linear-gradient(135deg, #24110d, #5a1717);
+}
+
+.personalized-game-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+    background: linear-gradient(rgba(0,0,0,0.08), rgba(0,0,0,0.42));
+}
+
+.personalized-game-kicker {
+    color: #d7f5ff;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+}
+
+#personalized-game-title {
+    margin: 0.5rem 0 0.25rem;
+    color: #ffffff;
+    font-size: clamp(2rem, 5vw, 4rem);
+    letter-spacing: 0.06em;
+    text-shadow: 0 4px 18px rgba(0,0,0,0.5);
+}
+
+#personalized-game-level {
+    margin: 0.25rem 0;
+    color: #8fffe0;
+    font-size: 0.9rem;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+}
+
+#personalized-game-average {
+    margin: 0.4rem 0;
+    color: #ffffff;
+    font-size: 0.82rem;
+}
+
+#personalized-game-instruction {
+    max-width: 620px;
+    margin: 0.5rem auto 0;
+    color: #e6f7ff;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.average-grid {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.calibration-average-card .result-item strong {
+    color: #63efc1;
+}
+
+@media (max-width: 800px) {
+    .average-grid {
+        grid-template-columns: 1fr;
+    }
+    .personalized-game {
+        min-height: 300px;
+    }
+}
+</style>
 </head>
 <body>
-    <img class="brand-logo" src="REHABO-SG%20LOGO.png" alt="REHABO-SG logo">
-    <main id="home">
-        <nav class="top-nav" aria-label="Primary navigation">
-            <a href="#" aria-current="page">HOME</a>
-            <a href="#about">ABOUT</a>
-            <a href="#system">SYSTEM</a>
-            <a href="#features">FEATURES</a>
-            <a href="#research">RESEARCH</a>
-            <a href="#team">TEAM</a>
-        </nav>
+    <a href="index.html" aria-label="Return to REHABO-SG home">
+        <img class="brand-logo" src="REHABO-SG%20LOGO.png" alt="REHABO-SG logo">
+    </a>
 
-        <div class="system-status">
-            <span class="status-dot"></span>SYSTEM ONLINE
-            <small>v1.0.0</small>
+    <main class="initialization-panel">
+        <p class="panel-heading">REHABO-SG</p>
+        <h1>SYSTEM INITIALIZATION</h1>
+        <p class="initialization-status" aria-live="polite">
+            <span class="pulse" aria-hidden="true"></span>
+            <span id="status-message">INITIALIZING SYSTEM...</span>
+        </p>
+
+        <ul class="system-list" aria-label="System component status">
+            <li data-ready-at="18"><span class="indicator">○</span><span>ROBOT CONTROLLER</span><span class="device-state">CHECKING</span></li>
+            <li data-ready-at="38"><span class="indicator">○</span><span>MOTION SENSOR</span><span class="device-state">CHECKING</span></li>
+            <li data-ready-at="58"><span class="indicator">○</span><span>BALANCE PLATFORM</span><span class="device-state">CHECKING</span></li>
+            <li data-ready-at="78"><span class="indicator">○</span><span>TABLET INTERFACE</span><span class="device-state">CHECKING</span></li>
+            <li><span class="indicator">◐</span><span>PATIENT PROFILE</span><span class="device-state">STANDBY</span></li>
+        </ul>
+
+        <div class="progress-area">
+            <div class="progress-track" role="progressbar" aria-label="System initialization progress"
+                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <div class="progress-fill"></div>
+            </div>
+            <span class="progress-value">0%</span>
         </div>
 
-        <section class="hero-copy" aria-labelledby="hero-title">
-            <p class="eyebrow">MOBILE REHABILITATION SYSTEM</p>
-            <h1 id="hero-title">REHABO-SG</h1>
-            <p class="hero-subtitle">MOBILE POST-STROKE REHABILITATION<br>&amp; BALANCE MONITORING</p>
-            <p class="hero-tagline">Rehabilitate. Monitor. Recover.</p>
-
-            <div class="feature-list" id="feature-highlights">
-                <div class="feature">GUIDED<br>EXERCISES</div>
-                <div class="feature">REAL-TIME<br>MONITORING</div>
-                <div class="feature">TRACK<br>PROGRESS</div>
-            </div>
-
-            <a class="enter-button" href="system.html">Initialize REHABO-SG</a>
-        </section>
-
-        <p class="scroll-prompt">SCROLL TO EXPLORE</p>
-        <p class="footer-left">REHABO-SG&nbsp;&nbsp;|&nbsp;&nbsp;ENGINEERING FOR A STRONGER TOMORROW</p>
-        <p class="footer-right">MEDICAL ROBOTICS&nbsp;&nbsp;|&nbsp;&nbsp;REHABILITATION&nbsp;&nbsp;|&nbsp;&nbsp;INNOVATION</p>
+        <p class="panel-footer">SECURE REHABILITATION SYSTEM</p>
+        <a class="scroll-to-dashboard" href="#control-dashboard">
+            ↓ &nbsp; OPEN CONTROL DASHBOARD
+        </a>
     </main>
 
-    <section class="system-portal" id="system" aria-labelledby="system-title">
-        <div class="system-content">
-            <p class="system-kicker">REHABO-SG / SYSTEM ARCHITECTURE</p>
-            <h2 id="system-title">HOW REHABO-SG WORKS</h2>
+    <section class="control-dashboard" id="control-dashboard" aria-labelledby="dashboard-title">
+        <header class="dashboard-header">
+            <p class="dashboard-brand">REHABO-SG</p>
+            <h2 class="dashboard-title" id="dashboard-title">REHABILITATION CONTROL SYSTEM</h2>
+            <p class="dashboard-status">SYSTEM STATUS <span>●</span> ONLINE</p>
+        </header>
 
-            <div class="module-grid">
-                <article class="module">
-                    <h3>MOVEMENT MODULE</h3>
-                    <strong>MPU6050 / IMU</strong>
-                    <p>Measures:</p>
-                    <ul>
-                        <li>acceleration</li>
-                        <li>angular movement</li>
-                        <li>movement patterns</li>
-                        <li>arm motion</li>
-                    </ul>
-                </article>
+        <h3 class="mode-heading">SELECT REHABILITATION MODE</h3>
 
-                <article class="module">
-                    <h3>BALANCE MODULE</h3>
-                    <strong>Pressure sensing platform</strong>
-                    <p>Measures:</p>
-                    <ul>
-                        <li>weight distribution</li>
-                        <li>left/right loading</li>
-                        <li>pressure distribution</li>
-                        <li>postural stability indicators</li>
-                    </ul>
-                </article>
-
-                <article class="module">
-                    <h3>FORCE MODULE</h3>
-                    <strong>Load cells</strong>
-                    <p>Measures:</p>
-                    <ul>
-                        <li>applied force</li>
-                        <li>left/right force distribution</li>
-                        <li>exercise performance</li>
-                    </ul>
-                </article>
-
-                <article class="module">
-                    <h3>CONTROL MODULE</h3>
-                    <strong>ESP32</strong>
-                    <p>Handles:</p>
-                    <ul>
-                        <li>sensor acquisition</li>
-                        <li>processing</li>
-                        <li>communication</li>
-                        <li>system coordination</li>
-                    </ul>
-                </article>
-
-                <article class="module">
-                    <h3>INTERFACE</h3>
-                    <strong>Tablet</strong>
-                    <p>Displays:</p>
-                    <ul>
-                        <li>exercise instructions</li>
-                        <li>sensor readings</li>
-                        <li>performance feedback</li>
-                        <li>session results</li>
-                    </ul>
-                </article>
-            </div>
-
-            <a class="portal-back" href="#">&lt; Return to home</a>
+        <div class="mode-grid">
+            <button class="mode-card" type="button" aria-pressed="false">
+                <span class="mode-icon" aria-hidden="true">↗</span>
+                <span class="mode-name">UPPER LIMB<br>TRAINING</span>
+            </button>
+            <button class="mode-card" type="button" aria-pressed="false">
+                <span class="mode-icon" aria-hidden="true">⇄</span>
+                <span class="mode-name">BALANCE &amp;<br>WEIGHT SHIFT</span>
+            </button>
+            <button class="mode-card" type="button" aria-pressed="false">
+                <span class="mode-icon" aria-hidden="true">▥</span>
+                <span class="mode-name">PROGRESS<br>TRACKING</span>
+            </button>
+            <button class="mode-card" type="button" aria-pressed="false">
+    <span class="mode-icon" aria-hidden="true">◷</span>
+    <span class="mode-name">HISTORICAL<br>TRIALS</span>
+</button>
         </div>
+
+        <p class="mode-message" id="mode-message" aria-live="polite">SELECT A MODE</p>
     </section>
+<section class="training-workspace" id="upper-limb-training"
+         aria-labelledby="training-heading" hidden>
+    <header class="training-topbar">
+        <h2 class="training-heading" id="training-heading">REHAB MODE // WRIST</h2>
+        <span class="session-badge">● READY</span>
+    </header>
 
-    <section class="about-portal" id="about" aria-labelledby="about-title">
-        <div class="about-content">
-            <p class="about-kicker">REHABO-SG / SYSTEM PROFILE</p>
-            <h2 id="about-title">ABOUT REHABO-SG</h2>
-            <p class="about-lead">A student-developed mobile robotic system designed to support post-stroke rehabilitation through guided exercises and non-invasive movement monitoring.</p>
+    <div class="training-layout">
+        <section class="exercise-panel" aria-labelledby="exercise-title">
+            <h3 class="exercise-title" id="exercise-title">WRIST REHABILITATION</h3>
 
-            <div class="problem-block">
-                <h3>THE PROBLEM</h3>
-                <p>Stroke can affect a person's ability to move, maintain balance, and perform coordinated upper-limb activities. Rehabilitation requires repeated exercises and continuous assessment of movement performance.</p>
+            <div class="exercise-stage" aria-label="Wrist calibration area">
+                <div class="calibration-axis" aria-hidden="true">
+                    <span class="up">UP</span>
+                    <span class="down">DOWN</span>
+                    <span class="left">LEFT</span>
+                    <span class="right">RIGHT</span>
+                    <span class="axis-line-h"></span>
+                    <span class="axis-line-v"></span>
+                </div>
+                <div class="calibration-center" aria-hidden="true"></div>
+
+                <p class="stage-instruction" id="exercise-instruction">
+                    Place your wrist in a comfortable neutral position to begin calibration.
+                </p>
+
+                <!-- Retained for existing JavaScript compatibility; hidden by the new UI. -->
+                <button class="target-button" type="button"
+                        aria-label="Rehabilitation target" disabled></button>
+                <div id="game-cursor" aria-hidden="true"></div>
             </div>
 
-            <img class="approach-image" src="APPROACH.png" alt="REHABO-SG approach overview">
+            <div class="calibration-side-panel">
+                <section class="current-movement-card">
+                    <h4 class="subpanel-title">CURRENT MOVEMENT</h4>
+                    <div class="axis-readout">
+                        <div class="axis-value">
+                            <span>PITCH (UP / DOWN)</span>
+                            <strong id="calibration-pitch">0.0°</strong>
+                        </div>
+                        <div class="axis-value">
+                            <span>ROLL (LEFT / RIGHT)</span>
+                            <strong id="calibration-roll">0.0°</strong>
+                        </div>
+                    </div>
+                </section>
 
-            <a class="about-back" href="#">&lt; Return to home</a>
-        </div>
-    </section>
-
-    <section class="features-portal" id="features" aria-labelledby="features-title">
-        <div class="features-content">
-            <p class="features-kicker">REHABO-SG / CAPABILITIES</p>
-            <h2 id="features-title">FEATURES</h2>
-
-            <div class="feature-details">
-                <article class="feature-detail">
-                    <span class="feature-number">01</span>
-                    <h3>GUIDED REHABILITATION</h3>
-                    <p>Provides visual instructions and targets for upper-limb exercises.</p>
-                </article>
-
-                <article class="feature-detail">
-                    <span class="feature-number">02</span>
-                    <h3>MOVEMENT MONITORING</h3>
-                    <p>Records movement characteristics using wearable inertial sensing.</p>
-                </article>
-
-                <article class="feature-detail">
-                    <span class="feature-number">03</span>
-                    <h3>BALANCE</h3>
-                    <p>Evaluates weight distribution and postural stability using the sensing platform.</p>
-                </article>
-
-                <article class="feature-detail">
-                    <span class="feature-number">04</span>
-                    <h3>REAL-TIME FEEDBACK</h3>
-                    <p>Provides immediate visual feedback through the tablet interface.</p>
-                </article>
-
-                <article class="feature-detail">
-                    <span class="feature-number">05</span>
-                    <h3>PROGRESS TRACKING</h3>
-                    <p>Allows performance measurements to be compared across rehabilitation sessions.</p>
-                </article>
-
-                <article class="feature-detail">
-                    <span class="feature-number">06</span>
-                    <h3>MOBILE ROBOTIC PLATFORM</h3>
-                    <p>Integrates rehabilitation monitoring into a mobile robotic platform designed for flexible use.</p>
-                </article>
+                <section class="peak-card-panel two-wrist-peak-panel">
+                    <h4 class="subpanel-title">COMFORTABLE PEAK ANGLES // BOTH WRISTS</h4>
+                    <div class="two-wrist-results">
+                        <div class="wrist-result-column">
+                            <h5>LEFT WRIST</h5>
+                            <div class="peak-grid">
+                                <div class="peak-card" id="peak-left-up-card"><span>↑ UP</span><strong id="peak-left-up">—</strong><small id="peak-left-up-status">PENDING</small></div>
+                                <div class="peak-card" id="peak-left-down-card"><span>↓ DOWN</span><strong id="peak-left-down">—</strong><small id="peak-left-down-status">PENDING</small></div>
+                                <div class="peak-card" id="peak-left-left-card"><span>← LEFT</span><strong id="peak-left-left">—</strong><small id="peak-left-left-status">PENDING</small></div>
+                                <div class="peak-card" id="peak-left-right-card"><span>→ RIGHT</span><strong id="peak-left-right">—</strong><small id="peak-left-right-status">PENDING</small></div>
+                            </div>
+                        </div>
+                        <div class="wrist-result-column">
+                            <h5>RIGHT WRIST</h5>
+                            <div class="peak-grid">
+                                <div class="peak-card" id="peak-right-up-card"><span>↑ UP</span><strong id="peak-right-up">—</strong><small id="peak-right-up-status">PENDING</small></div>
+                                <div class="peak-card" id="peak-right-down-card"><span>↓ DOWN</span><strong id="peak-right-down">—</strong><small id="peak-right-down-status">PENDING</small></div>
+                                <div class="peak-card" id="peak-right-left-card"><span>← LEFT</span><strong id="peak-right-left">—</strong><small id="peak-right-left-status">PENDING</small></div>
+                                <div class="peak-card" id="peak-right-right-card"><span>→ RIGHT</span><strong id="peak-right-right">—</strong><small id="peak-right-right-status">PENDING</small></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="manual-calibration-button" id="manual-calibrate-button" type="button">▶ START CALIBRATION</button>
+                    <p class="manual-calibration-note" id="manual-calibration-note">CLICK START CALIBRATION TO BEGIN. CONNECTED SENSORS WILL BE MEASURED.</p>
+                </section>
             </div>
 
-            <a class="portal-back" href="#">&lt; Return to home</a>
-        </div>
-    </section>
+            <div class="session-setup">
+                <label for="duration-select">SESSION LENGTH</label>
+                <select id="duration-select">
+                    <option value="">Choose time</option>
+                    <option value="20">20 seconds</option>
+                    <option value="40">40 seconds</option>
+                    <option value="60">60 seconds</option>
+                    <option value="90">90 seconds</option>
+                    <option value="120">120 seconds</option>
+                </select>
+                <span class="session-timer" id="session-timer" aria-live="polite">--:--</span>
+            </div>
+        </section>
 
-    <section class="research-portal" id="research" aria-labelledby="research-title">
-        <div class="research-content">
-            <p class="research-kicker">REHABO-SG / STUDY FRAMEWORK</p>
-            <h2 id="research-title">RESEARCH</h2>
+        <aside class="monitor-panel" aria-labelledby="monitor-title">
+            <h3 class="monitor-title" id="monitor-title">LIVE MONITORING</h3>
 
-            <div class="research-block">
-                <h3>RESEARCH QUESTION</h3>
-                <p>Can an integrated mobile robotic system provide consistent monitoring and feedback of upper-limb movement, and postural stability during rehabilitation exercises?</p>
+            <p class="monitor-status" id="serial-status">● SENSORS DISCONNECTED</p>
+
+            <div class="sensor-buttons">
+                <button id="connect-left" type="button" onclick="connectSensor('LEFT')">CONNECT LEFT SENSOR</button>
+                <button id="connect-right" type="button" onclick="connectSensor('RIGHT')">CONNECT RIGHT SENSOR</button>
             </div>
 
-            <div class="research-block">
-                <h3>RESEARCH GAP</h3>
-                <p>Existing rehabilitation technologies can provide exercise guidance or monitor individual aspects of movement. REHABO-SG explores the integration of guided upper-limb rehabilitation with simultaneous balance, and movement monitoring within a single mobile robotic platform.</p>
-            </div>
-
-            <div class="research-block">
-                <h3>RESEARCH VARIABLES</h3>
-                <div class="research-flow">
-                    <article class="flow-step">
-                        <h4>INPUT</h4>
-                        <p>User movement</p>
-                    </article>
-                    <article class="flow-step">
-                        <h4>SENSOR DATA</h4>
-                        <p>IMU<br>Pressure<br>Force</p>
-                    </article>
-                    <article class="flow-step">
-                        <h4>COMPUTATION</h4>
-                        <p>ESP32</p>
-                    </article>
-                    <article class="flow-step">
-                        <h4>OUTPUT</h4>
-                        <p>Movement metrics<br>Balance metrics<br>Gait-related metrics<br>Exercise performance</p>
-                    </article>
-                    <article class="flow-step">
-                        <h4>FEEDBACK</h4>
-                        <p>Tablet interface</p>
-                    </article>
+            <div class="live-data-table">
+                <div class="live-row live-header">
+                    <span>DATA</span>
+                    <span>LEFT WRIST</span>
+                    <span>RIGHT WRIST</span>
+                </div>
+                <div class="live-row">
+                    <span>Angle</span>
+                    <span id="left-angle">0°</span>
+                    <span id="right-angle">0°</span>
+                </div>
+                <div class="live-row">
+                    <span>Angular Velocity</span>
+                    <span id="left-angular">0.00 °/s</span>
+                    <span id="right-angular">0.00 °/s</span>
+                </div>
+                <div class="live-row">
+                    <span>Acceleration</span>
+                    <span id="left-acceleration">0.00 m/s²</span>
+                    <span id="right-acceleration">0.00 m/s²</span>
+                </div>
+                <div class="live-row">
+                    <span>Direction</span>
+                    <span id="left-direction">Neutral</span>
+                    <span id="right-direction">Neutral</span>
+                </div>
+                <div class="live-row">
+                    <span>Movement State</span>
+                    <span id="left-state">Idle</span>
+                    <span id="right-state">Idle</span>
                 </div>
             </div>
 
-            <a class="portal-back" href="#">&lt; Return to home</a>
+            <section class="wrist-card" aria-label="Left wrist sensor details">
+                <div class="wrist-card-header">
+                    <strong>LEFT WRIST</strong>
+                    <span id="left-sensor-chip">READY</span>
+                </div>
+                <div class="wrist-readout">
+                    <div><span>Pitch</span><strong id="left-pitch-live">0.0°</strong></div>
+                    <div><span>Roll</span><strong id="left-roll-live">0.0°</strong></div>
+                    <div><span>Direction</span><strong id="left-direction-live">Neutral</strong></div>
+                    <div><span>State</span><strong id="left-state-live">Idle</strong></div>
+                </div>
+                <div class="axis-diagram" aria-hidden="true">
+                    <span class="axis-label axis-up">UP (+)</span>
+                    <span class="axis-label axis-down">DOWN (-)</span>
+                    <span class="axis-label axis-left">LEFT (-)</span>
+                    <span class="axis-label axis-right">RIGHT (+)</span>
+                    <span class="axis-center"></span>
+                </div>
+            </section>
+
+            <section class="wrist-card" aria-label="Right wrist sensor details">
+                <div class="wrist-card-header">
+                    <strong>RIGHT WRIST</strong>
+                    <span id="right-sensor-chip">READY</span>
+                </div>
+                <div class="wrist-readout">
+                    <div><span>Pitch</span><strong id="right-pitch-live">0.0°</strong></div>
+                    <div><span>Roll</span><strong id="right-roll-live">0.0°</strong></div>
+                    <div><span>Direction</span><strong id="right-direction-live">Neutral</strong></div>
+                    <div><span>State</span><strong id="right-state-live">Idle</strong></div>
+                </div>
+                <div class="axis-diagram" aria-hidden="true">
+                    <span class="axis-label axis-up">UP (+)</span>
+                    <span class="axis-label axis-down">DOWN (-)</span>
+                    <span class="axis-label axis-left">LEFT (-)</span>
+                    <span class="axis-label axis-right">RIGHT (+)</span>
+                    <span class="axis-center"></span>
+                </div>
+            </section>
+
+            <div class="sensor-data-shell">
+                <p class="sensor-data-heading">RAW SENSOR STREAM</p>
+                <pre id="sensor-data">WAITING FOR SENSOR DATA...</pre>
+            </div>
+        </aside>
+
+        <div class="calibration-footer">
+            <section class="info-card">
+                <h4>CALIBRATION STATUS</h4>
+                <p><strong id="calibration-step">READY</strong> — WAITING TO BEGIN</p>
+                <p class="progress-dots" aria-label="Calibration progress">
+                    <i class="active"></i><i></i><i></i><i></i><i></i>
+                </p>
+            </section>
+
+            <section class="info-card">
+                <h4>CALIBRATION RESULTS // COMFORTABLE PEAK</h4>
+                <div class="result-grid">
+                    <div class="result-item"><span>↑ UP</span><strong id="result-up">—</strong></div>
+                    <div class="result-item"><span>↓ DOWN</span><strong id="result-down">—</strong></div>
+                    <div class="result-item"><span>← LEFT</span><strong id="result-left">—</strong></div>
+                    <div class="result-item"><span>→ RIGHT</span><strong id="result-right">—</strong></div>
+                </div>
+            </section>
+
+            <section class="info-card calibration-average-card">
+                <h4>CALIBRATION AVERAGE ANGLE</h4>
+                <div class="result-grid average-grid">
+                    <div class="result-item"><span>LEFT WRIST</span><strong id="calibration-average-left">—</strong></div>
+                    <div class="result-item"><span>RIGHT WRIST</span><strong id="calibration-average-right">—</strong></div>
+                    <div class="result-item bilateral-average-item"><span>BILATERAL AVERAGE</span><strong id="calibration-average-bilateral">—</strong></div>
+                </div>
+            </section>
+
+            <div class="calibration-controls">
+                <span class="calibration-progress-text">
+                    CALIBRATION <span id="calibration-progress">READY</span>
+                    <span class="progress-dots" aria-hidden="true">
+                        <i class="active"></i><i></i><i></i><i></i><i></i>
+                    </span>
+                </span>
+                <button class="calibration-action" id="begin-calibration" type="button" disabled hidden>▶ BEGIN CALIBRATION</button>
+            </div>
         </div>
+    </div>
+</section>
+
+<section class="personalized-game" id="personalized-game" hidden aria-labelledby="personalized-game-title">
+    <div class="personalized-game-overlay">
+        <div class="personalized-game-kicker">PERSONALIZED REHABILITATION GAME</div>
+        <h3 id="personalized-game-title">GARDEN ADVENTURE</h3>
+        <p id="personalized-game-level">PERSONALIZED LEVEL 1</p>
+        <p id="personalized-game-average">BILATERAL CALIBRATION AVERAGE: —</p>
+        <p id="personalized-game-instruction">Explore the garden using comfortable wrist movements.</p>
+    </div>
+</section>
+
+<section class="balance-workspace" id="balance-workspace" aria-labelledby="balance-title" hidden>
+    <header class="balance-header">
+        <h2 id="balance-title">REHAB MODE // BALANCE &amp; WEIGHT SHIFT</h2>
+        <p class="monitor-status" id="device-session-status">
+    ● SENSOR SESSION
+</p>
+    </header>
+
+    <div class="balance-layout">
+        <section class="balance-stage" aria-labelledby="weight-shift-title">
+            <h3 id="weight-shift-title">WEIGHT DISTRIBUTION // CENTER OF MASS</h3>
+
+            <div class="weight-track">
+    <button class="weight-target" type="button" data-side="LEFT" disabled
+            aria-label="Shift weight left">
+        <img class="footprint-image" src="Foot Print Left.png" alt="">
+        <span>SHIFT LEFT</span>
+    </button>
+
+    <button class="weight-target" type="button" data-side="RIGHT" disabled
+            aria-label="Shift weight right">
+        <img class="footprint-image" src="Foot Print Right.png" alt="">
+        <span>SHIFT RIGHT</span>
+    </button>
+    <aside class="pressure-legend" aria-label="Pressure scale">
+    <span class="pressure-low">LOWEST</span>
+    <img src="Color Spectrum.png" alt="Pressure spectrum from low to high">
+    <span class="pressure-high">HIGHEST</span>
+</aside>
+</div>
+
+            <p class="weight-instruction" id="weight-instruction">
+                Choose a duration, then start the test.
+            </p>
+
+            <div class="balance-setup">
+                <label for="balance-duration">TEST LENGTH</label>
+                <select id="balance-duration">
+                    <option value="20">20 seconds</option>
+                    <option value="40" selected>40 seconds</option>
+                    <option value="60">60 seconds</option>
+                    <option value="90">90 seconds</option>
+                </select>
+                <span class="balance-timer" id="balance-timer">00:40</span>
+            </div>
+
+            <div class="balance-controls">
+                <button class="start-exercise" id="start-balance" type="button">▶ START BALANCE TEST</button>
+                <button class="start-exercise" id="reset-balance" type="button">RESET</button>
+            </div>
+        </section>
+
+        <aside class="balance-metrics" aria-label="Balance test measurements">
+            <h3>LIVE BALANCE METRICS</h3>
+            <div class="balance-metric"><span>BALANCE SCORE</span><strong id="balance-score">—</strong></div>
+            <div class="balance-metric"><span>LEFT / RIGHT</span><strong id="weight-split">50% / 50%</strong></div>
+            <div class="balance-metric"><span>CENTER DEVIATION</span><strong id="center-deviation">0.0 cm</strong></div>
+            <div class="balance-metric"><span>TIME</span><strong id="balance-elapsed">00:00</strong></div>
+            <p class="balance-note">Demo results are simulated and are not clinical measurements.</p>
+        </aside>
+    </div>
+</section>
+<section class="progress-workspace" id="progress-workspace"
+         aria-labelledby="progress-title" hidden>
+    <header class="progress-header">
+        <h2 id="progress-title">REHAB MODE // PROGRESS TRACKING</h2>
+        <span class="session-badge">● DEMO DATA</span>
+    </header>
+
+    <div class="progress-grid">
+        <section class="progress-card" aria-labelledby="trend-title">
+            <h3 id="trend-title">PERFORMANCE TREND</h3>
+            <svg class="performance-chart" viewBox="0 0 520 250"
+                 role="img" aria-label="Sample performance increased from 40 to 82 over five sessions">
+                <line class="chart-grid" x1="55" y1="30" x2="500" y2="30"/>
+                <line class="chart-grid" x1="55" y1="75" x2="500" y2="75"/>
+                <line class="chart-grid" x1="55" y1="120" x2="500" y2="120"/>
+                <line class="chart-grid" x1="55" y1="165" x2="500" y2="165"/>
+                <line class="chart-grid" x1="55" y1="210" x2="500" y2="210"/>
+
+                <text class="chart-axis-label" x="12" y="214">0</text>
+                <text class="chart-axis-label" x="5" y="169">25</text>
+                <text class="chart-axis-label" x="5" y="124">50</text>
+                <text class="chart-axis-label" x="5" y="79">75</text>
+                <text class="chart-axis-label" x="0" y="34">100</text>
+
+                <polyline class="chart-line"
+                          points="75,138 175,102 275,102 375,66 475,57"/>
+                <circle class="chart-point" cx="75" cy="138" r="6"/>
+                <circle class="chart-point" cx="175" cy="102" r="6"/>
+                <circle class="chart-point" cx="275" cy="102" r="6"/>
+                <circle class="chart-point" cx="375" cy="66" r="6"/>
+                <circle class="chart-point" cx="475" cy="57" r="6"/>
+
+                <text class="chart-session-label" x="65" y="238">01</text>
+                <text class="chart-session-label" x="165" y="238">02</text>
+                <text class="chart-session-label" x="265" y="238">03</text>
+                <text class="chart-session-label" x="365" y="238">04</text>
+                <text class="chart-session-label" x="465" y="238">05</text>
+            </svg>
+        </section>
+
+        <section class="progress-card" aria-labelledby="current-session-title">
+            <h3 id="current-session-title">CURRENT SESSION</h3>
+            <p class="progress-stat"><span>UPPER-LIMB ACCURACY</span><strong>86%</strong></p>
+            <p class="progress-stat"><span>REPETITIONS</span><strong>10 / 10</strong></p>
+            <p class="progress-stat"><span>BALANCE WEIGHT SHIFT</span><strong>79%</strong></p>
+            <p class="progress-stat"><span>STABILITY</span><strong>82%</strong></p>
+        </section>
+
+        <section class="progress-card overall-card" aria-labelledby="overall-title">
+            <h3 id="overall-title">OVERALL SESSION PERFORMANCE</h3>
+            <div class="overall-score">82%</div>
+
+            <div class="progress-milestones" aria-label="Four sample progress milestones">
+                <span class="milestone" style="--milestone-color:#42caff"></span>
+                <span class="milestone" style="--milestone-color:#ffd166"></span>
+                <span class="milestone" style="--milestone-color:#ff8c69"></span>
+                <span class="milestone" style="--milestone-color:#ff5470"></span>
+            </div>
+
+            <details class="progress-report">
+                <summary>VIEW FULL SESSION REPORT</summary>
+                <p>Sample report: upper-limb accuracy was 86% across 10 repetitions. Balance weight-shift performance was 79%, with a stability score of 82%.</p>
+                <p>These values are illustrative demo data, not clinical measurements.</p>
+            </details>
+        </section>
+    </div>
+</section>
+<section class="history-workspace" id="history-workspace"
+         aria-labelledby="history-title" hidden>
+    <header class="history-header">
+        <div>
+            <h2 id="history-title">REHAB MODE // HISTORICAL TRIALS</h2>
+            <p>SESSION ACTIVITY LOG <span aria-hidden="true">● LIVE</span></p>
+        </div>
+        <button class="history-clear" id="clear-history" type="button">CLEAR HISTORY</button>
+    </header>
+
+    <div class="history-summary">
+        <div><span>TOTAL TRIALS</span><strong id="history-count">0</strong></div>
+        <div><span>LAST ACTIVITY</span><strong id="history-last">—</strong></div>
+    </div>
+
+    <ol class="history-list" id="history-list" aria-live="polite">
+        <li class="history-empty">No trials recorded yet. Complete an exercise to see activity here.</li>
+    </ol>
+
+    <p class="history-note">
+        Activity is saved in this browser. Demo logs are not clinical records or sensor readings.
+    </p>
+</section>
+<dialog class="session-feedback" id="session-feedback" aria-labelledby="feedback-title">
+    <h2 id="feedback-title">SESSION COMPLETE</h2>
+    <p id="feedback-summary"></p>
+    <p id="feedback-detail">
+        These are simulated demo results, not a clinical assessment.
+    </p>
+    <div class="feedback-actions">
+        <button class="start-exercise" id="retry-session" type="button">RUN AGAIN</button>
+        <button class="start-exercise" id="close-feedback" type="button">CLOSE</button>
+    </div>
+</dialog>
+
+<!-- Automatic two-wrist calibration notification dashboard -->
+<div class="calibration-overlay" id="calibration-overlay" role="dialog" aria-modal="true" aria-labelledby="calibration-overlay-title">
+    <section class="calibration-dialog">
+        <p class="calibration-kicker" id="calibration-overlay-kicker">BOTH WRIST SENSORS ONLINE</p>
+        <h2 id="calibration-overlay-title">HIGHEST COMFORTABLE TILT TEST</h2>
+        <div class="calibration-direction-icon" id="calibration-direction-icon">◌</div>
+        <p class="calibration-message" id="calibration-overlay-message">The left and right MPU6050 sensors are connected and receiving data.</p>
+        <div class="calibration-countdown" id="calibration-countdown">3</div>
+        <div class="calibration-timer" id="calibration-timer" hidden>5.0 s</div>
+        <div class="calibration-progress-track" id="calibration-progress-track" hidden>
+            <div class="calibration-progress-fill" id="calibration-progress-fill"></div>
+        </div>
+        <div class="calibration-live-grid calibration-two-wrist-grid" id="calibration-live-grid" hidden>
+            <div class="calibration-live-cell"><span>LEFT CURRENT</span><strong id="calibration-left-current">0.0°</strong></div>
+            <div class="calibration-live-cell"><span>RIGHT CURRENT</span><strong id="calibration-right-current">0.0°</strong></div>
+            <div class="calibration-live-cell"><span>LEFT PEAK</span><strong id="calibration-left-peak">0.0°</strong></div>
+            <div class="calibration-live-cell"><span>RIGHT PEAK</span><strong id="calibration-right-peak">0.0°</strong></div>
+        </div>
+        <div class="calibration-result-grid" id="calibration-result-grid" hidden>
+            <div><span>LEFT UP</span><strong id="result-left-up">—</strong></div>
+            <div><span>LEFT DOWN</span><strong id="result-left-down">—</strong></div>
+            <div><span>LEFT LEFT</span><strong id="result-left-left">—</strong></div>
+            <div><span>LEFT RIGHT</span><strong id="result-left-right">—</strong></div>
+            <div><span>RIGHT UP</span><strong id="result-right-up">—</strong></div>
+            <div><span>RIGHT DOWN</span><strong id="result-right-down">—</strong></div>
+            <div><span>RIGHT LEFT</span><strong id="result-right-left">—</strong></div>
+            <div><span>RIGHT RIGHT</span><strong id="result-right-right">—</strong></div>
+        </div>
+        <p class="calibration-result-message" id="calibration-result-message"></p>
+        <p class="calibration-safety-note">Move only as far as comfortably possible. Do not force your wrist. The system records the greatest comfortable movement detected during each 5-second test.</p>
     </section>
-
+</div>
+    <!-- Legacy compatibility controls kept hidden while REHABO-SG uses the new wrist calibration flow. -->
+    <button id="legacy-game-start" type="button" hidden></button>
+    <button id="pause-exercise" type="button" hidden></button>
+    <button id="reset-exercise" type="button" hidden></button>
+    <span id="repetitions" hidden>0</span>
+    <span id="angle-fill" hidden></span>
+    <span id="speed-fill" hidden></span>
+    <span id="accuracy-fill" hidden></span>
     <script>
-        document.querySelectorAll('a[href^="#"]').forEach((link) => {
-            link.addEventListener("click", (event) => {
-                const targetId = link.getAttribute("href");
-                const target = targetId === "#"
-                    ? document.body
-                    : document.querySelector(targetId);
+      const progressTrack = document.querySelector(".progress-track");
+const progressFill = document.querySelector(".progress-fill");
+const progressValue = document.querySelector(".progress-value");
+const statusMessage = document.querySelector("#status-message");
+const components = document.querySelectorAll("[data-ready-at]");
 
-                if (!target) {
-                    return;
+const trainingWorkspace = document.querySelector("#upper-limb-training");
+const modeMessage = document.querySelector("#mode-message");
+const durationSelect = document.querySelector("#duration-select");
+const timerDisplay = document.querySelector("#session-timer");
+const startButton = document.querySelector("#legacy-game-start");
+const pauseButton = document.querySelector("#pause-exercise");
+const resetButton = document.querySelector("#reset-exercise");
+const targetButton = document.querySelector(".target-button");
+const exerciseInstruction = document.querySelector("#exercise-instruction");
+const repetitionsDisplay = document.querySelector("#repetitions");
+const feedbackDialog = document.querySelector("#session-feedback");
+
+let progress = 0;
+let repetitions = 0;
+let secondsRemaining = 0;
+let timerInterval = null;
+let motionFrame = null;
+let sessionActive = false;
+let sessionPaused = false;
+let selectedType = "REACH";
+let directionIndex = 0;
+
+const exerciseTypes = {
+    REACH: {
+        color: "#39dfa9",
+        instruction: "Reach for the green target."
+    },
+    DIRECTION: {
+        color: "#42caff",
+        instruction: "Follow the direction prompt."
+    },
+    CIRCULAR: {
+        color: "#bd83ff",
+        instruction: "Track and hit the orbiting target."
+    },
+    FOLLOW: {
+        color: "#ffad5c",
+        instruction: "Follow the moving target and tap it."
+    }
+};
+
+const directions = [
+    { label: "UP", x: 50, y: 22 },
+    { label: "RIGHT", x: 78, y: 47 },
+    { label: "DOWN", x: 50, y: 70 },
+    { label: "LEFT", x: 22, y: 47 }
+];
+
+function setTargetPosition(x, y) {
+    targetButton.style.left = `${x}%`;
+    targetButton.style.top = `${y}%`;
+}
+
+function showDirectionPrompt() {
+    const direction = directions[directionIndex % directions.length];
+    exerciseInstruction.textContent = `Reach ${direction.label} for the target.`;
+    setTargetPosition(direction.x, direction.y);
+}
+
+function stopTargetMotion() {
+    if (motionFrame !== null) {
+        cancelAnimationFrame(motionFrame);
+        motionFrame = null;
+    }
+}
+
+function animateTarget(timestamp) {
+    if (!sessionActive || sessionPaused) return;
+
+    if (selectedType === "CIRCULAR") {
+        const angle = timestamp * 0.0018;
+        setTargetPosition(
+            50 + Math.cos(angle) * 28,
+            43 + Math.sin(angle) * 27
+        );
+    } else if (selectedType === "FOLLOW") {
+        setTargetPosition(
+            50 + Math.sin(timestamp * 0.0013) * 33,
+            43 + Math.sin(timestamp * 0.0019 + 1) * 23
+        );
+    } else {
+        return;
+    }
+
+    motionFrame = requestAnimationFrame(animateTarget);
+}
+
+function startTargetMotion() {
+    stopTargetMotion();
+
+    if (selectedType === "CIRCULAR" || selectedType === "FOLLOW") {
+        motionFrame = requestAnimationFrame(animateTarget);
+    } else if (selectedType === "DIRECTION") {
+        showDirectionPrompt();
+    } else {
+        setTargetPosition(20 + Math.random() * 60, 20 + Math.random() * 48);
+    }
+}
+
+// Simulated system initialization
+const initialization = window.setInterval(() => {
+    progress = Math.min(progress + 1, 100);
+    progressFill.style.width = `${progress}%`;
+    progressValue.textContent = `${progress}%`;
+    progressTrack.setAttribute("aria-valuenow", progress);
+
+    components.forEach((component) => {
+        if (progress >= Number(component.dataset.readyAt)) {
+            component.classList.add("ready");
+            component.querySelector(".indicator").textContent = "✓";
+            component.querySelector(".device-state").textContent = "ONLINE";
+        }
+    });
+
+    if (progress === 100) {
+        clearInterval(initialization);
+        statusMessage.textContent = "SYSTEM READY";
+    }
+}, 45);
+
+const balanceWorkspace = document.querySelector("#balance-workspace");
+const progressWorkspace = document.querySelector("#progress-workspace");
+const historyWorkspace = document.querySelector("#history-workspace");
+
+document.querySelectorAll(".mode-card").forEach((card) => {
+    card.addEventListener("click", () => {
+        document.querySelectorAll(".mode-card").forEach((item) => {
+            item.setAttribute("aria-pressed", "false");
+        });
+
+        card.setAttribute("aria-pressed", "true");
+
+        const name = card.querySelector(".mode-name").textContent
+            .replace(/\s+/g, " ")
+            .trim();
+
+        const isUpperLimb = name.includes("UPPER LIMB");
+        const isBalance = name.includes("BALANCE");
+        const isProgress = name.includes("PROGRESS");
+const isHistory = name.includes("HISTORICAL");
+
+modeMessage.textContent = `${name} SELECTED`;
+trainingWorkspace.hidden = !isUpperLimb;
+balanceWorkspace.hidden = !isBalance;
+progressWorkspace.hidden = !isProgress;
+historyWorkspace.hidden = !isHistory;
+
+        const selectedWorkspace = isUpperLimb
+    ? trainingWorkspace
+    : isBalance
+        ? balanceWorkspace
+        : isProgress
+            ? progressWorkspace
+            : isHistory
+                ? historyWorkspace
+                : null;
+
+        selectedWorkspace?.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    });
+});
+const historyList = document.querySelector("#history-list");
+const historyCount = document.querySelector("#history-count");
+const historyLast = document.querySelector("#history-last");
+const historyKey = "rehabo-sg-trial-history";
+
+let trialHistory = [];
+
+try {
+    trialHistory = JSON.parse(localStorage.getItem(historyKey) || "[]");
+    if (!Array.isArray(trialHistory)) trialHistory = [];
+} catch {
+    trialHistory = [];
+}
+
+function renderHistory() {
+    historyCount.textContent = String(trialHistory.length);
+
+    if (trialHistory.length === 0) {
+        historyLast.textContent = "—";
+        historyList.innerHTML =
+            '<li class="history-empty">No trials recorded yet. Complete an exercise to see activity here.</li>';
+        return;
+    }
+
+    historyLast.textContent = new Date(trialHistory[0].time).toLocaleTimeString();
+
+    historyList.innerHTML = trialHistory.map((entry) => `
+        <li class="history-entry">
+            <span><strong>${entry.exercise}</strong> — ${entry.detail}</span>
+            <time datetime="${entry.time}">${new Date(entry.time).toLocaleString()}</time>
+        </li>
+    `).join("");
+}
+
+function recordTrial(exercise, detail) {
+    trialHistory.unshift({
+        exercise,
+        detail,
+        time: new Date().toISOString()
+    });
+
+    trialHistory = trialHistory.slice(0, 100);
+
+    try {
+        localStorage.setItem(historyKey, JSON.stringify(trialHistory));
+    } catch (error) {
+        console.warn("Could not save trial history in this browser.", error);
+    }
+
+    renderHistory();
+}
+
+document.querySelector("#clear-history").addEventListener("click", () => {
+    trialHistory = [];
+    localStorage.removeItem(historyKey);
+    renderHistory();
+});
+
+renderHistory();
+const balanceDuration = document.querySelector("#balance-duration");
+const balanceTimer = document.querySelector("#balance-timer");
+const startBalance = document.querySelector("#start-balance");
+const resetBalance = document.querySelector("#reset-balance");
+const weightInstruction = document.querySelector("#weight-instruction");
+const balanceTargets = document.querySelectorAll(".weight-target");
+
+let balanceInterval = null;
+let balanceRemaining = Number(balanceDuration.value);
+let balanceElapsed = 0;
+let balanceScore = 0;
+let leftShare = 50;
+let requestedSide = "LEFT";
+
+function formatBalanceTime(seconds) {
+    return `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
+}
+
+function updateBalanceDisplay() {
+    document.querySelector("#balance-score").textContent =
+        balanceScore ? `${balanceScore}%` : "—";
+    document.querySelector("#weight-split").textContent =
+        `${leftShare}% / ${100 - leftShare}%`;
+    document.querySelector("#center-deviation").textContent =
+        `${(Math.abs(50 - leftShare) * 0.16).toFixed(1)} cm`;
+    document.querySelector("#balance-elapsed").textContent =
+        formatBalanceTime(balanceElapsed);
+}
+
+function finishBalanceTest() {
+    clearInterval(balanceInterval);
+    balanceInterval = null;
+    balanceTargets.forEach((target) => target.disabled = true);
+
+    document.querySelector("#feedback-title").textContent = "BALANCE TEST COMPLETE";
+    document.querySelector("#feedback-summary").textContent =
+        `Simulated balance score: ${balanceScore}%. Final weight distribution: ${leftShare}% left and ${100 - leftShare}% right.`;
+    feedbackDialog.showModal();
+}
+
+balanceDuration.addEventListener("change", () => {
+    balanceRemaining = Number(balanceDuration.value);
+    balanceTimer.textContent = formatBalanceTime(balanceRemaining);
+});
+
+startBalance.addEventListener("click", () => {
+    clearInterval(balanceInterval);
+    balanceRemaining = Number(balanceDuration.value);
+    balanceElapsed = 0;
+    balanceScore = 0;
+    leftShare = 50;
+
+    balanceTargets.forEach((target) => target.disabled = false);
+    requestedSide = Math.random() < 0.5 ? "LEFT" : "RIGHT";
+    weightInstruction.textContent = `Shift your weight toward the ${requestedSide.toLowerCase()} target.`;
+    balanceTimer.textContent = formatBalanceTime(balanceRemaining);
+    updateBalanceDisplay();
+
+    balanceInterval = window.setInterval(() => {
+        balanceRemaining -= 1;
+        balanceElapsed += 1;
+        balanceTimer.textContent = formatBalanceTime(balanceRemaining);
+        updateBalanceDisplay();
+
+        if (balanceRemaining <= 0) {
+            balanceRemaining = 0;
+            balanceTimer.textContent = "00:00";
+            finishBalanceTest();
+        }
+    }, 1000);
+});
+
+balanceTargets.forEach((target) => {
+    target.addEventListener("click", () => {
+        if (!balanceInterval || target.disabled) return;
+
+        const side = target.dataset.side;
+        leftShare = Math.max(35, Math.min(65, leftShare + (side === "LEFT" ? 4 : -4)));
+
+        if (side === requestedSide) {
+            balanceScore = Math.min(100, balanceScore + 8);
+        } else {
+            balanceScore = Math.max(0, balanceScore - 3);
+        }
+
+        requestedSide = Math.random() < 0.5 ? "LEFT" : "RIGHT";
+        weightInstruction.textContent =
+            `Shift your weight toward the ${requestedSide.toLowerCase()} target.`;
+        updateBalanceDisplay();
+    });
+});
+
+resetBalance.addEventListener("click", () => {
+    clearInterval(balanceInterval);
+    balanceInterval = null;
+    balanceRemaining = Number(balanceDuration.value);
+    balanceElapsed = 0;
+    balanceScore = 0;
+    leftShare = 50;
+
+    balanceTargets.forEach((target) => target.disabled = true);
+    balanceTimer.textContent = formatBalanceTime(balanceRemaining);
+    weightInstruction.textContent = "Choose a duration, then start the test.";
+    updateBalanceDisplay();
+});
+
+// Select the game type and update the target ball
+document.querySelectorAll(".exercise-type").forEach((button) => {
+    button.addEventListener("click", () => {
+        if (sessionActive) return;
+
+        document.querySelectorAll(".exercise-type").forEach((item) => {
+            item.setAttribute("aria-pressed", "false");
+        });
+
+        button.setAttribute("aria-pressed", "true");
+        selectedType = button.textContent.trim();
+        targetButton.style.setProperty(
+            "--target-color",
+            exerciseTypes[selectedType].color
+        );
+        exerciseInstruction.textContent = exerciseTypes[selectedType].instruction;
+    });
+});
+
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainder = seconds % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(remainder).padStart(2, "0")}`;
+}
+
+durationSelect.addEventListener("change", () => {
+    startButton.disabled = !durationSelect.value;
+    timerDisplay.textContent = durationSelect.value
+        ? formatTime(Number(durationSelect.value))
+        : "--:--";
+});
+
+function finishSession() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    stopTargetMotion();
+    sessionActive = false;
+    sessionPaused = false;
+
+    targetButton.disabled = true;
+    durationSelect.disabled = false;
+    startButton.disabled = false;
+    startButton.textContent = "▶ START AGAIN";
+    pauseButton.disabled = true;
+    pauseButton.textContent = "PAUSE";
+    exerciseInstruction.textContent = "Session complete.";
+
+    document.querySelector("#feedback-summary").textContent =
+        `You completed ${repetitions} target hits in a ${durationSelect.value}-second ${selectedType.toLowerCase()} session.`;
+
+    feedbackDialog.showModal();
+}
+
+function tickSession() {
+    secondsRemaining -= 1;
+    timerDisplay.textContent = formatTime(secondsRemaining);
+
+    if (secondsRemaining <= 0) {
+        secondsRemaining = 0;
+        timerDisplay.textContent = formatTime(0);
+        finishSession();
+    }
+}
+
+startButton.addEventListener("click", () => {
+    const duration = Number(durationSelect.value);
+    if (!duration) return;
+
+    clearInterval(timerInterval);
+    stopTargetMotion();
+
+    repetitions = 0;
+    directionIndex = 0;
+    secondsRemaining = duration;
+    sessionActive = true;
+    sessionPaused = false;
+
+    repetitionsDisplay.textContent = "0";
+    timerDisplay.textContent = formatTime(secondsRemaining);
+    targetButton.disabled = false;
+    durationSelect.disabled = true;
+    startButton.disabled = true;
+    pauseButton.disabled = false;
+    pauseButton.textContent = "PAUSE";
+
+    exerciseInstruction.textContent = exerciseTypes[selectedType].instruction;
+    startTargetMotion();
+    timerInterval = window.setInterval(tickSession, 1000);
+});
+
+pauseButton.addEventListener("click", () => {
+    if (!sessionActive) return;
+
+    if (!sessionPaused) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        sessionPaused = true;
+        stopTargetMotion();
+        targetButton.disabled = true;
+        pauseButton.textContent = "RESUME";
+        exerciseInstruction.textContent = "Session paused.";
+    } else {
+        sessionPaused = false;
+        targetButton.disabled = false;
+        pauseButton.textContent = "PAUSE";
+        exerciseInstruction.textContent = exerciseTypes[selectedType].instruction;
+        startTargetMotion();
+        timerInterval = window.setInterval(tickSession, 1000);
+    }
+});
+
+resetButton.addEventListener("click", () => {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    stopTargetMotion();
+
+    sessionActive = false;
+    sessionPaused = false;
+    repetitions = 0;
+    directionIndex = 0;
+    secondsRemaining = Number(durationSelect.value) || 0;
+
+    repetitionsDisplay.textContent = "0";
+    timerDisplay.textContent = secondsRemaining
+        ? formatTime(secondsRemaining)
+        : "--:--";
+
+    targetButton.disabled = true;
+    durationSelect.disabled = false;
+    startButton.disabled = !durationSelect.value;
+    startButton.textContent = "▶ START EXERCISE";
+    pauseButton.disabled = true;
+    pauseButton.textContent = "PAUSE";
+    exerciseInstruction.textContent = exerciseTypes[selectedType].instruction;
+});
+
+targetButton.addEventListener("click", () => {
+    // Sensor-controlled mode.
+    // Repetitions are registered automatically
+    // when the wrist cursor reaches the target.
+    return;
+});
+
+document.querySelector("#close-feedback").addEventListener("click", () => {
+    feedbackDialog.close();
+});
+
+document.querySelector("#retry-session").addEventListener("click", () => {
+    feedbackDialog.close();
+    startButton.click();
+});
+        // ==========================================
+// SENSOR BUTTON CONNECTION
+// ==========================================
+
+// Web Serial connection buttons
+// Keep requestPort() directly tied to the user's button click so
+// Chrome can open the USB/Serial port chooser.
+document.getElementById("connect-left").addEventListener("click", async () => {
+    console.log("LEFT SENSOR BUTTON CLICKED");
+    await connectSensor("LEFT");
+});
+
+document.getElementById("connect-right").addEventListener("click", async () => {
+    console.log("RIGHT SENSOR BUTTON CLICKED");
+    await connectSensor("RIGHT");
+});
+    </script>
+
+<script>
+let leftPort = null;
+let rightPort = null;
+    let leftPitch = 0;
+let leftRoll = 0;
+
+let gameCursorX = 50;
+let gameCursorY = 50;
+    
+let targetHitCooldown = false;
+    
+const GAME_MIN_X = 10;
+const GAME_MAX_X = 90;
+const GAME_MIN_Y = 15;
+const GAME_MAX_Y = 80;
+
+const CURSOR_SENSITIVITY = 0.8;
+
+const sensorBuffers = {
+    LEFT: "",
+    RIGHT: ""
+};
+
+const sensorDecoders = {
+    LEFT: new TextDecoder(),
+    RIGHT: new TextDecoder()
+};
+
+window.connectSensor = connectSensor;
+
+async function connectSensor(side) {
+    const button = document.getElementById(side === "LEFT" ? "connect-left" : "connect-right");
+    const status = document.getElementById("serial-status");
+
+    try {
+        // Web Serial only works in supported browsers and secure contexts.
+        if (!("serial" in navigator)) {
+            if (status) status.textContent = "● WEB SERIAL NOT SUPPORTED — USE GOOGLE CHROME";
+            alert("Web Serial is not supported in this browser. Please use Google Chrome or Microsoft Edge.");
+            return;
+        }
+
+        if (!window.isSecureContext) {
+            if (status) status.textContent = "● SERIAL REQUIRES HTTPS OR LOCALHOST";
+            alert("Chrome only allows Web Serial on HTTPS or localhost. Open this page through a local server or an HTTPS website (such as GitHub Pages).");
+            return;
+        }
+
+        // Do not allow the same USB/Serial port to be assigned to both wrists.
+        const existingPort = side === "LEFT" ? rightPort : leftPort;
+        const port = await navigator.serial.requestPort();
+
+        if (existingPort && port === existingPort) {
+            if (status) status.textContent = "● PORT ALREADY ASSIGNED TO THE OTHER WRIST";
+            alert("That serial port is already connected to the other wrist sensor. Choose the other ESP32 port.");
+            return;
+        }
+
+        if (port.readable || port.writable) {
+            // The selected port may already be open by this page.
+            if (port.readable || port.writable) {
+                try {
+                    await port.close();
+                } catch (_) {
+                    // Ignore close errors; open() below will report a real failure.
+                }
+            }
+        }
+
+        if (button) {
+            button.disabled = true;
+            button.textContent = "SELECTED — CONNECTING...";
+        }
+        if (status) status.textContent = "● CONNECTING " + side + " SENSOR...";
+
+        // ESP32 firmware sends newline-delimited JSON at 115200 baud.
+        await port.open({ baudRate: 115200 });
+
+        if (side === "LEFT") {
+            leftPort = port;
+        } else {
+            rightPort = port;
+        }
+
+        if (button) {
+            button.disabled = false;
+            button.textContent = "✓ " + side + " SENSOR CONNECTED";
+        }
+
+        updateConnectionStatus();
+        readSensorData(port, side);
+
+    } catch (error) {
+        console.error(side + " connection error:", error);
+
+        if (button) {
+            button.disabled = false;
+            button.textContent = "CONNECT " + side + " SENSOR";
+        }
+
+        if (status) {
+            if (error && error.name === "NotFoundError") {
+                status.textContent = "● NO " + side + " SENSOR SELECTED";
+            } else if (error && error.name === "InvalidStateError") {
+                status.textContent = "● " + side + " PORT IS ALREADY OPEN";
+            } else {
+                status.textContent = "● " + side + " SENSOR ERROR";
+            }
+        }
+    }
+}
+
+function updateConnectionStatus() {
+    const status = document.getElementById("serial-status");
+    if (!status) return;
+
+    const leftChip = document.getElementById("left-sensor-chip");
+    const rightChip = document.getElementById("right-sensor-chip");
+    if (leftChip) leftChip.textContent = leftPort ? "CONNECTED" : "READY";
+    if (rightChip) rightChip.textContent = rightPort ? "CONNECTED" : "READY";
+
+    if (leftPort && rightPort) {
+        status.textContent = "● LEFT + RIGHT SENSORS CONNECTED";
+    } else if (leftPort) {
+        status.textContent = "● LEFT SENSOR CONNECTED";
+    } else if (rightPort) {
+        status.textContent = "● RIGHT SENSOR CONNECTED";
+    } else {
+        status.textContent = "● SENSORS DISCONNECTED";
+    }
+}
+
+// Restore ports that Chrome has already granted to this website.
+// A new port still requires clicking the corresponding CONNECT button.
+async function restoreGrantedPorts() {
+    if (!("serial" in navigator) || !window.isSecureContext) return;
+
+    try {
+        const ports = await navigator.serial.getPorts();
+        if (!ports.length) return;
+
+        console.log("Previously granted serial ports:", ports.length);
+        // We intentionally do not auto-assign ports to LEFT/RIGHT because
+        // the website cannot safely know which physical wrist a port belongs to.
+    } catch (error) {
+        console.warn("Could not read previously granted serial ports:", error);
+    }
+}
+
+restoreGrantedPorts();
+
+async function readSensorData(port, side) {
+    const reader = port.readable.getReader();
+    try {
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            if (!value) continue;
+
+            sensorBuffers[side] += sensorDecoders[side].decode(value, { stream: true });
+            const lines = sensorBuffers[side].split("\n");
+            sensorBuffers[side] = lines.pop();
+
+            for (const line of lines) {
+                const text = line.trim();
+                if (!text || !text.startsWith("{")) continue;
+
+                try {
+                    const parsed = JSON.parse(text);
+                    // The CONNECT button determines which wrist this serial stream belongs to.
+                    // This prevents a missing/wrong side field in the ESP32 JSON from sending
+                    // RIGHT-wrist readings into the LEFT calibration bucket.
+                    const data = { ...parsed, side };
+                    updateLiveDashboard(data);
+
+                    const debugBox = document.getElementById("sensor-data");
+                    if (debugBox) {
+                        debugBox.textContent = JSON.stringify(data, null, 2);
+                    }
+
+                    const status = document.getElementById("serial-status");
+                    if (status) {
+                        status.textContent = "● " + side + " SENSOR: RECEIVING DATA";
+                    }
+                } catch (error) {
+                    console.warn("Invalid JSON from " + side + ":", text);
+                }
+            }
+        }
+    } catch (error) {
+        console.error(side + " serial read error:", error);
+        const status = document.getElementById("serial-status");
+        if (status) {
+            status.textContent = "● " + side + " SENSOR READ ERROR";
+        }
+    }
+}
+
+function updateLiveDashboard(data) {
+    window.__rehaboLatestSensorData = window.__rehaboLatestSensorData || { LEFT: null, RIGHT: null };
+    if (data && data.side) window.__rehaboLatestSensorData[String(data.side).toUpperCase()] = data;
+    if (typeof window.__rehaboCalibrationSensorUpdate === "function") window.__rehaboCalibrationSensorUpdate(data);
+    if (!data || !data.side) return;
+
+    const side = String(data.side).toUpperCase();
+
+    if (side !== "LEFT" && side !== "RIGHT") return;
+
+    const prefix = side === "LEFT" ? "left" : "right";
+
+    const angle = document.getElementById(prefix + "-angle");
+    const angular = document.getElementById(prefix + "-angular");
+    const acceleration = document.getElementById(prefix + "-acceleration");
+    const direction = document.getElementById(prefix + "-direction");
+    const state = document.getElementById(prefix + "-state");
+
+    if (angle && Number.isFinite(Number(data.angle))) {
+        angle.textContent = Number(data.angle).toFixed(1) + "°";
+    }
+
+    if (angular && Number.isFinite(Number(data.angularVelocity))) {
+        angular.textContent =
+            Number(data.angularVelocity).toFixed(2) + " °/s";
+    }
+
+    if (acceleration && Number.isFinite(Number(data.acceleration))) {
+        acceleration.textContent =
+            Number(data.acceleration).toFixed(2) + " m/s²";
+    }
+
+    if (direction) {
+        direction.textContent = data.direction ?? "Neutral";
+    }
+
+    if (state) {
+        state.textContent = data.state ?? "Idle";
+    }
+
+    const pitchLive = document.getElementById(prefix + "-pitch-live");
+    const rollLive = document.getElementById(prefix + "-roll-live");
+    const directionLive = document.getElementById(prefix + "-direction-live");
+    const stateLive = document.getElementById(prefix + "-state-live");
+
+    if (pitchLive && Number.isFinite(Number(data.pitch))) {
+        pitchLive.textContent = Number(data.pitch).toFixed(1) + "°";
+    }
+    if (rollLive && Number.isFinite(Number(data.roll))) {
+        rollLive.textContent = Number(data.roll).toFixed(1) + "°";
+    }
+    if (directionLive) {
+        directionLive.textContent = data.direction ?? "Neutral";
+    }
+    if (stateLive) {
+        stateLive.textContent = data.state ?? "Idle";
+    }
+
+    // ==============================
+    // LEFT WRIST GAME CONTROL
+    // ==============================
+    if (side === "LEFT") {
+
+    if (Number.isFinite(Number(data.pitch))) {
+        leftPitch = Number(data.pitch);
+    }
+
+    if (Number.isFinite(Number(data.roll))) {
+        leftRoll = Number(data.roll);
+    }
+}
+
+// CLOSE updateLiveDashboard()
+}
+// ==========================================
+// SMOOTH CURSOR VARIABLES
+// ==========================================
+    
+// ==========================================
+// CURSOR CONTROL
+// ==========================================
+
+let smoothHorizontal = 0;
+let smoothVertical = 0;
+
+function updateGameCursor() {
+
+    if (!sessionActive || sessionPaused) return;
+
+    const cursor = document.getElementById("game-cursor");
+    if (!cursor) return;
+
+    // ==========================================
+    // CURSOR SETTINGS
+    // ==========================================
+
+    // Small deadzone so tiny sensor noise does not move the cursor
+    const HORIZONTAL_DEADZONE = 0.5;
+    const VERTICAL_DEADZONE = 0.8;
+
+    // Sensitivity for each axis
+    // Roll  = LEFT / RIGHT
+    // Pitch = UP / DOWN
+    const HORIZONTAL_SENSITIVITY = 2.0;
+    const VERTICAL_SENSITIVITY = 1.5;
+
+    // Higher = faster response
+    // Lower = smoother
+    const SMOOTHING = 0.40;
+
+    // Overall cursor speed
+    const CURSOR_SPEED = 1.2;
+
+
+    // ==========================================
+    // GET MPU6050 MOVEMENT
+    // ==========================================
+
+    let horizontal = Number(leftRoll);
+    let vertical = Number(leftPitch);
+
+
+    // ==========================================
+    // DEADZONE
+    // ==========================================
+
+    if (Math.abs(horizontal) < HORIZONTAL_DEADZONE) {
+        horizontal = 0;
+    }
+
+    if (Math.abs(vertical) < VERTICAL_DEADZONE) {
+        vertical = 0;
+    }
+
+
+    // ==========================================
+    // SENSITIVITY
+    // ==========================================
+
+    horizontal *= HORIZONTAL_SENSITIVITY;
+    vertical *= VERTICAL_SENSITIVITY;
+
+
+    // ==========================================
+    // SMOOTHING
+    // ==========================================
+
+    smoothHorizontal +=
+        (horizontal - smoothHorizontal) * SMOOTHING;
+
+    smoothVertical +=
+        (vertical - smoothVertical) * SMOOTHING;
+
+
+    // ==========================================
+    // MOVE CURSOR
+    // ==========================================
+
+    gameCursorX +=
+        smoothHorizontal * CURSOR_SPEED * 0.10;
+
+    gameCursorY -=
+        smoothVertical * CURSOR_SPEED * 0.10;
+
+
+    // ==========================================
+    // KEEP CURSOR INSIDE GAME
+    // ==========================================
+
+    gameCursorX = Math.max(
+        GAME_MIN_X,
+        Math.min(GAME_MAX_X, gameCursorX)
+    );
+
+    gameCursorY = Math.max(
+        GAME_MIN_Y,
+        Math.min(GAME_MAX_Y, gameCursorY)
+    );
+
+
+    // ==========================================
+    // UPDATE CURSOR POSITION
+    // ==========================================
+
+    cursor.style.left = `${gameCursorX}%`;
+    cursor.style.top = `${gameCursorY}%`;
+
+
+    // ==========================================
+    // CHECK TARGET
+    // ==========================================
+
+    checkTargetCollision();
+}
+function checkTargetCollision() {
+
+    if (!sessionActive || sessionPaused) return;
+    if (targetButton.disabled) return;
+    if (targetHitCooldown) return;
+
+    const targetRect = targetButton.getBoundingClientRect();
+    const stageRect = targetButton.parentElement.getBoundingClientRect();
+
+    const targetX =
+        ((targetRect.left + targetRect.width / 2 - stageRect.left)
+        / stageRect.width) * 100;
+
+    const targetY =
+        ((targetRect.top + targetRect.height / 2 - stageRect.top)
+        / stageRect.height) * 100;
+
+    const dx = gameCursorX - targetX;
+    const dy = gameCursorY - targetY;
+
+    const distance = Math.sqrt(
+        (dx * dx) + (dy * dy)
+    );
+
+    if (distance <= HIT_DISTANCE) {
+        registerSensorHit();
+    }
+}
+function registerSensorHit() {
+
+    // Prevent multiple hits from the same touch
+    if (targetHitCooldown) return;
+
+    targetHitCooldown = true;
+
+    // ==========================================
+    // INCREASE REPETITION
+    // ==========================================
+
+    repetitions += 1;
+    repetitionsDisplay.textContent = repetitions;
+
+
+    // ==========================================
+    // CALCULATE SENSOR RESULTS
+    // ==========================================
+
+    const angle = Math.min(
+        180,
+        Math.round(
+            Math.sqrt(
+                leftPitch * leftPitch +
+                leftRoll * leftRoll
+            )
+        )
+    );
+
+    const speed = Math.min(
+        1.5,
+        Math.max(
+            0,
+            Number(
+                document.getElementById("left-angular")?.textContent
+                    .replace(" °/s", "")
+            ) / 100
+        )
+    );
+
+    const accuracy = Math.max(
+        0,
+        Math.min(
+            100,
+            Math.round(100 - (distanceFromTarget() * 10))
+        )
+    );
+
+
+    // ==========================================
+    // UPDATE PERFORMANCE BARS
+    // ==========================================
+
+    document.querySelector("#angle-fill").style.width =
+        `${Math.min(100, angle / 1.8)}%`;
+
+    document.querySelector("#speed-fill").style.width =
+        `${Math.min(100, speed / 1.5 * 100)}%`;
+
+    document.querySelector("#accuracy-fill").style.width =
+        `${accuracy}%`;
+
+
+    // ==========================================
+    // HIDE CURRENT GREEN BALL
+    // ==========================================
+
+    targetButton.style.visibility = "hidden";
+
+
+    // ==========================================
+    // CREATE NEXT TARGET
+    // ==========================================
+
+    setTimeout(() => {
+
+        // Make sure the exercise is still running
+        if (!sessionActive || sessionPaused) {
+            targetHitCooldown = false;
+            return;
+        }
+
+        // New random position
+        if (selectedType === "REACH") {
+
+            setTargetPosition(
+                20 + Math.random() * 60,
+                20 + Math.random() * 48
+            );
+
+            exerciseInstruction.textContent =
+                "Great! Reach for the next target.";
+        }
+
+        // Show the new green ball
+        targetButton.style.visibility = "visible";
+
+        // Allow another hit
+        targetHitCooldown = false;
+
+    }, 300);
+}
+function distanceFromTarget() {
+
+    const targetRect = targetButton.getBoundingClientRect();
+    const stageRect = targetButton.parentElement.getBoundingClientRect();
+
+    const targetX =
+        ((targetRect.left + targetRect.width / 2 - stageRect.left)
+        / stageRect.width) * 100;
+
+    const targetY =
+        ((targetRect.top + targetRect.height / 2 - stageRect.top)
+        / stageRect.height) * 100;
+
+    const dx = gameCursorX - targetX;
+    const dy = gameCursorY - targetY;
+
+    return Math.sqrt(
+        (dx * dx) + (dy * dy)
+    );
+}
+
+
+// ==========================================
+// CONTINUOUS CURSOR UPDATE
+// ==========================================
+
+function cursorAnimationLoop() {
+    updateGameCursor();
+    requestAnimationFrame(cursorAnimationLoop);
+}
+
+requestAnimationFrame(cursorAnimationLoop);
+</script>
+
+<script>
+/* =========================================================
+   REHABO-SG AUTOMATIC TWO-WRIST CALIBRATION ENGINE
+   Starts automatically when BOTH MPU6050 sensors are online.
+   Each direction: 3s preparation/countdown -> 5s measurement -> 2s transition.
+   Movement is normalized to each wrist's neutral baseline.
+   ========================================================= */
+(() => {
+    const overlay = document.getElementById("calibration-overlay");
+    const title = document.getElementById("calibration-overlay-title");
+    const kicker = document.getElementById("calibration-overlay-kicker");
+    const message = document.getElementById("calibration-overlay-message");
+    const countdownEl = document.getElementById("calibration-countdown");
+    const timerText = document.getElementById("calibration-timer");
+    const progressTrack = document.getElementById("calibration-progress-track");
+    const progressFill = document.getElementById("calibration-progress-fill");
+    const liveGrid = document.getElementById("calibration-live-grid");
+    const resultGrid = document.getElementById("calibration-result-grid");
+    const resultMessage = document.getElementById("calibration-result-message");
+    const directionIcon = document.getElementById("calibration-direction-icon");
+    const manualCalibrationButton = document.getElementById("manual-calibrate-button");
+    const manualCalibrationNote = document.getElementById("manual-calibration-note");
+
+    const directions = [
+        { key: "UP", label: "UP", icon: "↑", axis: "pitch", sign: 1 },
+        { key: "DOWN", label: "DOWN", icon: "↓", axis: "pitch", sign: -1 },
+        { key: "LEFT", label: "LEFT", icon: "←", axis: "roll", sign: -1 },
+        { key: "RIGHT", label: "RIGHT", icon: "→", axis: "roll", sign: 1 }
+    ];
+
+    const peaks = {
+        LEFT: { UP: null, DOWN: null, LEFT: null, RIGHT: null },
+        RIGHT: { UP: null, DOWN: null, LEFT: null, RIGHT: null }
+    };
+
+    // Average all valid movement readings collected during the four calibration directions.
+    // Missing/invalid packets are not counted as zero.
+    const calibrationAverageSums = { LEFT: 0, RIGHT: 0 };
+    const calibrationAverageCounts = { LEFT: 0, RIGHT: 0 };
+
+    function resetCalibrationAverages() {
+        calibrationAverageSums.LEFT = 0;
+        calibrationAverageSums.RIGHT = 0;
+        calibrationAverageCounts.LEFT = 0;
+        calibrationAverageCounts.RIGHT = 0;
+    }
+
+    const neutral = {
+        LEFT: { pitch: null, roll: null },
+        RIGHT: { pitch: null, roll: null }
+    };
+
+    // Each wrist can be mounted in a mirrored orientation. The raw MPU6050
+    // pitch/roll sign may therefore be opposite between LEFT and RIGHT.
+    // These signs are learned during calibration so both wrists can use the
+    // same UP/DOWN/LEFT/RIGHT instructions.
+    const orientationSign = {
+        LEFT: { pitch: 1, roll: 1 },
+        RIGHT: { pitch: 1, roll: 1 }
+    };
+    const signedExtremes = {
+        LEFT: { pitch: { value: 0, abs: 0 }, roll: { value: 0, abs: 0 } },
+        RIGHT: { pitch: { value: 0, abs: 0 }, roll: { value: 0, abs: 0 } }
+    };
+
+    const PREP_SECONDS = 0;
+    const MEASURE_MS = 5000;
+    const TRANSITION_SECONDS = 2;
+    const DATA_TIMEOUT_MS = 2000;
+
+    let running = false;
+    let waitingForBoth = false;
+    let directionIndex = 0;
+    let phase = "IDLE";
+    let measureStart = 0;
+    let countdownTimer = null;
+    let transitionTimer = null;
+    let measureFrame = null;
+    let latest = { LEFT: null, RIGHT: null };
+
+    window.__rehaboCalibrationResults = peaks;
+
+    function setText(id, value) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value;
+    }
+
+    function showOverlay() {
+        overlay.classList.add("active");
+        overlay.setAttribute("aria-hidden", "false");
+    }
+
+    function hideOverlay() {
+        overlay.classList.remove("active");
+        overlay.setAttribute("aria-hidden", "true");
+    }
+
+    function stopTimers() {
+        clearInterval(countdownTimer);
+        clearInterval(transitionTimer);
+        if (measureFrame !== null) cancelAnimationFrame(measureFrame);
+        countdownTimer = null;
+        transitionTimer = null;
+        measureFrame = null;
+    }
+
+    function resetPeaks() {
+        resetCalibrationAverages();
+        for (const side of ["LEFT", "RIGHT"]) {
+            for (const d of directions) peaks[side][d.key] = null;
+            neutral[side].pitch = null;
+            neutral[side].roll = null;
+            orientationSign[side].pitch = 1;
+            orientationSign[side].roll = 1;
+            signedExtremes[side].pitch.value = 0;
+            signedExtremes[side].pitch.abs = 0;
+            signedExtremes[side].roll.value = 0;
+            signedExtremes[side].roll.abs = 0;
+        }
+    }
+
+    function sensorFresh(side) {
+        const data = latest[side];
+        if (!data || !Number.isFinite(Number(data.pitch)) || !Number.isFinite(Number(data.roll))) return false;
+        if (Number.isFinite(data._receivedAt)) return Date.now() - data._receivedAt <= DATA_TIMEOUT_MS;
+        return true;
+    }
+
+    function bothSensorsOnline() {
+        return sensorFresh("LEFT") && sensorFresh("RIGHT");
+    }
+
+    function captureNeutral() {
+        for (const side of ["LEFT", "RIGHT"]) {
+            if (sensorFresh(side)) {
+                neutral[side].pitch = Number(latest[side].pitch);
+                neutral[side].roll = Number(latest[side].roll);
+            } else {
+                neutral[side].pitch = null;
+                neutral[side].roll = null;
+            }
+        }
+    }
+
+    // Capture a short neutral window for EACH wrist independently.
+    // One wrist can arrive a little later than the other without cancelling calibration.
+    function captureNeutralWindow(done) {
+        const samples = { LEFT: [], RIGHT: [] };
+        const start = performance.now();
+        const windowMs = 500;
+        phase = "NEUTRAL";
+        message.textContent = "Hold BOTH wrists in a comfortable neutral position. Preparing the baseline...";
+
+        function sample(now) {
+            if (!running) return;
+
+            for (const side of ["LEFT", "RIGHT"]) {
+                const data = latest[side];
+                if (data && Number.isFinite(Number(data.pitch)) && Number.isFinite(Number(data.roll))) {
+                    samples[side].push({
+                        pitch: Number(data.pitch),
+                        roll: Number(data.roll)
+                    });
+                }
+            }
+
+            if (now - start >= windowMs) {
+                for (const side of ["LEFT", "RIGHT"]) {
+                    if (samples[side].length) {
+                        neutral[side].pitch = samples[side].reduce((sum, v) => sum + v.pitch, 0) / samples[side].length;
+                        neutral[side].roll = samples[side].reduce((sum, v) => sum + v.roll, 0) / samples[side].length;
+                    } else {
+                        neutral[side].pitch = null;
+                        neutral[side].roll = null;
+                    }
+                }
+                done();
+                return;
+            }
+            requestAnimationFrame(sample);
+        }
+        requestAnimationFrame(sample);
+    }
+
+    function rawAxisDelta(side, axis) {
+        const data = latest[side];
+        if (!data || neutral[side][axis] === null) return null;
+        const value = Number(data[axis]);
+        if (!Number.isFinite(value)) return null;
+        return value - neutral[side][axis];
+    }
+
+    function directionalMovement(side, direction) {
+        const raw = rawAxisDelta(side, direction.axis);
+        if (raw === null) return 0;
+
+        // During calibration we care about the magnitude of the comfortable
+        // movement. This also makes calibration work when the RIGHT MPU6050
+        // is physically mirrored and reports the opposite sign.
+        return Math.abs(raw);
+    }
+
+    function updateCurrentReadouts(direction) {
+        for (const side of ["LEFT", "RIGHT"]) {
+            const movement = directionalMovement(side, direction);
+            setText(side === "LEFT" ? "calibration-left-current" : "calibration-right-current", movement.toFixed(1) + "°");
+            const peak = peaks[side][direction.key];
+            setText(side === "LEFT" ? "calibration-left-peak" : "calibration-right-peak", (peak ?? 0).toFixed(1) + "°");
+        }
+    }
+
+    function resetLivePanel() {
+        setText("calibration-left-current", "0.0°");
+        setText("calibration-right-current", "0.0°");
+        setText("calibration-left-peak", "0.0°");
+        setText("calibration-right-peak", "0.0°");
+    }
+
+    function countdown(seconds, done) {
+        let remaining = seconds;
+        countdownEl.textContent = String(remaining);
+        clearInterval(countdownTimer);
+        countdownTimer = setInterval(() => {
+            remaining -= 1;
+            countdownEl.textContent = remaining > 0 ? String(remaining) : "GO";
+            if (remaining <= 0) {
+                clearInterval(countdownTimer);
+                countdownTimer = null;
+                setTimeout(done, 350);
+            }
+        }, 1000);
+    }
+
+    function prepareDirection(direction) {
+        if (!running) return;
+        phase = "PREPARE";
+        directionIcon.textContent = direction.icon;
+        title.textContent = "MOVE YOUR WRIST " + direction.label;
+        kicker.textContent = "HIGHEST COMFORTABLE TILT TEST";
+        message.textContent = "Move BOTH wrists " + direction.label.toLowerCase() + " as far as comfortably possible. Do not force the movement.";
+        timerText.hidden = true;
+        progressTrack.hidden = true;
+        liveGrid.hidden = true;
+        resultGrid.hidden = true;
+        resultMessage.textContent = "";
+        resetLivePanel();
+        // Get a fresh neutral baseline immediately before every 5-second direction test.
+        captureNeutralWindow(() => startMeasurement(direction));
+    }
+
+    function startMeasurement(direction) {
+        // Manual calibration is allowed to run regardless of sensor connection state.
+        // Each wrist is measured independently; a missing wrist records 0° rather than
+        // preventing the other wrist from being calibrated.
+        if (!running) return;
+        phase = "MEASURE";
+        measureStart = performance.now();
+        peaks.LEFT[direction.key] = 0;
+        peaks.RIGHT[direction.key] = 0;
+        timerText.hidden = false;
+        progressTrack.hidden = false;
+        liveGrid.hidden = false;
+        message.textContent = "MOVE BOTH WRISTS " + direction.label + " NOW. The highest comfortable movement will be recorded.";
+
+        function frame(now) {
+            if (!running) return;
+            // Manual calibration must never abort just because a serial packet
+            // is briefly delayed. Use the latest valid reading from each wrist.
+            const elapsed = now - measureStart;
+            const percent = Math.min(100, elapsed / MEASURE_MS * 100);
+            const remaining = Math.max(0, (MEASURE_MS - elapsed) / 1000);
+            progressFill.style.width = percent + "%";
+            timerText.textContent = remaining.toFixed(1) + " s";
+
+            for (const side of ["LEFT", "RIGHT"]) {
+                const raw = rawAxisDelta(side, direction.axis);
+                const movement = raw === null ? 0 : Math.abs(raw);
+
+                if (raw !== null && Number.isFinite(movement)) {
+                    calibrationAverageSums[side] += movement;
+                    calibrationAverageCounts[side] += 1;
                 }
 
-                event.preventDefault();
-                target.scrollIntoView({ behavior: "smooth", block: "start" });
-                history.replaceState(null, "", targetId);
-            });
-        });
-    </script>
+                // Keep the largest signed excursion too. This lets us learn
+                // whether this wrist's sensor axis is mirrored.
+                if (raw !== null && movement > signedExtremes[side][direction.axis].abs) {
+                    signedExtremes[side][direction.axis].abs = movement;
+                    signedExtremes[side][direction.axis].value = raw;
+                }
+
+                if (movement > (peaks[side][direction.key] ?? 0)) {
+                    peaks[side][direction.key] = movement;
+                }
+            }
+            updateCurrentReadouts(direction);
+
+            if (elapsed >= MEASURE_MS) {
+                measureFrame = null;
+                completeDirection(direction);
+                return;
+            }
+            measureFrame = requestAnimationFrame(frame);
+        }
+        measureFrame = requestAnimationFrame(frame);
+    }
+
+    function completeDirection(direction) {
+        // Learn the sign of this wrist's physical axis from the largest
+        // excursion just recorded. UP/DOWN establish pitch orientation;
+        // LEFT/RIGHT establish roll orientation.
+        for (const side of ["LEFT", "RIGHT"]) {
+            const axis = direction.axis;
+            const extreme = signedExtremes[side][axis];
+            if (extreme.abs > 1) {
+                orientationSign[side][axis] = extreme.value >= 0 ? 1 : -1;
+            }
+        }
+
+        phase = "TRANSITION";
+        timerText.textContent = "DONE";
+        progressFill.style.width = "100%";
+        message.textContent = direction.label + " recorded. Return both wrists toward neutral and prepare for the next direction.";
+        resultMessage.textContent = "LEFT: " + peaks.LEFT[direction.key].toFixed(1) + "°   |   RIGHT: " + peaks.RIGHT[direction.key].toFixed(1) + "°";
+        updateStaticResult(direction);
+
+        let remaining = TRANSITION_SECONDS;
+        countdownEl.textContent = "✓";
+        clearInterval(transitionTimer);
+        transitionTimer = setInterval(() => {
+            remaining -= 1;
+            if (remaining <= 0) {
+                clearInterval(transitionTimer);
+                transitionTimer = null;
+                directionIndex += 1;
+                if (directionIndex >= directions.length) finishCalibration();
+                else prepareDirection(directions[directionIndex]);
+            } else {
+                countdownEl.textContent = String(remaining);
+            }
+        }, 1000);
+    }
+
+    function updateStaticResult(direction) {
+        const map = {
+            LEFT: {
+                UP: ["result-left-up", "peak-left-up"],
+                DOWN: ["result-left-down", "peak-left-down"],
+                LEFT: ["result-left-left", "peak-left-left"],
+                RIGHT: ["result-left-right", "peak-left-right"]
+            },
+            RIGHT: {
+                UP: ["result-right-up", "peak-right-up"],
+                DOWN: ["result-right-down", "peak-right-down"],
+                LEFT: ["result-right-left", "peak-right-left"],
+                RIGHT: ["result-right-right", "peak-right-right"]
+            }
+        };
+
+        for (const side of ["LEFT", "RIGHT"]) {
+            const value = Number(peaks[side][direction.key] ?? 0);
+            const text = value.toFixed(1) + "°";
+            const resultId = map[side][direction.key][0];
+            const peakId = map[side][direction.key][1];
+            setText(resultId, text);
+            setText(peakId, text);
+            setText(peakId + "-status", "RECORDED");
+
+            const card = document.getElementById(peakId + "-card");
+            if (card) card.classList.add("complete");
+        }
+    }
+
+    function getPersonalizedGameLevel(bilateralAverage) {
+        if (!Number.isFinite(bilateralAverage)) return null;
+
+        // Researcher-defined prototype categories; these are not clinical standards.
+        if (bilateralAverage <= 20) return { level: 1, name: "GARDEN ADVENTURE" };
+        if (bilateralAverage <= 40) return { level: 2, name: "TREASURE HUNT" };
+        if (bilateralAverage <= 60) return { level: 3, name: "SKY PILOT" };
+        if (bilateralAverage <= 80) return { level: 4, name: "SPACE ESCAPE" };
+        return { level: 5, name: "NINJA DODGE" };
+    }
+
+    function applyPersonalizedGameLevel(level, bilateralAverage) {
+        const game = document.getElementById("personalized-game");
+        const titleEl = document.getElementById("personalized-game-title");
+        const levelEl = document.getElementById("personalized-game-level");
+        const averageEl = document.getElementById("personalized-game-average");
+        const instructionEl = document.getElementById("personalized-game-instruction");
+        if (!game || !titleEl || !levelEl || !averageEl || !instructionEl) return;
+
+        const gameInfo = {
+            1: { name: "GARDEN ADVENTURE", instruction: "Explore the garden using comfortable wrist movements." },
+            2: { name: "TREASURE HUNT", instruction: "Move your wrist to explore and discover hidden treasure." },
+            3: { name: "SKY PILOT", instruction: "Guide the aircraft through the sky using wrist movements." },
+            4: { name: "SPACE ESCAPE", instruction: "Navigate through space and avoid incoming obstacles." },
+            5: { name: "NINJA DODGE", instruction: "Move quickly and accurately to dodge incoming objects." }
+        };
+
+        const info = gameInfo[level] || gameInfo[1];
+        game.className = "personalized-game level-" + level;
+        titleEl.textContent = info.name;
+        levelEl.textContent = "PERSONALIZED LEVEL " + level;
+        averageEl.textContent = "BILATERAL CALIBRATION AVERAGE: " + (Number.isFinite(bilateralAverage) ? bilateralAverage.toFixed(1) + "°" : "—");
+        instructionEl.textContent = info.instruction;
+        game.hidden = false;
+    }
+
+    function finishCalibration() {
+        stopTimers();
+        running = false;
+        phase = "DONE";
+        progressFill.style.width = "100%";
+        timerText.hidden = true;
+        liveGrid.hidden = true;
+        resultGrid.hidden = false;
+        directionIcon.textContent = "✓";
+        title.textContent = "CALIBRATION COMPLETE";
+        kicker.textContent = "PERSONALIZED WRIST PROFILE SAVED";
+        const calibrationAverage = {
+            LEFT: calibrationAverageCounts.LEFT > 0
+                ? +(calibrationAverageSums.LEFT / calibrationAverageCounts.LEFT).toFixed(1)
+                : null,
+            RIGHT: calibrationAverageCounts.RIGHT > 0
+                ? +(calibrationAverageSums.RIGHT / calibrationAverageCounts.RIGHT).toFixed(1)
+                : null
+        };
+
+        const bilateralAverage = Number.isFinite(calibrationAverage.LEFT) && Number.isFinite(calibrationAverage.RIGHT)
+            ? +((calibrationAverage.LEFT + calibrationAverage.RIGHT) / 2).toFixed(1)
+            : null;
+
+        const personalizedLevel = getPersonalizedGameLevel(bilateralAverage);
+
+        message.textContent = "Both wrists have been calibrated using their highest comfortable movement. A personalized game level was assigned from the bilateral calibration average.";
+        countdownEl.textContent = "✓";
+        resultMessage.textContent = personalizedLevel
+            ? `Calibration complete. Personalized Level ${personalizedLevel.level} selected from a bilateral average of ${bilateralAverage.toFixed(1)}°.`
+            : "Calibration complete, but a personalized game level could not be assigned because both wrist averages were not available.";
+
+        setText("calibration-average-left", Number.isFinite(calibrationAverage.LEFT) ? calibrationAverage.LEFT.toFixed(1) + "°" : "—");
+        setText("calibration-average-right", Number.isFinite(calibrationAverage.RIGHT) ? calibrationAverage.RIGHT.toFixed(1) + "°" : "—");
+        setText("calibration-average-bilateral", Number.isFinite(bilateralAverage) ? bilateralAverage.toFixed(1) + "°" : "—");
+
+        const record = {
+            timestamp: new Date().toISOString(),
+            neutral: JSON.parse(JSON.stringify(neutral)),
+            orientationSign: JSON.parse(JSON.stringify(orientationSign)),
+            comfortablePeaks: JSON.parse(JSON.stringify(peaks)),
+            calibrationAverage,
+            bilateralAverage,
+            personalizedGameLevel: personalizedLevel ? personalizedLevel.level : null
+        };
+        window.__rehaboCalibrationRecord = record;
+
+        if (personalizedLevel) {
+            applyPersonalizedGameLevel(personalizedLevel.level, bilateralAverage);
+        }
+
+        // Ensure every final value is written to the permanent BOTH-WRISTS table.
+        for (const side of ["LEFT", "RIGHT"]) {
+            for (const d of directions) {
+                const key = d.key.toLowerCase();
+                const value = Number(peaks[side][d.key] ?? 0);
+                const text = value.toFixed(1) + "°";
+                setText("peak-" + side.toLowerCase() + "-" + key, text);
+                setText("peak-" + side.toLowerCase() + "-" + key + "-status", "RECORDED");
+                const card = document.getElementById("peak-" + side.toLowerCase() + "-" + key + "-card");
+                if (card) card.classList.add("complete");
+            }
+        }
+
+        try { localStorage.setItem("rehabo-sg-latest-calibration", JSON.stringify(record)); }
+        catch (error) { console.warn("Could not save calibration.", error); }
+
+        manualCalibrationButton.disabled = false;
+        manualCalibrationNote.textContent = "CALIBRATION COMPLETE. CLICK START CALIBRATION TO MEASURE AGAIN.";
+        manualCalibrationNote.style.color = "#63efc1";
+        setTimeout(hideOverlay, 5500);
+    }
+
+    function finishBecauseSensorLost() {
+        // Kept for compatibility with the older automatic-calibration flow.
+        // Manual calibration no longer calls this function.
+        stopTimers();
+        running = false;
+        phase = "WAITING";
+        title.textContent = "CALIBRATION PAUSED";
+        kicker.textContent = "WAITING FOR SENSOR DATA";
+        directionIcon.textContent = "!";
+        timerText.hidden = true;
+        progressTrack.hidden = true;
+        liveGrid.hidden = false;
+        resultGrid.hidden = true;
+        message.textContent = "Calibration was paused by the automatic safety check. Click START CALIBRATION to try again.";
+        countdownEl.textContent = "—";
+        waitingForBoth = true;
+        manualCalibrationButton.disabled = false;
+        manualCalibrationNote.textContent = "CLICK START CALIBRATION TO TRY AGAIN.";
+        manualCalibrationNote.style.color = "#ffb86b";
+    }
+
+    function startManualCalibration() {
+        if (running) return;
+
+        waitingForBoth = false;
+        calibrationCompleted = false;
+        running = true;
+        directionIndex = 0;
+        resetPeaks();
+        resetLivePanel();
+        resultGrid.hidden = true;
+        showOverlay();
+        title.textContent = "WRIST CALIBRATION";
+        kicker.textContent = "LEFT + RIGHT WRISTS TOGETHER";
+        directionIcon.textContent = "✓";
+        message.textContent = "Keep both wrists comfortable and follow the direction shown. Each direction is measured for 5 seconds.";
+        countdownEl.textContent = "READY";
+        manualCalibrationButton.disabled = true;
+        manualCalibrationNote.textContent = "CALIBRATION RUNNING — BOTH WRISTS ARE MEASURED AT THE SAME TIME.";
+        manualCalibrationNote.style.color = "#63efc1";
+
+        // Give both serial streams a short opportunity to provide a neutral reading.
+        // LEFT and RIGHT are captured independently; neither one can block the other.
+        setTimeout(() => {
+            if (!running) return;
+            captureNeutralWindow(() => prepareDirection(directions[0]));
+        }, 100);
+    }
+
+    // Called by the sensor stream after every valid JSON packet.
+    window.__rehaboCalibrationSensorUpdate = function(data) {
+        if (!data || !data.side) return;
+        const side = String(data.side).toUpperCase();
+        if (side !== "LEFT" && side !== "RIGHT") return;
+        latest[side] = { ...data, _receivedAt: Date.now() };
+        if (running && phase === "MEASURE") {
+            const d = directions[directionIndex];
+            updateCurrentReadouts(d);
+        }
+    };
+
+    // The manual calibration button is always available. No sensor connection
+    // requirement is used to enable/disable the button. No automatic calibration.
+    manualCalibrationButton.disabled = false;
+    manualCalibrationNote.textContent = "CLICK START CALIBRATION TO BEGIN. CONNECTED SENSORS WILL BE MEASURED.";
+    manualCalibrationNote.style.color = "#6f9ab3";
+
+    manualCalibrationButton.addEventListener("click", startManualCalibration);
+})();
+</script>
+
+<style>
+/* Wrist calibration is measurement-only; the MPU6050 must not control a cursor. */
+#game-cursor { display: none !important; }
+
+</style>
 </body>
 </html>
