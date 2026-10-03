@@ -2697,6 +2697,9 @@ function updateLiveDashboard(data) {
         leftRoll = Number(data.roll);
     }
 }
+
+// CLOSE updateLiveDashboard()
+}
 // ==========================================
 // SMOOTH CURSOR VARIABLES
 // ==========================================
@@ -2870,12 +2873,6 @@ function registerSensorHit() {
             )
         )
     );
-    function cursorAnimationLoop() {
-    updateGameCursor();
-    requestAnimationFrame(cursorAnimationLoop);
-}
-
-requestAnimationFrame(cursorAnimationLoop);
 
     const speed = Math.min(
         1.5,
@@ -2970,6 +2967,18 @@ function distanceFromTarget() {
         (dx * dx) + (dy * dy)
     );
 }
+
+
+// ==========================================
+// CONTINUOUS CURSOR UPDATE
+// ==========================================
+
+function cursorAnimationLoop() {
+    updateGameCursor();
+    requestAnimationFrame(cursorAnimationLoop);
+}
+
+requestAnimationFrame(cursorAnimationLoop);
 </script>
 </body>
 </html>
