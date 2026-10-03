@@ -2724,8 +2724,6 @@ let smoothVertical = 0;
 
 function updateGameCursor() {
 
-    if (!sessionActive || sessionPaused) return;
-
     const cursor = document.getElementById("game-cursor");
     if (!cursor) return;
 
@@ -2733,30 +2731,32 @@ function updateGameCursor() {
     // CURSOR SETTINGS
     // ==========================================
 
-    // Small deadzone so tiny sensor noise does not move the cursor
-    const HORIZONTAL_DEADZONE = 0.5;
-    const VERTICAL_DEADZONE = 0.8;
+    const HORIZONTAL_DEADZONE = 0.3;
+    const VERTICAL_DEADZONE = 0.3;
 
-    // Sensitivity for each axis
-    // Roll  = LEFT / RIGHT
+    // Roll = LEFT / RIGHT
     // Pitch = UP / DOWN
-    const HORIZONTAL_SENSITIVITY = 2.0;
-    const VERTICAL_SENSITIVITY = 1.5;
+    const HORIZONTAL_SENSITIVITY = 2.5;
+    const VERTICAL_SENSITIVITY = 2.0;
 
-    // Higher = faster response
-    // Lower = smoother
-    const SMOOTHING = 0.40;
+    // 0.25 = smoother
+    // 0.40 = faster response
+    const SMOOTHING = 0.35;
 
-    // Overall cursor speed
-    const CURSOR_SPEED = 1.2;
+    const CURSOR_SPEED = 1.5;
 
 
     // ==========================================
-    // GET MPU6050 MOVEMENT
+    // READ SENSOR VALUES
     // ==========================================
 
     let horizontal = Number(leftRoll);
     let vertical = Number(leftPitch);
+
+
+    // Safety check
+    if (!Number.isFinite(horizontal)) horizontal = 0;
+    if (!Number.isFinite(vertical)) vertical = 0;
 
 
     // ==========================================
@@ -2803,7 +2803,7 @@ function updateGameCursor() {
 
 
     // ==========================================
-    // KEEP CURSOR INSIDE GAME
+    // KEEP INSIDE GAME
     // ==========================================
 
     gameCursorX = Math.max(
@@ -2818,7 +2818,7 @@ function updateGameCursor() {
 
 
     // ==========================================
-    // UPDATE CURSOR POSITION
+    // DISPLAY CURSOR
     // ==========================================
 
     cursor.style.left = `${gameCursorX}%`;
@@ -2826,10 +2826,12 @@ function updateGameCursor() {
 
 
     // ==========================================
-    // CHECK TARGET
+    // ONLY CHECK TARGET DURING EXERCISE
     // ==========================================
 
-    checkTargetCollision();
+    if (sessionActive && !sessionPaused) {
+        checkTargetCollision();
+    }
 }
 function checkTargetCollision() {
 
