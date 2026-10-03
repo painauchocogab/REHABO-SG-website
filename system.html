@@ -2505,6 +2505,18 @@ document.querySelector("#retry-session").addEventListener("click", () => {
 <script>
 let leftPort = null;
 let rightPort = null;
+    let leftPitch = 0;
+let leftRoll = 0;
+
+let gameCursorX = 50;
+let gameCursorY = 50;
+
+const GAME_MIN_X = 10;
+const GAME_MAX_X = 90;
+const GAME_MIN_Y = 15;
+const GAME_MAX_Y = 80;
+
+const CURSOR_SENSITIVITY = 0.8;
 
 const sensorBuffers = {
     LEFT: "",
@@ -2607,6 +2619,7 @@ function updateLiveDashboard(data) {
     if (!data || !data.side) return;
 
     const side = String(data.side).toUpperCase();
+
     if (side !== "LEFT" && side !== "RIGHT") return;
 
     const prefix = side === "LEFT" ? "left" : "right";
@@ -2622,11 +2635,13 @@ function updateLiveDashboard(data) {
     }
 
     if (angular && Number.isFinite(Number(data.angularVelocity))) {
-        angular.textContent = Number(data.angularVelocity).toFixed(2) + " °/s";
+        angular.textContent =
+            Number(data.angularVelocity).toFixed(2) + " °/s";
     }
 
     if (acceleration && Number.isFinite(Number(data.acceleration))) {
-        acceleration.textContent = Number(data.acceleration).toFixed(2) + " m/s²";
+        acceleration.textContent =
+            Number(data.acceleration).toFixed(2) + " m/s²";
     }
 
     if (direction) {
@@ -2636,6 +2651,45 @@ function updateLiveDashboard(data) {
     if (state) {
         state.textContent = data.state ?? "Idle";
     }
+
+    // ==============================
+    // LEFT WRIST GAME CONTROL
+    // ==============================
+    if (side === "LEFT") {
+
+        if (Number.isFinite(Number(data.pitch))) {
+            leftPitch = Number(data.pitch);
+        }
+
+        if (Number.isFinite(Number(data.roll))) {
+            leftRoll = Number(data.roll);
+        }
+
+        updateGameCursor();
+    }
+}
+    function updateGameCursor() {
+
+    if (!sessionActive || sessionPaused) return;
+    if (!targetButton) return;
+
+    // Convert wrist movement to screen position
+    gameCursorX = 50 + (leftRoll * CURSOR_SENSITIVITY);
+    gameCursorY = 50 - (leftPitch * CURSOR_SENSITIVITY);
+
+    // Keep cursor inside game area
+    gameCursorX = Math.max(
+        GAME_MIN_X,
+        Math.min(GAME_MAX_X, gameCursorX)
+    );
+
+    gameCursorY = Math.max(
+        GAME_MIN_Y,
+        Math.min(GAME_MAX_Y, gameCursorY)
+    );
+
+    // Move the target using wrist movement
+    setTargetPosition(gameCursorX, gameCursorY);
 }
 </script>
 </body>
