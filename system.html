@@ -2531,6 +2531,14 @@
 @media (max-width: 500px) {
     .calibration-live-grid { grid-template-columns: 1fr; }
 }
+
+.calibration-two-wrist-grid{grid-template-columns:1fr 1fr;}
+.calibration-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-top:1rem;}
+.calibration-result-grid>div{padding:.65rem;border:1px solid rgba(80,164,213,.3);background:rgba(3,25,48,.65);text-align:left;}
+.calibration-result-grid span{color:#8fb7cf;font-size:.68rem;}
+.calibration-result-grid strong{float:right;color:#63efc1;font-size:.82rem;}
+.calibration-safety-note{margin:1rem 0 0;color:#7899ad;font-size:.68rem;line-height:1.5;}
+@media(max-width:600px){.calibration-two-wrist-grid,.calibration-result-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -2811,9 +2819,7 @@
                         <i class="active"></i><i></i><i></i><i></i><i></i>
                     </span>
                 </span>
-                <button class="calibration-action" id="begin-calibration" type="button" disabled>
-                    ▶ BEGIN CALIBRATION
-                </button>
+                <button class="calibration-action" id="begin-calibration" type="button" disabled hidden>▶ BEGIN CALIBRATION</button>
             </div>
         </div>
     </div>
@@ -2982,23 +2988,36 @@
     </div>
 </dialog>
 
-<!-- Guided calibration notification dashboard -->
+<!-- Automatic two-wrist calibration notification dashboard -->
 <div class="calibration-overlay" id="calibration-overlay" role="dialog" aria-modal="true" aria-labelledby="calibration-overlay-title">
     <section class="calibration-dialog">
-        <p class="calibration-kicker" id="calibration-overlay-kicker">WRIST CALIBRATION</p>
-        <h2 id="calibration-overlay-title">CALIBRATION STARTING</h2>
+        <p class="calibration-kicker" id="calibration-overlay-kicker">BOTH WRIST SENSORS ONLINE</p>
+        <h2 id="calibration-overlay-title">HIGHEST COMFORTABLE TILT TEST</h2>
         <div class="calibration-direction-icon" id="calibration-direction-icon">◌</div>
-        <p class="calibration-message" id="calibration-overlay-message">Please prepare your wrist.</p>
+        <p class="calibration-message" id="calibration-overlay-message">The left and right MPU6050 sensors are connected and receiving data.</p>
         <div class="calibration-countdown" id="calibration-countdown">3</div>
         <div class="calibration-timer" id="calibration-timer" hidden>5.0 s</div>
         <div class="calibration-progress-track" id="calibration-progress-track" hidden>
             <div class="calibration-progress-fill" id="calibration-progress-fill"></div>
         </div>
-        <div class="calibration-live-grid" id="calibration-live-grid" hidden>
-            <div class="calibration-live-cell"><span>CURRENT TILT</span><strong id="calibration-current">0.0°</strong></div>
-            <div class="calibration-live-cell"><span>HIGHEST TILT</span><strong id="calibration-peak">0.0°</strong></div>
+        <div class="calibration-live-grid calibration-two-wrist-grid" id="calibration-live-grid" hidden>
+            <div class="calibration-live-cell"><span>LEFT CURRENT</span><strong id="calibration-left-current">0.0°</strong></div>
+            <div class="calibration-live-cell"><span>RIGHT CURRENT</span><strong id="calibration-right-current">0.0°</strong></div>
+            <div class="calibration-live-cell"><span>LEFT PEAK</span><strong id="calibration-left-peak">0.0°</strong></div>
+            <div class="calibration-live-cell"><span>RIGHT PEAK</span><strong id="calibration-right-peak">0.0°</strong></div>
+        </div>
+        <div class="calibration-result-grid" id="calibration-result-grid" hidden>
+            <div><span>LEFT UP</span><strong id="result-left-up">—</strong></div>
+            <div><span>LEFT DOWN</span><strong id="result-left-down">—</strong></div>
+            <div><span>LEFT LEFT</span><strong id="result-left-left">—</strong></div>
+            <div><span>LEFT RIGHT</span><strong id="result-left-right">—</strong></div>
+            <div><span>RIGHT UP</span><strong id="result-right-up">—</strong></div>
+            <div><span>RIGHT DOWN</span><strong id="result-right-down">—</strong></div>
+            <div><span>RIGHT LEFT</span><strong id="result-right-left">—</strong></div>
+            <div><span>RIGHT RIGHT</span><strong id="result-right-right">—</strong></div>
         </div>
         <p class="calibration-result-message" id="calibration-result-message"></p>
+        <p class="calibration-safety-note">Move only as far as comfortably possible. Do not force your wrist. The system records the greatest comfortable movement detected during each 5-second test.</p>
     </section>
 </div>
     <!-- Legacy compatibility controls kept hidden while REHABO-SG uses the new wrist calibration flow. -->
@@ -3710,6 +3729,7 @@ async function readSensorData(port, side) {
 function updateLiveDashboard(data) {
     window.__rehaboLatestSensorData = window.__rehaboLatestSensorData || { LEFT: null, RIGHT: null };
     if (data && data.side) window.__rehaboLatestSensorData[String(data.side).toUpperCase()] = data;
+    if (typeof window.__rehaboCalibrationSensorUpdate === "function") window.__rehaboCalibrationSensorUpdate(data);
     if (!data || !data.side) return;
 
     const side = String(data.side).toUpperCase();
@@ -4066,28 +4086,24 @@ requestAnimationFrame(cursorAnimationLoop);
 
 <script>
 /* =========================================================
-   REHABO-SG GUIDED WRIST CALIBRATION ENGINE
-   Patient flow:
-   BEGIN CALIBRATION -> 3s preparation -> 5s maximum-comfort
-   measurement -> 2s transition -> next direction -> results.
-   The MPU6050 is measurement-only; the game cursor is not used.
+   REHABO-SG AUTOMATIC TWO-WRIST CALIBRATION ENGINE
+   Starts automatically when BOTH MPU6050 sensors are online.
+   Each direction: 3s preparation/countdown -> 5s measurement -> 2s transition.
+   Movement is normalized to each wrist's neutral baseline.
    ========================================================= */
 (() => {
-    const beginButton = document.getElementById("begin-calibration");
     const overlay = document.getElementById("calibration-overlay");
     const title = document.getElementById("calibration-overlay-title");
     const kicker = document.getElementById("calibration-overlay-kicker");
     const message = document.getElementById("calibration-overlay-message");
-    const countdown = document.getElementById("calibration-countdown");
+    const countdownEl = document.getElementById("calibration-countdown");
     const timerText = document.getElementById("calibration-timer");
     const progressTrack = document.getElementById("calibration-progress-track");
     const progressFill = document.getElementById("calibration-progress-fill");
     const liveGrid = document.getElementById("calibration-live-grid");
-    const currentReadout = document.getElementById("calibration-current");
-    const peakReadout = document.getElementById("calibration-peak");
+    const resultGrid = document.getElementById("calibration-result-grid");
     const resultMessage = document.getElementById("calibration-result-message");
     const directionIcon = document.getElementById("calibration-direction-icon");
-    const serialStatus = document.getElementById("serial-status");
 
     const directions = [
         { key: "UP", label: "UP", icon: "↑", axis: "pitch", sign: 1 },
@@ -4096,304 +4112,314 @@ requestAnimationFrame(cursorAnimationLoop);
         { key: "RIGHT", label: "RIGHT", icon: "→", axis: "roll", sign: 1 }
     ];
 
-    const results = { UP: null, DOWN: null, LEFT: null, RIGHT: null };
+    const peaks = {
+        LEFT: { UP: null, DOWN: null, LEFT: null, RIGHT: null },
+        RIGHT: { UP: null, DOWN: null, LEFT: null, RIGHT: null }
+    };
+
+    const neutral = {
+        LEFT: { pitch: null, roll: null },
+        RIGHT: { pitch: null, roll: null }
+    };
+
     const TARGET_RATIO = 0.80;
     const PREP_SECONDS = 3;
     const MEASURE_MS = 5000;
     const TRANSITION_SECONDS = 2;
+    const DATA_TIMEOUT_MS = 2000;
 
-    let calibrationRunning = false;
+    let running = false;
+    let waitingForBoth = false;
     let directionIndex = 0;
+    let phase = "IDLE";
     let measureStart = 0;
-    let peak = 0;
-    let baseline = { pitch: 0, roll: 0 };
-    let animationFrame = null;
     let countdownTimer = null;
     let transitionTimer = null;
-    let lastSample = null;
-    let sampleCount = 0;
+    let measureFrame = null;
+    let latest = { LEFT: null, RIGHT: null };
 
-    window.__rehaboCalibrationResults = results;
-
-    function getSensorSide() {
-        if (window.leftPort) return "LEFT";
-        if (window.rightPort) return "RIGHT";
-        // leftPort/rightPort are lexical variables in the existing script;
-        // fallback to the latest data if a port is not exposed.
-        const latest = window.__rehaboLatestSensorData || {};
-        if (latest.LEFT) return "LEFT";
-        if (latest.RIGHT) return "RIGHT";
-        return null;
-    }
-
-    function getLatestSensor() {
-        const latest = window.__rehaboLatestSensorData || {};
-        const side = latest.LEFT ? "LEFT" : latest.RIGHT ? "RIGHT" : null;
-        return side ? { side, data: latest[side] } : null;
-    }
+    window.__rehaboCalibrationResults = peaks;
 
     function setText(id, value) {
         const el = document.getElementById(id);
         if (el) el.textContent = value;
     }
 
-    function updateStaticResults() {
-        directions.forEach((d) => {
-            const value = results[d.key];
-            setText("peak-" + d.key.toLowerCase(), value == null ? "—" : value.toFixed(1) + "°");
-            setText("result-" + d.key.toLowerCase(), value == null ? "—" : value.toFixed(1) + "°");
-            setText("target-" + d.key.toLowerCase(), value == null ? "—" : (value * TARGET_RATIO).toFixed(1) + "°");
-            setText("peak-" + d.key.toLowerCase() + "-status", value == null ? "PENDING" : "RECORDED");
-        });
+    function showOverlay() {
+        overlay.classList.add("active");
+        overlay.setAttribute("aria-hidden", "false");
     }
 
-    function updateProgress(step, total = 4) {
-        const text = step <= total ? `${step} / ${total}` : "COMPLETE";
-        setText("calibration-step", text);
-        setText("calibration-progress", text);
-        document.querySelectorAll(".calibration-footer .progress-dots i").forEach((dot, i) => {
-            dot.classList.toggle("active", i < Math.min(step, 4));
-        });
-    }
-
-    function setOverlay({ titleText, messageText, icon = "◌", count = "", showTimer = false, showLive = false, result = "" }) {
-        title.textContent = titleText;
-        message.textContent = messageText;
-        directionIcon.textContent = icon;
-        countdown.textContent = count;
-        countdown.hidden = count === "";
-        timerText.hidden = !showTimer;
-        progressTrack.hidden = !showTimer;
-        liveGrid.hidden = !showLive;
-        resultMessage.textContent = result;
-        progressFill.style.width = "0%";
-    }
-
-    function getAxisValue(data, direction) {
-        const raw = Number(data?.[direction.axis]);
-        if (!Number.isFinite(raw)) return null;
-        const neutral = Number(baseline[direction.axis]) || 0;
-        return Math.max(0, (raw - neutral) * direction.sign);
-    }
-
-    function captureBaseline() {
-        const latest = getLatestSensor();
-        if (!latest?.data) return false;
-        const pitch = Number(latest.data.pitch);
-        const roll = Number(latest.data.roll);
-        if (!Number.isFinite(pitch) || !Number.isFinite(roll)) return false;
-        baseline = { pitch, roll };
-        return true;
+    function hideOverlay() {
+        overlay.classList.remove("active");
+        overlay.setAttribute("aria-hidden", "true");
     }
 
     function stopTimers() {
-        if (countdownTimer) clearInterval(countdownTimer);
-        if (transitionTimer) clearTimeout(transitionTimer);
-        if (animationFrame) cancelAnimationFrame(animationFrame);
+        clearInterval(countdownTimer);
+        clearInterval(transitionTimer);
+        if (measureFrame !== null) cancelAnimationFrame(measureFrame);
         countdownTimer = null;
         transitionTimer = null;
-        animationFrame = null;
+        measureFrame = null;
     }
 
-    function failCalibration(messageText) {
-        stopTimers();
-        calibrationRunning = false;
-        if (beginButton) {
-            beginButton.disabled = false;
-            beginButton.textContent = "▶ BEGIN CALIBRATION";
+    function resetPeaks() {
+        for (const side of ["LEFT", "RIGHT"]) {
+            for (const d of directions) peaks[side][d.key] = null;
+            neutral[side].pitch = null;
+            neutral[side].roll = null;
         }
-        setOverlay({
-            titleText: "CALIBRATION STOPPED",
-            messageText,
-            icon: "!",
-            count: "",
-            result: "Connect a wrist sensor, then try again."
-        });
-        setTimeout(() => overlay.classList.remove("active"), 2200);
     }
 
-    function prepareDirection(direction) {
-        updateProgress(directionIndex + 1);
-        setOverlay({
-            titleText: `PREPARE FOR ${direction.label}`,
-            messageText: `The next test will measure your ${direction.label.toLowerCase()} wrist movement. Get comfortable and prepare to move.`,
-            icon: direction.icon,
-            count: String(PREP_SECONDS),
-            showTimer: false,
-            showLive: false
-        });
+    function sensorFresh(side) {
+        const data = latest[side];
+        if (!data || !Number.isFinite(Number(data.pitch)) || !Number.isFinite(Number(data.roll))) return false;
+        if (Number.isFinite(data._receivedAt)) return Date.now() - data._receivedAt <= DATA_TIMEOUT_MS;
+        return true;
+    }
 
-        let remaining = PREP_SECONDS;
-        countdown.textContent = remaining;
+    function bothSensorsOnline() {
+        return sensorFresh("LEFT") && sensorFresh("RIGHT");
+    }
+
+    function captureNeutral() {
+        for (const side of ["LEFT", "RIGHT"]) {
+            neutral[side].pitch = Number(latest[side].pitch);
+            neutral[side].roll = Number(latest[side].roll);
+        }
+    }
+
+    function directionalMovement(side, direction) {
+        const data = latest[side];
+        if (!data || neutral[side].pitch === null) return 0;
+        const raw = direction.axis === "pitch"
+            ? Number(data.pitch) - neutral[side].pitch
+            : Number(data.roll) - neutral[side].roll;
+        return Math.max(0, raw * direction.sign);
+    }
+
+    function updateCurrentReadouts(direction) {
+        for (const side of ["LEFT", "RIGHT"]) {
+            const movement = directionalMovement(side, direction);
+            setText(side === "LEFT" ? "calibration-left-current" : "calibration-right-current", movement.toFixed(1) + "°");
+            const peak = peaks[side][direction.key];
+            setText(side === "LEFT" ? "calibration-left-peak" : "calibration-right-peak", (peak ?? 0).toFixed(1) + "°");
+        }
+    }
+
+    function resetLivePanel() {
+        setText("calibration-left-current", "0.0°");
+        setText("calibration-right-current", "0.0°");
+        setText("calibration-left-peak", "0.0°");
+        setText("calibration-right-peak", "0.0°");
+    }
+
+    function countdown(seconds, done) {
+        let remaining = seconds;
+        countdownEl.textContent = String(remaining);
+        clearInterval(countdownTimer);
         countdownTimer = setInterval(() => {
             remaining -= 1;
-            countdown.textContent = remaining > 0 ? String(remaining) : "GO";
+            countdownEl.textContent = remaining > 0 ? String(remaining) : "GO";
             if (remaining <= 0) {
                 clearInterval(countdownTimer);
                 countdownTimer = null;
-                startMeasurement(direction);
+                setTimeout(done, 350);
             }
         }, 1000);
     }
 
+    function prepareDirection(direction) {
+        if (!running) return;
+        phase = "PREPARE";
+        directionIcon.textContent = direction.icon;
+        title.textContent = "MOVE YOUR WRIST " + direction.label;
+        kicker.textContent = "HIGHEST COMFORTABLE TILT TEST";
+        message.textContent = "Move BOTH wrists " + direction.label.toLowerCase() + " as far as comfortably possible. Do not force the movement.";
+        timerText.hidden = true;
+        progressTrack.hidden = true;
+        liveGrid.hidden = true;
+        resultGrid.hidden = true;
+        resultMessage.textContent = "";
+        resetLivePanel();
+        countdown(PREP_SECONDS, () => startMeasurement(direction));
+    }
+
     function startMeasurement(direction) {
-        // Capture the current wrist orientation immediately before the 5-second test.
-        if (!captureBaseline()) {
-            failCalibration("No live MPU6050 reading is available.");
+        if (!running || !bothSensorsOnline()) {
+            finishBecauseSensorLost();
             return;
         }
-
-        peak = 0;
-        sampleCount = 0;
-        lastSample = null;
+        phase = "MEASURE";
         measureStart = performance.now();
+        peaks.LEFT[direction.key] = 0;
+        peaks.RIGHT[direction.key] = 0;
+        timerText.hidden = false;
+        progressTrack.hidden = false;
+        liveGrid.hidden = false;
+        message.textContent = "MOVE BOTH WRISTS " + direction.label + " NOW. The highest comfortable movement will be recorded.";
 
-        setOverlay({
-            titleText: `MOVE YOUR WRIST ${direction.label}`,
-            messageText: `Tilt your wrist as far as you can comfortably. Do not force the movement. The system will record the highest tilt during the next 5 seconds.`,
-            icon: direction.icon,
-            showTimer: true,
-            showLive: true
-        });
-
-        requestAnimationFrame(() => measurementLoop(direction));
-    }
-
-    function measurementLoop(direction) {
-        if (!calibrationRunning) return;
-
-        const elapsed = performance.now() - measureStart;
-        const remaining = Math.max(0, MEASURE_MS - elapsed);
-        const seconds = remaining / 1000;
-        timerText.textContent = `${seconds.toFixed(1)} s`;
-        progressFill.style.width = `${Math.min(100, elapsed / MEASURE_MS * 100)}%`;
-
-        const latest = getLatestSensor();
-        if (latest?.data) {
-            const value = getAxisValue(latest.data, direction);
-            if (value !== null) {
-                lastSample = value;
-                sampleCount += 1;
-                if (value > peak) peak = value;
-                currentReadout.textContent = value.toFixed(1) + "°";
-                peakReadout.textContent = peak.toFixed(1) + "°";
+        function frame(now) {
+            if (!running) return;
+            if (!bothSensorsOnline()) {
+                finishBecauseSensorLost();
+                return;
             }
-        }
+            const elapsed = now - measureStart;
+            const percent = Math.min(100, elapsed / MEASURE_MS * 100);
+            const remaining = Math.max(0, (MEASURE_MS - elapsed) / 1000);
+            progressFill.style.width = percent + "%";
+            timerText.textContent = remaining.toFixed(1) + " s";
 
-        if (elapsed >= MEASURE_MS) {
-            finishMeasurement(direction);
-            return;
-        }
+            for (const side of ["LEFT", "RIGHT"]) {
+                const movement = directionalMovement(side, direction);
+                if (movement > (peaks[side][direction.key] ?? 0)) {
+                    peaks[side][direction.key] = movement;
+                }
+            }
+            updateCurrentReadouts(direction);
 
-        animationFrame = requestAnimationFrame(() => measurementLoop(direction));
+            if (elapsed >= MEASURE_MS) {
+                measureFrame = null;
+                completeDirection(direction);
+                return;
+            }
+            measureFrame = requestAnimationFrame(frame);
+        }
+        measureFrame = requestAnimationFrame(frame);
     }
 
-    function finishMeasurement(direction) {
+    function completeDirection(direction) {
+        phase = "TRANSITION";
+        timerText.textContent = "DONE";
         progressFill.style.width = "100%";
+        message.textContent = direction.label + " recorded. Return both wrists toward neutral and prepare for the next direction.";
+        resultMessage.textContent = "LEFT: " + peaks.LEFT[direction.key].toFixed(1) + "°   |   RIGHT: " + peaks.RIGHT[direction.key].toFixed(1) + "°";
+        updateStaticResult(direction);
 
-        // Require actual sensor samples. A zero peak is valid only if the patient
-        // genuinely did not move; it is still recorded rather than invented.
-        results[direction.key] = peak;
-        updateStaticResults();
+        let remaining = TRANSITION_SECONDS;
+        countdownEl.textContent = "✓";
+        clearInterval(transitionTimer);
+        transitionTimer = setInterval(() => {
+            remaining -= 1;
+            if (remaining <= 0) {
+                clearInterval(transitionTimer);
+                transitionTimer = null;
+                directionIndex += 1;
+                if (directionIndex >= directions.length) finishCalibration();
+                else prepareDirection(directions[directionIndex]);
+            } else {
+                countdownEl.textContent = String(remaining);
+            }
+        }, 1000);
+    }
 
-        setOverlay({
-            titleText: `${direction.label} CALIBRATION COMPLETE`,
-            messageText: `Your highest comfortable ${direction.label.toLowerCase()} wrist movement recorded during the 5-second test was:`,
-            icon: "✓",
-            count: "",
-            showTimer: false,
-            showLive: true,
-            result: `COMFORTABLE PEAK: ${peak.toFixed(1)}°${sampleCount === 0 ? " — NO SENSOR SAMPLES" : ""}`
-        });
-        currentReadout.textContent = (lastSample ?? 0).toFixed(1) + "°";
-        peakReadout.textContent = peak.toFixed(1) + "°";
-
-        directionIndex += 1;
-        if (directionIndex >= directions.length) {
-            transitionTimer = setTimeout(finishCalibration, 1800);
-        } else {
-            transitionTimer = setTimeout(() => prepareDirection(directions[directionIndex]), TRANSITION_SECONDS * 1000);
+    function updateStaticResult(direction) {
+        const map = {
+            LEFT: {UP:"result-left-up",DOWN:"result-left-down",LEFT:"result-left-left",RIGHT:"result-left-right"},
+            RIGHT:{UP:"result-right-up",DOWN:"result-right-down",LEFT:"result-right-left",RIGHT:"result-right-right"}
+        };
+        for (const side of ["LEFT","RIGHT"]) {
+            setText(map[side][direction.key], peaks[side][direction.key].toFixed(1) + "°");
         }
     }
 
     function finishCalibration() {
         stopTimers();
-        calibrationRunning = false;
-        updateProgress(5);
-        setOverlay({
-            titleText: "CALIBRATION COMPLETE",
-            messageText: "Your comfortable wrist movement values have been recorded. These values will be used to personalize the rehabilitation exercises.",
-            icon: "✓",
-            count: "",
-            showTimer: false,
-            showLive: false,
-            result: `UP ${results.UP.toFixed(1)}°  •  DOWN ${results.DOWN.toFixed(1)}°  •  LEFT ${results.LEFT.toFixed(1)}°  •  RIGHT ${results.RIGHT.toFixed(1)}°`
-        });
+        running = false;
+        phase = "DONE";
+        progressFill.style.width = "100%";
+        timerText.hidden = true;
+        liveGrid.hidden = true;
+        resultGrid.hidden = false;
+        directionIcon.textContent = "✓";
+        title.textContent = "CALIBRATION COMPLETE";
+        kicker.textContent = "PERSONALIZED WRIST PROFILE SAVED";
+        message.textContent = "Both wrists have been calibrated using their highest comfortable movement. Game targets are set to 80% of each comfortable peak.";
+        countdownEl.textContent = "✓";
+        resultMessage.textContent = "Calibration complete. You may now continue to the rehabilitation exercise.";
 
-        if (beginButton) {
-            beginButton.disabled = false;
-            beginButton.textContent = "↻ REPEAT CALIBRATION";
-        }
-
-        // Store the complete calibration in the browser for later game use.
         const record = {
             timestamp: new Date().toISOString(),
-            sensorSide: getSensorSide() || "UNKNOWN",
-            comfortablePeaks: { ...results },
-            targets80: Object.fromEntries(directions.map(d => [d.key, results[d.key] * TARGET_RATIO]))
+            neutral: JSON.parse(JSON.stringify(neutral)),
+            comfortablePeaks: JSON.parse(JSON.stringify(peaks)),
+            targets80: { LEFT: {}, RIGHT: {} }
         };
+        for (const side of ["LEFT","RIGHT"]) {
+            for (const d of directions) record.targets80[side][d.key] = +(peaks[side][d.key] * TARGET_RATIO).toFixed(1);
+        }
         window.__rehaboCalibrationRecord = record;
-        try {
-            localStorage.setItem("rehabo-sg-latest-calibration", JSON.stringify(record));
-        } catch (error) {
-            console.warn("Could not save calibration in this browser.", error);
-        }
+        try { localStorage.setItem("rehabo-sg-latest-calibration", JSON.stringify(record)); }
+        catch (error) { console.warn("Could not save calibration.", error); }
 
-        setTimeout(() => overlay.classList.remove("active"), 3500);
+        setTimeout(hideOverlay, 5500);
     }
 
-    function startCalibration() {
-        if (calibrationRunning) return;
-
-        const latest = getLatestSensor();
-        if (!latest?.data) {
-            alert("Please connect a wrist sensor and wait until live MPU6050 readings are appearing before beginning calibration.");
-            return;
-        }
-
+    function finishBecauseSensorLost() {
         stopTimers();
-        calibrationRunning = true;
+        running = false;
+        phase = "WAITING";
+        title.textContent = "SENSOR CONNECTION LOST";
+        kicker.textContent = "CALIBRATION PAUSED";
+        directionIcon.textContent = "!";
+        timerText.hidden = true;
+        progressTrack.hidden = true;
+        liveGrid.hidden = false;
+        resultGrid.hidden = true;
+        message.textContent = "Both MPU6050 sensors must remain connected and sending data. Reconnect the missing sensor, then calibration will restart automatically.";
+        countdownEl.textContent = "—";
+        waitingForBoth = true;
+    }
+
+    function startAutomaticCalibration() {
+        if (running || !bothSensorsOnline()) return;
+        waitingForBoth = false;
+        running = true;
         directionIndex = 0;
-        Object.keys(results).forEach(key => results[key] = null);
-        updateStaticResults();
-        updateProgress(1);
-
-        beginButton.disabled = true;
-        beginButton.textContent = "● CALIBRATION IN PROGRESS";
-        overlay.classList.add("active");
-        prepareDirection(directions[0]);
+        resetPeaks();
+        resetLivePanel();
+        resultGrid.hidden = true;
+        showOverlay();
+        title.textContent = "HIGHEST COMFORTABLE TILT TEST";
+        kicker.textContent = "BOTH WRIST SENSORS ONLINE";
+        directionIcon.textContent = "✓";
+        message.textContent = "Both wrist sensors are connected and online. Sit comfortably and prepare for the test.";
+        countdown(PREP_SECONDS, () => {
+            if (!bothSensorsOnline()) { finishBecauseSensorLost(); return; }
+            captureNeutral();
+            prepareDirection(directions[0]);
+        });
     }
 
-    function updateButtonAvailability() {
-        const latest = window.__rehaboLatestSensorData || {};
-        const connected = !!(latest.LEFT || latest.RIGHT);
-        if (beginButton && !calibrationRunning) beginButton.disabled = !connected;
-        if (serialStatus && connected && !calibrationRunning) {
-            serialStatus.textContent = "● SENSOR READY FOR CALIBRATION";
+    // Called by the sensor stream after every valid JSON packet.
+    window.__rehaboCalibrationSensorUpdate = function(data) {
+        if (!data || !data.side) return;
+        const side = String(data.side).toUpperCase();
+        if (side !== "LEFT" && side !== "RIGHT") return;
+        latest[side] = { ...data, _receivedAt: Date.now() };
+        if (running && phase === "MEASURE") {
+            const d = directions[directionIndex];
+            updateCurrentReadouts(d);
         }
-    }
+    };
 
-    if (beginButton) beginButton.addEventListener("click", startCalibration);
-
-    // Poll only for UI readiness; actual measurements remain driven by serial data.
-    setInterval(updateButtonAvailability, 250);
-    updateStaticResults();
+    // Polls the latest serial data so the popup appears automatically only
+    // after BOTH wrists are actually receiving live MPU6050 packets.
+    setInterval(() => {
+        if (bothSensorsOnline()) {
+            if (!running && !waitingForBoth) startAutomaticCalibration();
+        } else if (!running) {
+            waitingForBoth = true;
+        }
+    }, 250);
 })();
 </script>
 
 <style>
 /* Wrist calibration is measurement-only; the MPU6050 must not control a cursor. */
 #game-cursor { display: none !important; }
+#begin-calibration { display: none !important; }
 </style>
 </body>
 </html>
