@@ -3348,14 +3348,17 @@ document.querySelector("#retry-session").addEventListener("click", () => {
 // SENSOR BUTTON CONNECTION
 // ==========================================
 
-document.getElementById("connect-left").addEventListener("click", () => {
+// Web Serial connection buttons
+// Keep requestPort() directly tied to the user's button click so
+// Chrome can open the USB/Serial port chooser.
+document.getElementById("connect-left").addEventListener("click", async () => {
     console.log("LEFT SENSOR BUTTON CLICKED");
-    connectSensor("LEFT");
+    await connectSensor("LEFT");
 });
 
-document.getElementById("connect-right").addEventListener("click", () => {
+document.getElementById("connect-right").addEventListener("click", async () => {
     console.log("RIGHT SENSOR BUTTON CLICKED");
-    connectSensor("RIGHT");
+    await connectSensor("RIGHT");
 });
     </script>
 
@@ -3388,15 +3391,51 @@ const sensorDecoders = {
 };
 
 async function connectSensor(side) {
+    const button = document.getElementById(side === "LEFT" ? "connect-left" : "connect-right");
+    const status = document.getElementById("serial-status");
+
     try {
+        // Web Serial only works in supported browsers and secure contexts.
         if (!("serial" in navigator)) {
-            alert("Web Serial is not supported. Please use Google Chrome.");
+            if (status) status.textContent = "● WEB SERIAL NOT SUPPORTED — USE GOOGLE CHROME";
+            alert("Web Serial is not supported in this browser. Please use Google Chrome or Microsoft Edge.");
             return;
         }
 
-        // Must be called directly from the user click handler.
+        if (!window.isSecureContext) {
+            if (status) status.textContent = "● SERIAL REQUIRES HTTPS OR LOCALHOST";
+            alert("Chrome only allows Web Serial on HTTPS or localhost. Open this page through a local server or an HTTPS website (such as GitHub Pages).");
+            return;
+        }
+
+        // Do not allow the same USB/Serial port to be assigned to both wrists.
+        const existingPort = side === "LEFT" ? rightPort : leftPort;
         const port = await navigator.serial.requestPort();
 
+        if (existingPort && port === existingPort) {
+            if (status) status.textContent = "● PORT ALREADY ASSIGNED TO THE OTHER WRIST";
+            alert("That serial port is already connected to the other wrist sensor. Choose the other ESP32 port.");
+            return;
+        }
+
+        if (port.readable || port.writable) {
+            // The selected port may already be open by this page.
+            if (port.readable || port.writable) {
+                try {
+                    await port.close();
+                } catch (_) {
+                    // Ignore close errors; open() below will report a real failure.
+                }
+            }
+        }
+
+        if (button) {
+            button.disabled = true;
+            button.textContent = "SELECTED — CONNECTING...";
+        }
+        if (status) status.textContent = "● CONNECTING " + side + " SENSOR...";
+
+        // ESP32 firmware sends newline-delimited JSON at 115200 baud.
         await port.open({ baudRate: 115200 });
 
         if (side === "LEFT") {
@@ -3405,13 +3444,30 @@ async function connectSensor(side) {
             rightPort = port;
         }
 
+        if (button) {
+            button.disabled = false;
+            button.textContent = "✓ " + side + " SENSOR CONNECTED";
+        }
+
         updateConnectionStatus();
         readSensorData(port, side);
+
     } catch (error) {
         console.error(side + " connection error:", error);
-        const status = document.getElementById("serial-status");
+
+        if (button) {
+            button.disabled = false;
+            button.textContent = "CONNECT " + side + " SENSOR";
+        }
+
         if (status) {
-            status.textContent = "● " + side + " SENSOR ERROR";
+            if (error && error.name === "NotFoundError") {
+                status.textContent = "● NO " + side + " SENSOR SELECTED";
+            } else if (error && error.name === "InvalidStateError") {
+                status.textContent = "● " + side + " PORT IS ALREADY OPEN";
+            } else {
+                status.textContent = "● " + side + " SENSOR ERROR";
+            }
         }
     }
 }
@@ -3435,6 +3491,25 @@ function updateConnectionStatus() {
         status.textContent = "● SENSORS DISCONNECTED";
     }
 }
+
+// Restore ports that Chrome has already granted to this website.
+// A new port still requires clicking the corresponding CONNECT button.
+async function restoreGrantedPorts() {
+    if (!("serial" in navigator) || !window.isSecureContext) return;
+
+    try {
+        const ports = await navigator.serial.getPorts();
+        if (!ports.length) return;
+
+        console.log("Previously granted serial ports:", ports.length);
+        // We intentionally do not auto-assign ports to LEFT/RIGHT because
+        // the website cannot safely know which physical wrist a port belongs to.
+    } catch (error) {
+        console.warn("Could not read previously granted serial ports:", error);
+    }
+}
+
+restoreGrantedPorts();
 
 async function readSensorData(port, side) {
     const reader = port.readable.getReader();
