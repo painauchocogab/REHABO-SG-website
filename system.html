@@ -2528,9 +2528,7 @@ document.querySelector("#retry-session").addEventListener("click", () => {
     feedbackDialog.close();
     startButton.click();
 });
-        // ==========================================
-// SENSOR BUTTON CONNECTION
-// ==========================================
+
 
 document.getElementById("connect-left").addEventListener("click", () => {
     console.log("LEFT SENSOR BUTTON CLICKED");
@@ -2695,9 +2693,7 @@ function updateLiveDashboard(data) {
         state.textContent = data.state ?? "Idle";
     }
 
-    // ==============================
-    // LEFT WRIST GAME CONTROL
-    // ==============================
+
     if (side === "LEFT") {
 
     if (Number.isFinite(Number(data.pitch))) {
@@ -2709,15 +2705,8 @@ function updateLiveDashboard(data) {
     }
 }
 
-// CLOSE updateLiveDashboard()
-}
-// ==========================================
-// SMOOTH CURSOR VARIABLES
-// ==========================================
-    
-// ==========================================
-// CURSOR CONTROL
-// ==========================================
+
+
 
 let smoothHorizontal = 0;
 let smoothVertical = 0;
@@ -2727,9 +2716,7 @@ function updateGameCursor() {
     const cursor = document.getElementById("game-cursor");
     if (!cursor) return;
 
-    // ==========================================
-    // CURSOR SETTINGS
-    // ==========================================
+
 
     const HORIZONTAL_DEADZONE = 0.3;
     const VERTICAL_DEADZONE = 0.3;
@@ -2745,24 +2732,17 @@ function updateGameCursor() {
 
     const CURSOR_SPEED = 1.5;
 
-
-    // ==========================================
-    // READ SENSOR VALUES
-    // ==========================================
+    //READ SENSOR VALUES
 
     let horizontal = Number(leftRoll);
     let vertical = Number(leftPitch);
 
-
+// READ SENSOR VALUE
     // Safety check
     if (!Number.isFinite(horizontal)) horizontal = 0;
     if (!Number.isFinite(vertical)) vertical = 0;
 
-
-    // ==========================================
-    // DEADZONE
-    // ==========================================
-
+// DEADZONE
     if (Math.abs(horizontal) < HORIZONTAL_DEADZONE) {
         horizontal = 0;
     }
@@ -2772,17 +2752,12 @@ function updateGameCursor() {
     }
 
 
-    // ==========================================
-    // SENSITIVITY
-    // ==========================================
-
+ // DEADZONE
     horizontal *= HORIZONTAL_SENSITIVITY;
     vertical *= VERTICAL_SENSITIVITY;
 
 
-    // ==========================================
-    // SMOOTHING
-    // ==========================================
+    
 
     smoothHorizontal +=
         (horizontal - smoothHorizontal) * SMOOTHING;
@@ -2790,11 +2765,7 @@ function updateGameCursor() {
     smoothVertical +=
         (vertical - smoothVertical) * SMOOTHING;
 
-
-    // ==========================================
-    // MOVE CURSOR
-    // ==========================================
-
+// MOVE CURSOR
     gameCursorX +=
         smoothHorizontal * CURSOR_SPEED * 0.10;
 
@@ -2802,10 +2773,7 @@ function updateGameCursor() {
         smoothVertical * CURSOR_SPEED * 0.10;
 
 
-    // ==========================================
-    // KEEP INSIDE GAME
-    // ==========================================
-
+// MOVE CURSOR
     gameCursorX = Math.max(
         GAME_MIN_X,
         Math.min(GAME_MAX_X, gameCursorX)
@@ -2816,19 +2784,13 @@ function updateGameCursor() {
         Math.min(GAME_MAX_Y, gameCursorY)
     );
 
-
-    // ==========================================
-    // DISPLAY CURSOR
-    // ==========================================
+// DISPLAY CURSOR
 
     cursor.style.left = `${gameCursorX}%`;
     cursor.style.top = `${gameCursorY}%`;
 
 
-    // ==========================================
-    // ONLY CHECK TARGET DURING EXERCISE
-    // ==========================================
-
+// DISPLAY CURSOR
     if (sessionActive && !sessionPaused) {
         checkTargetCollision();
     }
@@ -2868,18 +2830,12 @@ function registerSensorHit() {
 
     targetHitCooldown = true;
 
-    // ==========================================
-    // INCREASE REPETITION
-    // ==========================================
+    // INCREASE REPETITION 
 
     repetitions += 1;
     repetitionsDisplay.textContent = repetitions;
 
-
-    // ==========================================
-    // CALCULATE SENSOR RESULTS
-    // ==========================================
-
+    // CALCULATE SENSOR RESULT
     const angle = Math.min(
         180,
         Math.round(
@@ -2910,10 +2866,7 @@ function registerSensorHit() {
     );
 
 
-    // ==========================================
-    // UPDATE PERFORMANCE BARS
-    // ==========================================
-
+// UPDATE PERFORMANCE BARS
     document.querySelector("#angle-fill").style.width =
         `${Math.min(100, angle / 1.8)}%`;
 
@@ -2923,17 +2876,12 @@ function registerSensorHit() {
     document.querySelector("#accuracy-fill").style.width =
         `${accuracy}%`;
 
-
-    // ==========================================
-    // HIDE CURRENT GREEN BALL
-    // ==========================================
+// UPDATE PERFORMANCE BARS
 
     targetButton.style.visibility = "hidden";
 
 
-    // ==========================================
-    // CREATE NEXT TARGET
-    // ==========================================
+// CREATE NEXT TARGET    
 
     setTimeout(() => {
 
@@ -2985,9 +2933,9 @@ function distanceFromTarget() {
 }
 
 
-// ==========================================
+
 // CONTINUOUS CURSOR UPDATE
-// ==========================================
+
 
 function cursorAnimationLoop() {
     updateGameCursor();
