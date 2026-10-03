@@ -2653,28 +2653,26 @@
                     </div>
                 </section>
 
-                <section class="peak-card-panel">
-                    <h4 class="subpanel-title">COMFORTABLE PEAK ANGLES</h4>
-                    <div class="peak-grid">
-                        <div class="peak-card" id="peak-up-card">
-                            <span>↑ UP</span>
-                            <strong id="peak-up">—</strong>
-                            <small id="peak-up-status">PENDING</small>
+                <section class="peak-card-panel two-wrist-results-panel">
+                    <h4 class="subpanel-title">COMFORTABLE PEAK ANGLES // BOTH WRISTS</h4>
+                    <div class="two-wrist-results">
+                        <div class="wrist-result-column">
+                            <h5>LEFT WRIST</h5>
+                            <div class="peak-grid">
+                                <div class="peak-card"><span>↑ UP</span><strong id="peak-left-up">—</strong><small id="peak-left-up-status">PENDING</small></div>
+                                <div class="peak-card"><span>↓ DOWN</span><strong id="peak-left-down">—</strong><small id="peak-left-down-status">PENDING</small></div>
+                                <div class="peak-card"><span>← LEFT</span><strong id="peak-left-left">—</strong><small id="peak-left-left-status">PENDING</small></div>
+                                <div class="peak-card"><span>→ RIGHT</span><strong id="peak-left-right">—</strong><small id="peak-left-right-status">PENDING</small></div>
+                            </div>
                         </div>
-                        <div class="peak-card" id="peak-down-card">
-                            <span>↓ DOWN</span>
-                            <strong id="peak-down">—</strong>
-                            <small id="peak-down-status">PENDING</small>
-                        </div>
-                        <div class="peak-card" id="peak-left-card">
-                            <span>← LEFT</span>
-                            <strong id="peak-left">—</strong>
-                            <small id="peak-left-status">PENDING</small>
-                        </div>
-                        <div class="peak-card" id="peak-right-card">
-                            <span>→ RIGHT</span>
-                            <strong id="peak-right">—</strong>
-                            <small id="peak-right-status">PENDING</small>
+                        <div class="wrist-result-column">
+                            <h5>RIGHT WRIST</h5>
+                            <div class="peak-grid">
+                                <div class="peak-card"><span>↑ UP</span><strong id="peak-right-up">—</strong><small id="peak-right-up-status">PENDING</small></div>
+                                <div class="peak-card"><span>↓ DOWN</span><strong id="peak-right-down">—</strong><small id="peak-right-down-status">PENDING</small></div>
+                                <div class="peak-card"><span>← LEFT</span><strong id="peak-right-left">—</strong><small id="peak-right-left-status">PENDING</small></div>
+                                <div class="peak-card"><span>→ RIGHT</span><strong id="peak-right-right">—</strong><small id="peak-right-right-status">PENDING</small></div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -2794,21 +2792,49 @@
 
             <section class="info-card">
                 <h4>CALIBRATION RESULTS // COMFORTABLE PEAK</h4>
-                <div class="result-grid">
-                    <div class="result-item"><span>↑ UP</span><strong id="result-up">—</strong></div>
-                    <div class="result-item"><span>↓ DOWN</span><strong id="result-down">—</strong></div>
-                    <div class="result-item"><span>← LEFT</span><strong id="result-left">—</strong></div>
-                    <div class="result-item"><span>→ RIGHT</span><strong id="result-right">—</strong></div>
+                <div class="two-wrist-results result-two-wrist">
+                    <div class="wrist-result-column">
+                        <h5>LEFT WRIST</h5>
+                        <div class="result-grid">
+                            <div class="result-item"><span>↑ UP</span><strong id="result-left-up">—</strong></div>
+                            <div class="result-item"><span>↓ DOWN</span><strong id="result-left-down">—</strong></div>
+                            <div class="result-item"><span>← LEFT</span><strong id="result-left-left">—</strong></div>
+                            <div class="result-item"><span>→ RIGHT</span><strong id="result-left-right">—</strong></div>
+                        </div>
+                    </div>
+                    <div class="wrist-result-column">
+                        <h5>RIGHT WRIST</h5>
+                        <div class="result-grid">
+                            <div class="result-item"><span>↑ UP</span><strong id="result-right-up">—</strong></div>
+                            <div class="result-item"><span>↓ DOWN</span><strong id="result-right-down">—</strong></div>
+                            <div class="result-item"><span>← LEFT</span><strong id="result-right-left">—</strong></div>
+                            <div class="result-item"><span>→ RIGHT</span><strong id="result-right-right">—</strong></div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             <section class="info-card game-targets">
-                <h4>GAME TARGETS // 80%</h4>
-                <div class="result-grid">
-                    <div class="result-item"><span>↑ UP</span><strong id="target-up">—</strong></div>
-                    <div class="result-item"><span>↓ DOWN</span><strong id="target-down">—</strong></div>
-                    <div class="result-item"><span>← LEFT</span><strong id="target-left">—</strong></div>
-                    <div class="result-item"><span>→ RIGHT</span><strong id="target-right">—</strong></div>
+                <h4>GAME TARGETS // 80% OF COMFORTABLE PEAK</h4>
+                <div class="two-wrist-results result-two-wrist">
+                    <div class="wrist-result-column">
+                        <h5>LEFT WRIST</h5>
+                        <div class="result-grid">
+                            <div class="result-item"><span>↑ UP</span><strong id="target-left-up">—</strong></div>
+                            <div class="result-item"><span>↓ DOWN</span><strong id="target-left-down">—</strong></div>
+                            <div class="result-item"><span>← LEFT</span><strong id="target-left-left">—</strong></div>
+                            <div class="result-item"><span>→ RIGHT</span><strong id="target-left-right">—</strong></div>
+                        </div>
+                    </div>
+                    <div class="wrist-result-column">
+                        <h5>RIGHT WRIST</h5>
+                        <div class="result-grid">
+                            <div class="result-item"><span>↑ UP</span><strong id="target-right-up">—</strong></div>
+                            <div class="result-item"><span>↓ DOWN</span><strong id="target-right-down">—</strong></div>
+                            <div class="result-item"><span>← LEFT</span><strong id="target-right-left">—</strong></div>
+                            <div class="result-item"><span>→ RIGHT</span><strong id="target-right-right">—</strong></div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -4317,11 +4343,25 @@ requestAnimationFrame(cursorAnimationLoop);
 
     function updateStaticResult(direction) {
         const map = {
-            LEFT: {UP:"result-left-up",DOWN:"result-left-down",LEFT:"result-left-left",RIGHT:"result-left-right"},
-            RIGHT:{UP:"result-right-up",DOWN:"result-right-down",LEFT:"result-right-left",RIGHT:"result-right-right"}
+            LEFT: {
+                UP: ["result-left-up", "peak-left-up"],
+                DOWN: ["result-left-down", "peak-left-down"],
+                LEFT: ["result-left-left", "peak-left-left"],
+                RIGHT: ["result-left-right", "peak-left-right"]
+            },
+            RIGHT: {
+                UP: ["result-right-up", "peak-right-up"],
+                DOWN: ["result-right-down", "peak-right-down"],
+                LEFT: ["result-right-left", "peak-right-left"],
+                RIGHT: ["result-right-right", "peak-right-right"]
+            }
         };
         for (const side of ["LEFT","RIGHT"]) {
-            setText(map[side][direction.key], peaks[side][direction.key].toFixed(1) + "°");
+            const value = peaks[side][direction.key];
+            const text = value.toFixed(1) + "°";
+            setText(map[side][direction.key][0], text);
+            setText(map[side][direction.key][1], text);
+            setText(map[side][direction.key][1] + "-status", "RECORDED");
         }
     }
 
@@ -4352,6 +4392,19 @@ requestAnimationFrame(cursorAnimationLoop);
         window.__rehaboCalibrationRecord = record;
         try { localStorage.setItem("rehabo-sg-latest-calibration", JSON.stringify(record)); }
         catch (error) { console.warn("Could not save calibration.", error); }
+
+        // Populate the permanent dashboard with BOTH wrists and their 80% targets.
+        for (const side of ["LEFT","RIGHT"]) {
+            for (const d of directions) {
+                const key = d.key.toLowerCase();
+                const peakText = peaks[side][d.key].toFixed(1) + "°";
+                const targetText = record.targets80[side][d.key].toFixed(1) + "°";
+                setText("peak-" + side.toLowerCase() + "-" + key, peakText);
+                setText("peak-" + side.toLowerCase() + "-" + key + "-status", "RECORDED");
+                setText("result-" + side.toLowerCase() + "-" + key, peakText);
+                setText("target-" + side.toLowerCase() + "-" + key, targetText);
+            }
+        }
 
         setTimeout(hideOverlay, 5500);
     }
@@ -4404,6 +4457,27 @@ requestAnimationFrame(cursorAnimationLoop);
         }
     };
 
+    function restoreSavedCalibration() {
+        try {
+            const saved = JSON.parse(localStorage.getItem("rehabo-sg-latest-calibration") || "null");
+            if (!saved || !saved.comfortablePeaks) return;
+            for (const side of ["LEFT","RIGHT"]) {
+                for (const d of directions) {
+                    const key = d.key.toLowerCase();
+                    const peak = Number(saved.comfortablePeaks[side]?.[d.key]);
+                    const target = Number(saved.targets80?.[side]?.[d.key]);
+                    if (Number.isFinite(peak)) {
+                        setText("peak-" + side.toLowerCase() + "-" + key, peak.toFixed(1) + "°");
+                        setText("peak-" + side.toLowerCase() + "-" + key + "-status", "RECORDED");
+                        setText("result-" + side.toLowerCase() + "-" + key, peak.toFixed(1) + "°");
+                    }
+                    if (Number.isFinite(target)) setText("target-" + side.toLowerCase() + "-" + key, target.toFixed(1) + "°");
+                }
+            }
+        } catch (error) { console.warn("Could not restore saved calibration.", error); }
+    }
+    restoreSavedCalibration();
+
     // Polls the latest serial data so the popup appears automatically only
     // after BOTH wrists are actually receiving live MPU6050 packets.
     setInterval(() => {
@@ -4416,6 +4490,16 @@ requestAnimationFrame(cursorAnimationLoop);
 })();
 </script>
 
+
+<style>
+/* Separate calibration results for the two MPU6050 wrist sensors. */
+.two-wrist-results{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.wrist-result-column{min-width:0;}
+.wrist-result-column h5{margin:0 0 .55rem;color:#8fdcff;font-size:.72rem;letter-spacing:.12em;}
+.two-wrist-results-panel .peak-grid{margin-top:0;}
+.result-two-wrist .result-grid{margin-top:0;}
+@media(max-width:760px){.two-wrist-results{grid-template-columns:1fr;}}
+</style>
 <style>
 /* Wrist calibration is measurement-only; the MPU6050 must not control a cursor. */
 #game-cursor { display: none !important; }
