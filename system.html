@@ -2702,8 +2702,8 @@ function updateGameCursor() {
     // SETTINGS
     // ==========================================
 
-    const DEADZONE = 4.0;
-
+const HORIZONTAL_DEADZONE = 1.5;
+const VERTICAL_DEADZONE = 4.0;
     // Lower = slower/more controlled
     // Higher = faster
     const CURSOR_SPEED = 0.65;
@@ -2727,13 +2727,13 @@ function updateGameCursor() {
     // Ignore tiny wrist movements
     // ==========================================
 
-    if (Math.abs(horizontal) < DEADZONE) {
-        horizontal = 0;
-    }
+   if (Math.abs(horizontal) < HORIZONTAL_DEADZONE) {
+    horizontal = 0;
+}
 
-    if (Math.abs(vertical) < DEADZONE) {
-        vertical = 0;
-    }
+if (Math.abs(vertical) < VERTICAL_DEADZONE) {
+    vertical = 0;
+}
 
 
     // ==========================================
@@ -2780,15 +2780,11 @@ function updateGameCursor() {
     // UPDATE CURSOR
     // ==========================================
 
-    cursor.style.left = `${gameCursorX}%`;
-    cursor.style.top = `${gameCursorY}%`;
+cursor.style.left = `${gameCursorX}%`;
+cursor.style.top = `${gameCursorY}%`;
 
-
-    // ==========================================
-    // CHECK TARGET
-    // ==========================================
-
-    checkTargetCollision();
+// Check if cursor touched the target
+checkTargetCollision();
 }
 function checkTargetCollision() {
 
