@@ -2685,58 +2685,43 @@ function updateLiveDashboard(data) {
         updateGameCursor();
     }
 }
-   function updateGameCursor() {
+  function updateGameCursor() {
 
     if (!sessionActive || sessionPaused) return;
 
     const cursor = document.getElementById("game-cursor");
     if (!cursor) return;
 
-    // Neutral zone to prevent small sensor noise
     const DEADZONE = 3;
+    const CURSOR_SPEED = 0.8;
 
-    // Maximum wrist tilt considered
-    const MAX_TILT = 30;
+    // Based on your sensor's physical orientation:
+    // Pitch controls horizontal movement
+    // Roll controls vertical movement
 
-    // Maximum cursor movement per sensor update
-    const MAX_SPEED = 1.8;
+    let horizontal = leftPitch;
+    let vertical = leftRoll;
 
-    let xInput = leftRoll;
-    let yInput = leftPitch;
-
-    // Deadzone
-    if (Math.abs(xInput) < DEADZONE) xInput = 0;
-    if (Math.abs(yInput) < DEADZONE) yInput = 0;
-
-    // Convert tilt to movement speed
-    let xSpeed = 0;
-    let ySpeed = 0;
-
-    if (xInput !== 0) {
-        const normalizedX =
-            Math.min(Math.abs(xInput), MAX_TILT) / MAX_TILT;
-
-        xSpeed =
-            Math.sign(xInput) *
-            normalizedX *
-            MAX_SPEED;
+    // Deadzone to remove small sensor noise
+    if (Math.abs(horizontal) < DEADZONE) {
+        horizontal = 0;
     }
 
-    if (yInput !== 0) {
-        const normalizedY =
-            Math.min(Math.abs(yInput), MAX_TILT) / MAX_TILT;
-
-        ySpeed =
-            Math.sign(yInput) *
-            normalizedY *
-            MAX_SPEED;
+    if (Math.abs(vertical) < DEADZONE) {
+        vertical = 0;
     }
 
-    // Move cursor
-    gameCursorX += xSpeed;
-    gameCursorY -= ySpeed;
+    // Horizontal
+    // Negative pitch = RIGHT
+    // Positive pitch = LEFT
+    gameCursorX -= horizontal * CURSOR_SPEED * 0.05;
 
-    // Keep cursor inside game
+    // Vertical
+    // Positive roll = UP
+    // Negative roll = DOWN
+    gameCursorY -= vertical * CURSOR_SPEED * 0.05;
+
+    // Keep cursor inside the game
     gameCursorX = Math.max(
         GAME_MIN_X,
         Math.min(GAME_MAX_X, gameCursorX)
@@ -2749,8 +2734,6 @@ function updateLiveDashboard(data) {
 
     cursor.style.left = `${gameCursorX}%`;
     cursor.style.top = `${gameCursorY}%`;
-
-    checkTargetCollision();
 }
 function checkTargetCollision() {
 
