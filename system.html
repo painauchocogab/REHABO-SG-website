@@ -2689,15 +2689,12 @@ function updateLiveDashboard(data) {
     // ==============================
     if (side === "LEFT") {
 
-        if (Number.isFinite(Number(data.pitch))) {
-            leftPitch = Number(data.pitch);
-        }
+    if (Number.isFinite(Number(data.pitch))) {
+        leftPitch = Number(data.pitch);
+    }
 
-        if (Number.isFinite(Number(data.roll))) {
-            leftRoll = Number(data.roll);
-        }
-
-        updateGameCursor();
+    if (Number.isFinite(Number(data.roll))) {
+        leftRoll = Number(data.roll);
     }
 }
 // ==========================================
@@ -2731,7 +2728,7 @@ function updateGameCursor() {
     // 0.1 = very smooth
     // 0.25 = balanced
     // 0.5 = fast response
-    const SMOOTHING = 0.25;
+    const SMOOTHING = 0.50;
 
 
     // ==========================================
@@ -2867,6 +2864,12 @@ function registerSensorHit() {
             )
         )
     );
+    function cursorAnimationLoop() {
+    updateGameCursor();
+    requestAnimationFrame(cursorAnimationLoop);
+}
+
+requestAnimationFrame(cursorAnimationLoop);
 
     const speed = Math.min(
         1.5,
