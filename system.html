@@ -11,7 +11,7 @@
         * {
             box-sizing: border-box;
         }
-        
+
       body {
     min-height: 100vh;
     margin: 0;
@@ -4307,10 +4307,8 @@ requestAnimationFrame(cursorAnimationLoop);
 
         function frame(now) {
             if (!running) return;
-            if (!bothSensorsOnline()) {
-                finishBecauseSensorLost();
-                return;
-            }
+            // Manual calibration must never abort just because a serial packet
+            // is briefly delayed. Use the latest valid reading from each wrist.
             const elapsed = now - measureStart;
             const percent = Math.min(100, elapsed / MEASURE_MS * 100);
             const remaining = Math.max(0, (MEASURE_MS - elapsed) / 1000);
@@ -4405,21 +4403,23 @@ requestAnimationFrame(cursorAnimationLoop);
     }
 
     function finishBecauseSensorLost() {
+        // Kept for compatibility with the older automatic-calibration flow.
+        // Manual calibration no longer calls this function.
         stopTimers();
         running = false;
         phase = "WAITING";
-        title.textContent = "SENSOR CONNECTION LOST";
-        kicker.textContent = "CALIBRATION PAUSED";
+        title.textContent = "CALIBRATION PAUSED";
+        kicker.textContent = "WAITING FOR SENSOR DATA";
         directionIcon.textContent = "!";
         timerText.hidden = true;
         progressTrack.hidden = true;
         liveGrid.hidden = false;
         resultGrid.hidden = true;
-        message.textContent = "Both MPU6050 sensors must remain connected and sending data. Reconnect the missing sensor, then calibration will restart automatically.";
+        message.textContent = "Calibration was paused by the automatic safety check. Click START CALIBRATION to try again.";
         countdownEl.textContent = "—";
         waitingForBoth = true;
-        manualCalibrationButton.disabled = true;
-        manualCalibrationNote.textContent = "RECONNECT BOTH WRIST SENSORS TO CONTINUE.";
+        manualCalibrationButton.disabled = false;
+        manualCalibrationNote.textContent = "CLICK START CALIBRATION TO TRY AGAIN.";
         manualCalibrationNote.style.color = "#ffb86b";
     }
 
@@ -4444,6 +4444,7 @@ requestAnimationFrame(cursorAnimationLoop);
         manualCalibrationNote.style.color = "#63efc1";
 
         // Capture a fresh neutral position immediately before the first 5-second test.
+        // Do not require either sensor to pass a connection/freshness check here.
         setTimeout(() => {
             if (!running) return;
             captureNeutral();
