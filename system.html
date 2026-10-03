@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -4123,13 +4124,18 @@ requestAnimationFrame(cursorAnimationLoop);
     };
 
     const TARGET_RATIO = 0.80;
-    const PREP_SECONDS = 3;
+    const PREP_SECONDS = 0;
+    const POPUP_START_DELAY_MS = 500;
+    const NEUTRAL_SAMPLES_MS = 400;
     const MEASURE_MS = 5000;
     const TRANSITION_SECONDS = 2;
     const DATA_TIMEOUT_MS = 2000;
 
     let running = false;
     let waitingForBoth = false;
+    let calibrationCompleted = false;
+    let neutralSampling = false;
+    let neutralSamples = { LEFT: [], RIGHT: [] };
     let directionIndex = 0;
     let phase = "IDLE";
     let measureStart = 0;
@@ -4190,6 +4196,44 @@ requestAnimationFrame(cursorAnimationLoop);
         }
     }
 
+    function beginNeutralSampling(done) {
+        neutralSampling = true;
+        neutralSamples = { LEFT: [], RIGHT: [] };
+        const start = performance.now();
+
+        function sample(now) {
+            if (!bothSensorsOnline()) {
+                neutralSampling = false;
+                finishBecauseSensorLost();
+                return;
+            }
+
+            for (const side of ["LEFT", "RIGHT"]) {
+                neutralSamples[side].push({
+                    pitch: Number(latest[side].pitch),
+                    roll: Number(latest[side].roll)
+                });
+            }
+
+            if (now - start >= NEUTRAL_SAMPLES_MS) {
+                for (const side of ["LEFT", "RIGHT"]) {
+                    const samples = neutralSamples[side];
+                    const pitch = samples.reduce((sum, v) => sum + v.pitch, 0) / samples.length;
+                    const roll = samples.reduce((sum, v) => sum + v.roll, 0) / samples.length;
+                    neutral[side].pitch = pitch;
+                    neutral[side].roll = roll;
+                }
+                neutralSampling = false;
+                done();
+                return;
+            }
+
+            requestAnimationFrame(sample);
+        }
+
+        requestAnimationFrame(sample);
+    }
+
     function directionalMovement(side, direction) {
         const data = latest[side];
         if (!data || neutral[side].pitch === null) return 0;
@@ -4234,16 +4278,21 @@ requestAnimationFrame(cursorAnimationLoop);
         if (!running) return;
         phase = "PREPARE";
         directionIcon.textContent = direction.icon;
-        title.textContent = "MOVE YOUR WRIST " + direction.label;
-        kicker.textContent = "HIGHEST COMFORTABLE TILT TEST";
-        message.textContent = "Move BOTH wrists " + direction.label.toLowerCase() + " as far as comfortably possible. Do not force the movement.";
-        timerText.hidden = true;
-        progressTrack.hidden = true;
+        title.textContent = "MOVE BOTH WRISTS " + direction.label;
+        kicker.textContent = "HIGHEST COMFORTABLE WRIST MOVEMENT";
+        message.textContent = "Move your LEFT and RIGHT wrists " + direction.label.toLowerCase() + " as far as comfortably possible within 5 seconds. Do not force the movement.";
+        timerText.hidden = false;
+        progressTrack.hidden = false;
         liveGrid.hidden = true;
         resultGrid.hidden = true;
         resultMessage.textContent = "";
         resetLivePanel();
-        countdown(PREP_SECONDS, () => startMeasurement(direction));
+        countdownEl.textContent = "GO";
+        progressFill.style.width = "0%";
+        setTimeout(() => {
+            if (!running || !bothSensorsOnline()) { finishBecauseSensorLost(); return; }
+            beginNeutralSampling(() => startMeasurement(direction));
+        }, POPUP_START_DELAY_MS);
     }
 
     function startMeasurement(direction) {
@@ -4350,6 +4399,8 @@ requestAnimationFrame(cursorAnimationLoop);
             for (const d of directions) record.targets80[side][d.key] = +(peaks[side][d.key] * TARGET_RATIO).toFixed(1);
         }
         window.__rehaboCalibrationRecord = record;
+        calibrationCompleted = true;
+        waitingForBoth = true;
         try { localStorage.setItem("rehabo-sg-latest-calibration", JSON.stringify(record)); }
         catch (error) { console.warn("Could not save calibration.", error); }
 
@@ -4373,7 +4424,7 @@ requestAnimationFrame(cursorAnimationLoop);
     }
 
     function startAutomaticCalibration() {
-        if (running || !bothSensorsOnline()) return;
+        if (running || calibrationCompleted || !bothSensorsOnline()) return;
         waitingForBoth = false;
         running = true;
         directionIndex = 0;
@@ -4381,15 +4432,17 @@ requestAnimationFrame(cursorAnimationLoop);
         resetLivePanel();
         resultGrid.hidden = true;
         showOverlay();
-        title.textContent = "HIGHEST COMFORTABLE TILT TEST";
-        kicker.textContent = "BOTH WRIST SENSORS ONLINE";
+        title.textContent = "HIGHEST COMFORTABLE WRIST MOVEMENT";
+        kicker.textContent = "BOTH WRIST SENSORS ACTIVE";
         directionIcon.textContent = "✓";
-        message.textContent = "Both wrist sensors are connected and online. Sit comfortably and prepare for the test.";
-        countdown(PREP_SECONDS, () => {
-            if (!bothSensorsOnline()) { finishBecauseSensorLost(); return; }
-            captureNeutral();
+        countdownEl.textContent = "5";
+        timerText.hidden = false;
+        progressTrack.hidden = false;
+        message.textContent = "Calibration started automatically. Both wrists will be tested together. Move only as far as comfortably possible.";
+        setTimeout(() => {
+            if (!running || !bothSensorsOnline()) { finishBecauseSensorLost(); return; }
             prepareDirection(directions[0]);
-        });
+        }, POPUP_START_DELAY_MS);
     }
 
     // Called by the sensor stream after every valid JSON packet.
@@ -4411,6 +4464,7 @@ requestAnimationFrame(cursorAnimationLoop);
             if (!running && !waitingForBoth) startAutomaticCalibration();
         } else if (!running) {
             waitingForBoth = true;
+            calibrationCompleted = false;
         }
     }, 250);
 })();
