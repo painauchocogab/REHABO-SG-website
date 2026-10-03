@@ -2685,6 +2685,12 @@ function updateLiveDashboard(data) {
         updateGameCursor();
     }
 }
+// ==========================================
+// SMOOTH CURSOR VARIABLES
+// ==========================================
+let smoothHorizontal = 0;
+let smoothVertical = 0;
+
 function updateGameCursor() {
 
     if (!sessionActive || sessionPaused) return;
@@ -2692,17 +2698,35 @@ function updateGameCursor() {
     const cursor = document.getElementById("game-cursor");
     if (!cursor) return;
 
-    const DEADZONE = 3;
-    const CURSOR_SPEED = 0.8;
+    // ==========================================
+    // SETTINGS
+    // ==========================================
 
-    // MPU6050 orientation:
-    // Roll  = LEFT / RIGHT
-    // Pitch = UP / DOWN
+    const DEADZONE = 4.0;
+
+    // Lower = slower/more controlled
+    // Higher = faster
+    const CURSOR_SPEED = 0.65;
+
+    // 0.1 = very smooth but slower response
+    // 0.3 = balanced
+    // 0.5 = faster response
+    const SMOOTHING = 0.25;
+
+
+    // ==========================================
+    // GET MPU6050 MOVEMENT
+    // ==========================================
 
     let horizontal = leftRoll;
     let vertical = leftPitch;
 
-    // Deadzone to remove small sensor noise
+
+    // ==========================================
+    // DEADZONE
+    // Ignore tiny wrist movements
+    // ==========================================
+
     if (Math.abs(horizontal) < DEADZONE) {
         horizontal = 0;
     }
@@ -2711,23 +2735,36 @@ function updateGameCursor() {
         vertical = 0;
     }
 
-    // ==================================
-    // HORIZONTAL MOVEMENT
-    // ==================================
-    // Positive roll  = RIGHT
-    // Negative roll  = LEFT
 
-    gameCursorX += horizontal * CURSOR_SPEED * 0.05;
+    // ==========================================
+    // SMOOTHING
+    // Gradually approach the actual movement
+    // ==========================================
 
-    // ==================================
-    // VERTICAL MOVEMENT
-    // ==================================
-    // Positive pitch = UP
-    // Negative pitch = DOWN
+    smoothHorizontal =
+        smoothHorizontal +
+        (horizontal - smoothHorizontal) * SMOOTHING;
 
-    gameCursorY -= vertical * CURSOR_SPEED * 0.05;
+    smoothVertical =
+        smoothVertical +
+        (vertical - smoothVertical) * SMOOTHING;
 
-    // Keep cursor inside the game
+
+    // ==========================================
+    // MOVEMENT
+    // ==========================================
+
+    gameCursorX +=
+        smoothHorizontal * CURSOR_SPEED * 0.05;
+
+    gameCursorY -=
+        smoothVertical * CURSOR_SPEED * 0.05;
+
+
+    // ==========================================
+    // KEEP CURSOR INSIDE GAME
+    // ==========================================
+
     gameCursorX = Math.max(
         GAME_MIN_X,
         Math.min(GAME_MAX_X, gameCursorX)
@@ -2738,8 +2775,18 @@ function updateGameCursor() {
         Math.min(GAME_MAX_Y, gameCursorY)
     );
 
+
+    // ==========================================
+    // UPDATE CURSOR
+    // ==========================================
+
     cursor.style.left = `${gameCursorX}%`;
     cursor.style.top = `${gameCursorY}%`;
+
+
+    // ==========================================
+    // CHECK TARGET
+    // ==========================================
 
     checkTargetCollision();
 }
