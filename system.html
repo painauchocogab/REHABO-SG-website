@@ -1797,21 +1797,23 @@
         ● SENSORS DISCONNECTED
     </p>
 
-    <div class="sensor-buttons">
+   <div class="sensor-buttons">
 
-        <button
-    id="connect-left"
-    type="button">
-    CONNECT LEFT SENSOR
-</button>
+    <button
+        id="connect-left"
+        type="button"
+        onclick="connectSensor('LEFT')">
+        CONNECT LEFT SENSOR
+    </button>
 
-       <button
-    id="connect-right"
-    type="button">
-    CONNECT RIGHT SENSOR
-</button>
+    <button
+        id="connect-right"
+        type="button"
+        onclick="connectSensor('RIGHT')">
+        CONNECT RIGHT SENSOR
+    </button>
 
-    </div>
+</div>
 
     <div class="live-data-table">
 
@@ -2527,13 +2529,6 @@ document.querySelector("#close-feedback").addEventListener("click", () => {
 document.querySelector("#retry-session").addEventListener("click", () => {
     feedbackDialog.close();
     startButton.click();
-});
-        document.getElementById("connect-left").addEventListener("click", function () {
-    connectSensor("LEFT");
-});
-
-document.getElementById("connect-right").addEventListener("click", function () {
-    connectSensor("RIGHT");
 });
     </script>
 
