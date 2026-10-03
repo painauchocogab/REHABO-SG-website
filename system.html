@@ -1952,6 +1952,39 @@
     font-weight: 500;
 }
 
+.manual-calibration-button {
+    width: 100%;
+    margin-top: 0.8rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid #49caff;
+    background: rgba(12, 83, 124, 0.35);
+    color: #dff8ff;
+    font-family: "Orbitron", sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.10em;
+    cursor: pointer;
+    transition: background 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+}
+
+.manual-calibration-button:hover:not(:disabled) {
+    background: rgba(20, 118, 170, 0.48);
+    box-shadow: 0 0 14px rgba(73, 202, 255, 0.22);
+}
+
+.manual-calibration-button:disabled {
+    opacity: 0.42;
+    cursor: not-allowed;
+}
+
+.manual-calibration-note {
+    margin: 0.45rem 0 0;
+    color: #6f9ab3;
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+}
+
 .peak-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -2678,6 +2711,8 @@
                             <small id="peak-right-status">PENDING</small>
                         </div>
                     </div>
+                    <button class="manual-calibration-button" id="manual-calibrate-button" type="button">▶ START CALIBRATION</button>
+                    <p class="manual-calibration-note" id="manual-calibration-note">Both wrist sensors must be connected before starting.</p>
                 </section>
             </div>
 
@@ -4105,6 +4140,8 @@ requestAnimationFrame(cursorAnimationLoop);
     const resultGrid = document.getElementById("calibration-result-grid");
     const resultMessage = document.getElementById("calibration-result-message");
     const directionIcon = document.getElementById("calibration-direction-icon");
+    const manualCalibrationButton = document.getElementById("manual-calibrate-button");
+    const manualCalibrationNote = document.getElementById("manual-calibration-note");
 
     const directions = [
         { key: "UP", label: "UP", icon: "↑", axis: "pitch", sign: 1 },
@@ -4125,17 +4162,12 @@ requestAnimationFrame(cursorAnimationLoop);
 
     const TARGET_RATIO = 0.80;
     const PREP_SECONDS = 0;
-    const POPUP_START_DELAY_MS = 500;
-    const NEUTRAL_SAMPLES_MS = 400;
     const MEASURE_MS = 5000;
     const TRANSITION_SECONDS = 2;
     const DATA_TIMEOUT_MS = 2000;
 
     let running = false;
     let waitingForBoth = false;
-    let calibrationCompleted = false;
-    let neutralSampling = false;
-    let neutralSamples = { LEFT: [], RIGHT: [] };
     let directionIndex = 0;
     let phase = "IDLE";
     let measureStart = 0;
@@ -4196,44 +4228,6 @@ requestAnimationFrame(cursorAnimationLoop);
         }
     }
 
-    function beginNeutralSampling(done) {
-        neutralSampling = true;
-        neutralSamples = { LEFT: [], RIGHT: [] };
-        const start = performance.now();
-
-        function sample(now) {
-            if (!bothSensorsOnline()) {
-                neutralSampling = false;
-                finishBecauseSensorLost();
-                return;
-            }
-
-            for (const side of ["LEFT", "RIGHT"]) {
-                neutralSamples[side].push({
-                    pitch: Number(latest[side].pitch),
-                    roll: Number(latest[side].roll)
-                });
-            }
-
-            if (now - start >= NEUTRAL_SAMPLES_MS) {
-                for (const side of ["LEFT", "RIGHT"]) {
-                    const samples = neutralSamples[side];
-                    const pitch = samples.reduce((sum, v) => sum + v.pitch, 0) / samples.length;
-                    const roll = samples.reduce((sum, v) => sum + v.roll, 0) / samples.length;
-                    neutral[side].pitch = pitch;
-                    neutral[side].roll = roll;
-                }
-                neutralSampling = false;
-                done();
-                return;
-            }
-
-            requestAnimationFrame(sample);
-        }
-
-        requestAnimationFrame(sample);
-    }
-
     function directionalMovement(side, direction) {
         const data = latest[side];
         if (!data || neutral[side].pitch === null) return 0;
@@ -4278,21 +4272,16 @@ requestAnimationFrame(cursorAnimationLoop);
         if (!running) return;
         phase = "PREPARE";
         directionIcon.textContent = direction.icon;
-        title.textContent = "MOVE BOTH WRISTS " + direction.label;
-        kicker.textContent = "HIGHEST COMFORTABLE WRIST MOVEMENT";
-        message.textContent = "Move your LEFT and RIGHT wrists " + direction.label.toLowerCase() + " as far as comfortably possible within 5 seconds. Do not force the movement.";
-        timerText.hidden = false;
-        progressTrack.hidden = false;
+        title.textContent = "MOVE YOUR WRIST " + direction.label;
+        kicker.textContent = "HIGHEST COMFORTABLE TILT TEST";
+        message.textContent = "Move BOTH wrists " + direction.label.toLowerCase() + " as far as comfortably possible. Do not force the movement.";
+        timerText.hidden = true;
+        progressTrack.hidden = true;
         liveGrid.hidden = true;
         resultGrid.hidden = true;
         resultMessage.textContent = "";
         resetLivePanel();
-        countdownEl.textContent = "GO";
-        progressFill.style.width = "0%";
-        setTimeout(() => {
-            if (!running || !bothSensorsOnline()) { finishBecauseSensorLost(); return; }
-            beginNeutralSampling(() => startMeasurement(direction));
-        }, POPUP_START_DELAY_MS);
+        countdown(PREP_SECONDS, () => startMeasurement(direction));
     }
 
     function startMeasurement(direction) {
@@ -4399,11 +4388,12 @@ requestAnimationFrame(cursorAnimationLoop);
             for (const d of directions) record.targets80[side][d.key] = +(peaks[side][d.key] * TARGET_RATIO).toFixed(1);
         }
         window.__rehaboCalibrationRecord = record;
-        calibrationCompleted = true;
-        waitingForBoth = true;
         try { localStorage.setItem("rehabo-sg-latest-calibration", JSON.stringify(record)); }
         catch (error) { console.warn("Could not save calibration.", error); }
 
+        manualCalibrationButton.disabled = false;
+        manualCalibrationNote.textContent = "CALIBRATION COMPLETE. CLICK START CALIBRATION TO MEASURE AGAIN.";
+        manualCalibrationNote.style.color = "#63efc1";
         setTimeout(hideOverlay, 5500);
     }
 
@@ -4421,28 +4411,44 @@ requestAnimationFrame(cursorAnimationLoop);
         message.textContent = "Both MPU6050 sensors must remain connected and sending data. Reconnect the missing sensor, then calibration will restart automatically.";
         countdownEl.textContent = "—";
         waitingForBoth = true;
+        manualCalibrationButton.disabled = true;
+        manualCalibrationNote.textContent = "RECONNECT BOTH WRIST SENSORS TO CONTINUE.";
+        manualCalibrationNote.style.color = "#ffb86b";
     }
 
-    function startAutomaticCalibration() {
-        if (running || calibrationCompleted || !bothSensorsOnline()) return;
+    function startManualCalibration() {
+        if (running) return;
+
+        if (!bothSensorsOnline()) {
+            manualCalibrationNote.textContent = "CONNECT BOTH LEFT AND RIGHT WRIST SENSORS FIRST.";
+            manualCalibrationNote.style.color = "#ffb86b";
+            return;
+        }
+
         waitingForBoth = false;
+        calibrationCompleted = false;
         running = true;
         directionIndex = 0;
         resetPeaks();
         resetLivePanel();
         resultGrid.hidden = true;
         showOverlay();
-        title.textContent = "HIGHEST COMFORTABLE WRIST MOVEMENT";
-        kicker.textContent = "BOTH WRIST SENSORS ACTIVE";
+        title.textContent = "WRIST CALIBRATION";
+        kicker.textContent = "LEFT + RIGHT WRISTS TOGETHER";
         directionIcon.textContent = "✓";
-        countdownEl.textContent = "5";
-        timerText.hidden = false;
-        progressTrack.hidden = false;
-        message.textContent = "Calibration started automatically. Both wrists will be tested together. Move only as far as comfortably possible.";
+        message.textContent = "Keep both wrists comfortable and follow the direction shown. Each direction is measured for 5 seconds.";
+        countdownEl.textContent = "READY";
+        manualCalibrationButton.disabled = true;
+        manualCalibrationNote.textContent = "CALIBRATION RUNNING — BOTH WRISTS ARE MEASURED AT THE SAME TIME.";
+        manualCalibrationNote.style.color = "#63efc1";
+
+        // Capture a fresh neutral position immediately before the first 5-second test.
         setTimeout(() => {
-            if (!running || !bothSensorsOnline()) { finishBecauseSensorLost(); return; }
+            if (!running) return;
+            if (!bothSensorsOnline()) { finishBecauseSensorLost(); return; }
+            captureNeutral();
             prepareDirection(directions[0]);
-        }, POPUP_START_DELAY_MS);
+        }, 150);
     }
 
     // Called by the sensor stream after every valid JSON packet.
@@ -4457,23 +4463,30 @@ requestAnimationFrame(cursorAnimationLoop);
         }
     };
 
-    // Polls the latest serial data so the popup appears automatically only
-    // after BOTH wrists are actually receiving live MPU6050 packets.
+    // Keep the manual calibration button available only when BOTH wrist sensors
+    // are actively sending valid pitch/roll readings. No automatic calibration.
     setInterval(() => {
-        if (bothSensorsOnline()) {
-            if (!running && !waitingForBoth) startAutomaticCalibration();
-        } else if (!running) {
-            waitingForBoth = true;
-            calibrationCompleted = false;
+        const online = bothSensorsOnline();
+        if (!running) {
+            manualCalibrationButton.disabled = !online;
+            if (online) {
+                manualCalibrationNote.textContent = "BOTH WRIST SENSORS READY. CLICK START CALIBRATION.";
+                manualCalibrationNote.style.color = "#6f9ab3";
+            } else {
+                manualCalibrationNote.textContent = "Both wrist sensors must be connected before starting.";
+                manualCalibrationNote.style.color = "#6f9ab3";
+            }
         }
     }, 250);
+
+    manualCalibrationButton.addEventListener("click", startManualCalibration);
 })();
 </script>
 
 <style>
 /* Wrist calibration is measurement-only; the MPU6050 must not control a cursor. */
 #game-cursor { display: none !important; }
-#begin-calibration { display: none !important; }
+
 </style>
 </body>
 </html>
