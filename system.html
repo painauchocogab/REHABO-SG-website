@@ -2691,6 +2691,13 @@ function updateLiveDashboard(data) {
 let smoothHorizontal = 0;
 let smoothVertical = 0;
 
+// ==========================================
+// CURSOR CONTROL
+// ==========================================
+
+let smoothHorizontal = 0;
+let smoothVertical = 0;
+
 function updateGameCursor() {
 
     if (!sessionActive || sessionPaused) return;
@@ -2702,21 +2709,24 @@ function updateGameCursor() {
     // SETTINGS
     // ==========================================
 
-const HORIZONTAL_DEADZONE = 1.5;
-const VERTICAL_DEADZONE = 4.0;
-    // Lower = slower/more controlled
-    // Higher = faster
-    const CURSOR_SPEED = 0.65;
+    const DEADZONE = 1.5;
 
-    // 0.1 = very smooth but slower response
-    // 0.3 = balanced
-    // 0.5 = faster response
+    // Cursor sensitivity
+    const CURSOR_SPEED = 1.2;
+
+    // Smoothing
+    // 0.1 = very smooth
+    // 0.25 = balanced
+    // 0.5 = fast response
     const SMOOTHING = 0.25;
 
 
     // ==========================================
-    // GET MPU6050 MOVEMENT
+    // MPU6050 AXES
     // ==========================================
+
+    // Roll = LEFT / RIGHT
+    // Pitch = UP / DOWN
 
     let horizontal = leftRoll;
     let vertical = leftPitch;
@@ -2724,21 +2734,19 @@ const VERTICAL_DEADZONE = 4.0;
 
     // ==========================================
     // DEADZONE
-    // Ignore tiny wrist movements
     // ==========================================
 
-   if (Math.abs(horizontal) < HORIZONTAL_DEADZONE) {
-    horizontal = 0;
-}
+    if (Math.abs(horizontal) < DEADZONE) {
+        horizontal = 0;
+    }
 
-if (Math.abs(vertical) < VERTICAL_DEADZONE) {
-    vertical = 0;
-}
+    if (Math.abs(vertical) < DEADZONE) {
+        vertical = 0;
+    }
 
 
     // ==========================================
     // SMOOTHING
-    // Gradually approach the actual movement
     // ==========================================
 
     smoothHorizontal =
@@ -2751,14 +2759,14 @@ if (Math.abs(vertical) < VERTICAL_DEADZONE) {
 
 
     // ==========================================
-    // MOVEMENT
+    // CURSOR MOVEMENT
     // ==========================================
 
     gameCursorX +=
-        smoothHorizontal * CURSOR_SPEED * 0.05;
+        smoothHorizontal * CURSOR_SPEED * 0.10;
 
     gameCursorY -=
-        smoothVertical * CURSOR_SPEED * 0.05;
+        smoothVertical * CURSOR_SPEED * 0.10;
 
 
     // ==========================================
@@ -2780,11 +2788,15 @@ if (Math.abs(vertical) < VERTICAL_DEADZONE) {
     // UPDATE CURSOR
     // ==========================================
 
-cursor.style.left = `${gameCursorX}%`;
-cursor.style.top = `${gameCursorY}%`;
+    cursor.style.left = `${gameCursorX}%`;
+    cursor.style.top = `${gameCursorY}%`;
 
-// Check if cursor touched the target
-checkTargetCollision();
+
+    // ==========================================
+    // CHECK TARGET COLLISION
+    // ==========================================
+
+    checkTargetCollision();
 }
 function checkTargetCollision() {
 
