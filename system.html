@@ -2685,7 +2685,7 @@ function updateLiveDashboard(data) {
         updateGameCursor();
     }
 }
-  function updateGameCursor() {
+function updateGameCursor() {
 
     if (!sessionActive || sessionPaused) return;
 
@@ -2695,12 +2695,12 @@ function updateLiveDashboard(data) {
     const DEADZONE = 3;
     const CURSOR_SPEED = 0.8;
 
-    // Based on your sensor's physical orientation:
-    // Pitch controls horizontal movement
-    // Roll controls vertical movement
+    // MPU6050 orientation:
+    // Roll  = LEFT / RIGHT
+    // Pitch = UP / DOWN
 
-    let horizontal = leftPitch;
-    let vertical = leftRoll;
+    let horizontal = leftRoll;
+    let vertical = leftPitch;
 
     // Deadzone to remove small sensor noise
     if (Math.abs(horizontal) < DEADZONE) {
@@ -2711,14 +2711,20 @@ function updateLiveDashboard(data) {
         vertical = 0;
     }
 
-    // Horizontal
-    // Negative pitch = RIGHT
-    // Positive pitch = LEFT
-    gameCursorX -= horizontal * CURSOR_SPEED * 0.05;
+    // ==================================
+    // HORIZONTAL MOVEMENT
+    // ==================================
+    // Positive roll  = RIGHT
+    // Negative roll  = LEFT
 
-    // Vertical
-    // Positive roll = UP
-    // Negative roll = DOWN
+    gameCursorX += horizontal * CURSOR_SPEED * 0.05;
+
+    // ==================================
+    // VERTICAL MOVEMENT
+    // ==================================
+    // Positive pitch = UP
+    // Negative pitch = DOWN
+
     gameCursorY -= vertical * CURSOR_SPEED * 0.05;
 
     // Keep cursor inside the game
@@ -2734,6 +2740,8 @@ function updateLiveDashboard(data) {
 
     cursor.style.left = `${gameCursorX}%`;
     cursor.style.top = `${gameCursorY}%`;
+
+    checkTargetCollision();
 }
 function checkTargetCollision() {
 
