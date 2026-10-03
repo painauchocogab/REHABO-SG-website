@@ -2828,12 +2828,23 @@ function checkTargetCollision() {
 }
 function registerSensorHit() {
 
+    // Prevent multiple hits from the same touch
+    if (targetHitCooldown) return;
+
     targetHitCooldown = true;
+
+    // ==========================================
+    // INCREASE REPETITION
+    // ==========================================
 
     repetitions += 1;
     repetitionsDisplay.textContent = repetitions;
 
-    // Use real sensor values instead of random values
+
+    // ==========================================
+    // CALCULATE SENSOR RESULTS
+    // ==========================================
+
     const angle = Math.min(
         180,
         Math.round(
@@ -2846,11 +2857,14 @@ function registerSensorHit() {
 
     const speed = Math.min(
         1.5,
-        Math.max(0, Number(
-            document.getElementById("left-angular")?.textContent
-                .replace(" °/s", "")
-        ) / 100
-    ));
+        Math.max(
+            0,
+            Number(
+                document.getElementById("left-angular")?.textContent
+                    .replace(" °/s", "")
+            ) / 100
+        )
+    );
 
     const accuracy = Math.max(
         0,
@@ -2859,6 +2873,11 @@ function registerSensorHit() {
             Math.round(100 - (distanceFromTarget() * 10))
         )
     );
+
+
+    // ==========================================
+    // UPDATE PERFORMANCE BARS
+    // ==========================================
 
     document.querySelector("#angle-fill").style.width =
         `${Math.min(100, angle / 1.8)}%`;
@@ -2869,21 +2888,45 @@ function registerSensorHit() {
     document.querySelector("#accuracy-fill").style.width =
         `${accuracy}%`;
 
-    // Move target to a new position
-    if (selectedType === "REACH") {
 
-        setTargetPosition(
-            20 + Math.random() * 60,
-            20 + Math.random() * 48
-        );
+    // ==========================================
+    // HIDE CURRENT GREEN BALL
+    // ==========================================
 
-        exerciseInstruction.textContent =
-            "Great! Reach for the next target.";
-    }
+    targetButton.style.visibility = "hidden";
+
+
+    // ==========================================
+    // CREATE NEXT TARGET
+    // ==========================================
 
     setTimeout(() => {
+
+        // Make sure the exercise is still running
+        if (!sessionActive || sessionPaused) {
+            targetHitCooldown = false;
+            return;
+        }
+
+        // New random position
+        if (selectedType === "REACH") {
+
+            setTargetPosition(
+                20 + Math.random() * 60,
+                20 + Math.random() * 48
+            );
+
+            exerciseInstruction.textContent =
+                "Great! Reach for the next target.";
+        }
+
+        // Show the new green ball
+        targetButton.style.visibility = "visible";
+
+        // Allow another hit
         targetHitCooldown = false;
-    }, 500);
+
+    }, 300);
 }
 function distanceFromTarget() {
 
