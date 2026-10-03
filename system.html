@@ -437,7 +437,7 @@
     transform: translate(-50%, -50%);
     pointer-events: none;
     z-index: 5;
-    transition: left 80ms linear, top 80ms linear;
+    transition: none;
 }
 
 #game-cursor::after {
@@ -2730,21 +2730,24 @@ function updateGameCursor() {
     if (!cursor) return;
 
     // ==========================================
-    // SETTINGS
+    // CURSOR SETTINGS
     // ==========================================
 
-    // Smaller = reacts to smaller wrist movements
-    const HORIZONTAL_DEADZONE = 0.7;
-    const VERTICAL_DEADZONE = 1.2;
+    // Small deadzone so tiny sensor noise does not move the cursor
+    const HORIZONTAL_DEADZONE = 0.5;
+    const VERTICAL_DEADZONE = 0.8;
 
-    // Horizontal needs more sensitivity
-    const HORIZONTAL_SENSITIVITY = 1.8;
-    const VERTICAL_SENSITIVITY = 1.15;
+    // Sensitivity for each axis
+    // Roll  = LEFT / RIGHT
+    // Pitch = UP / DOWN
+    const HORIZONTAL_SENSITIVITY = 2.0;
+    const VERTICAL_SENSITIVITY = 1.5;
 
     // Higher = faster response
-    const SMOOTHING = 0.45;
+    // Lower = smoother
+    const SMOOTHING = 0.40;
 
-    // Overall movement speed
+    // Overall cursor speed
     const CURSOR_SPEED = 1.2;
 
 
@@ -2752,8 +2755,8 @@ function updateGameCursor() {
     // GET MPU6050 MOVEMENT
     // ==========================================
 
-    let horizontal = leftRoll;
-    let vertical = leftPitch;
+    let horizontal = Number(leftRoll);
+    let vertical = Number(leftPitch);
 
 
     // ==========================================
@@ -2770,7 +2773,7 @@ function updateGameCursor() {
 
 
     // ==========================================
-    // HORIZONTAL SENSITIVITY
+    // SENSITIVITY
     // ==========================================
 
     horizontal *= HORIZONTAL_SENSITIVITY;
@@ -2815,7 +2818,7 @@ function updateGameCursor() {
 
 
     // ==========================================
-    // UPDATE CURSOR
+    // UPDATE CURSOR POSITION
     // ==========================================
 
     cursor.style.left = `${gameCursorX}%`;
