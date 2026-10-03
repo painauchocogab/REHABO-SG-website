@@ -3757,18 +3757,7 @@ async function readSensorData(port, side) {
                     // The CONNECT button determines which wrist this serial stream belongs to.
                     // This prevents a missing/wrong side field in the ESP32 JSON from sending
                     // RIGHT-wrist readings into the LEFT calibration bucket.
-                    // The port assignment is the authoritative wrist identity.
-                    // Do NOT depend on the ESP32's JSON `side` field during calibration.
-                    const streamSide = String(side).toUpperCase();
-                    const data = { ...parsed, side: streamSide };
-
-                    // Feed calibration directly from this serial stream. This bypasses
-                    // the dashboard layer completely, so RIGHT calibration cannot be
-                    // lost because of a packet-side label or dashboard update.
-                    if (typeof window.__rehaboCalibrationSensorUpdateFromStream === "function") {
-                        window.__rehaboCalibrationSensorUpdateFromStream(streamSide, parsed);
-                    }
-
+                    const data = { ...parsed, side };
                     updateLiveDashboard(data);
 
                     const debugBox = document.getElementById("sensor-data");
@@ -4192,6 +4181,19 @@ requestAnimationFrame(cursorAnimationLoop);
         RIGHT: { pitch: null, roll: null }
     };
 
+    // Each wrist can be mounted in a mirrored orientation. The raw MPU6050
+    // pitch/roll sign may therefore be opposite between LEFT and RIGHT.
+    // These signs are learned during calibration so both wrists can use the
+    // same UP/DOWN/LEFT/RIGHT instructions.
+    const orientationSign = {
+        LEFT: { pitch: 1, roll: 1 },
+        RIGHT: { pitch: 1, roll: 1 }
+    };
+    const signedExtremes = {
+        LEFT: { pitch: { value: 0, abs: 0 }, roll: { value: 0, abs: 0 } },
+        RIGHT: { pitch: { value: 0, abs: 0 }, roll: { value: 0, abs: 0 } }
+    };
+
     const TARGET_RATIO = 0.80;
     const PREP_SECONDS = 0;
     const MEASURE_MS = 5000;
@@ -4239,6 +4241,12 @@ requestAnimationFrame(cursorAnimationLoop);
             for (const d of directions) peaks[side][d.key] = null;
             neutral[side].pitch = null;
             neutral[side].roll = null;
+            orientationSign[side].pitch = 1;
+            orientationSign[side].roll = 1;
+            signedExtremes[side].pitch.value = 0;
+            signedExtremes[side].pitch.abs = 0;
+            signedExtremes[side].roll.value = 0;
+            signedExtremes[side].roll.abs = 0;
         }
     }
 
@@ -4305,18 +4313,22 @@ requestAnimationFrame(cursorAnimationLoop);
         requestAnimationFrame(sample);
     }
 
-    function directionalMovement(side, direction) {
+    function rawAxisDelta(side, axis) {
         const data = latest[side];
-        if (!data || !Number.isFinite(Number(data.pitch)) || !Number.isFinite(Number(data.roll))) return 0;
-        if (neutral[side].pitch === null || neutral[side].roll === null) {
-            neutral[side].pitch = Number(data.pitch);
-            neutral[side].roll = Number(data.roll);
-            return 0;
-        }
-        const raw = direction.axis === "pitch"
-            ? Number(data.pitch) - neutral[side].pitch
-            : Number(data.roll) - neutral[side].roll;
-        return Math.max(0, raw * direction.sign);
+        if (!data || neutral[side][axis] === null) return null;
+        const value = Number(data[axis]);
+        if (!Number.isFinite(value)) return null;
+        return value - neutral[side][axis];
+    }
+
+    function directionalMovement(side, direction) {
+        const raw = rawAxisDelta(side, direction.axis);
+        if (raw === null) return 0;
+
+        // During calibration we care about the magnitude of the comfortable
+        // movement. This also makes calibration work when the RIGHT MPU6050
+        // is physically mirrored and reports the opposite sign.
+        return Math.abs(raw);
     }
 
     function updateCurrentReadouts(direction) {
@@ -4392,7 +4404,16 @@ requestAnimationFrame(cursorAnimationLoop);
             timerText.textContent = remaining.toFixed(1) + " s";
 
             for (const side of ["LEFT", "RIGHT"]) {
-                const movement = directionalMovement(side, direction);
+                const raw = rawAxisDelta(side, direction.axis);
+                const movement = raw === null ? 0 : Math.abs(raw);
+
+                // Keep the largest signed excursion too. This lets us learn
+                // whether this wrist's sensor axis is mirrored.
+                if (raw !== null && movement > signedExtremes[side][direction.axis].abs) {
+                    signedExtremes[side][direction.axis].abs = movement;
+                    signedExtremes[side][direction.axis].value = raw;
+                }
+
                 if (movement > (peaks[side][direction.key] ?? 0)) {
                     peaks[side][direction.key] = movement;
                 }
@@ -4410,6 +4431,17 @@ requestAnimationFrame(cursorAnimationLoop);
     }
 
     function completeDirection(direction) {
+        // Learn the sign of this wrist's physical axis from the largest
+        // excursion just recorded. UP/DOWN establish pitch orientation;
+        // LEFT/RIGHT establish roll orientation.
+        for (const side of ["LEFT", "RIGHT"]) {
+            const axis = direction.axis;
+            const extreme = signedExtremes[side][axis];
+            if (extreme.abs > 1) {
+                orientationSign[side][axis] = extreme.value >= 0 ? 1 : -1;
+            }
+        }
+
         phase = "TRANSITION";
         timerText.textContent = "DONE";
         progressFill.style.width = "100%";
@@ -4482,6 +4514,7 @@ requestAnimationFrame(cursorAnimationLoop);
         const record = {
             timestamp: new Date().toISOString(),
             neutral: JSON.parse(JSON.stringify(neutral)),
+            orientationSign: JSON.parse(JSON.stringify(orientationSign)),
             comfortablePeaks: JSON.parse(JSON.stringify(peaks)),
             targets80: { LEFT: {}, RIGHT: {} }
         };
@@ -4561,34 +4594,16 @@ requestAnimationFrame(cursorAnimationLoop);
         }, 100);
     }
 
-    // Called directly by each Web Serial stream after every valid JSON packet.
-    // `streamSide` comes from the CONNECT LEFT/RIGHT button, so it is authoritative.
-    window.__rehaboCalibrationSensorUpdateFromStream = function(streamSide, packet) {
-        const side = String(streamSide).toUpperCase();
-        if (side !== "LEFT" && side !== "RIGHT") return;
-        if (!packet || !Number.isFinite(Number(packet.pitch)) || !Number.isFinite(Number(packet.roll))) return;
-
-        latest[side] = {
-            ...packet,
-            side,
-            pitch: Number(packet.pitch),
-            roll: Number(packet.roll),
-            _receivedAt: Date.now()
-        };
-
-        if (running && phase === "MEASURE") {
-            const d = directions[directionIndex];
-            if (d) updateCurrentReadouts(d);
-        }
-    };
-
-    // Keep the older callback available for compatibility with the dashboard.
+    // Called by the sensor stream after every valid JSON packet.
     window.__rehaboCalibrationSensorUpdate = function(data) {
         if (!data || !data.side) return;
         const side = String(data.side).toUpperCase();
         if (side !== "LEFT" && side !== "RIGHT") return;
-        if (!Number.isFinite(Number(data.pitch)) || !Number.isFinite(Number(data.roll))) return;
-        latest[side] = { ...data, pitch: Number(data.pitch), roll: Number(data.roll), _receivedAt: Date.now() };
+        latest[side] = { ...data, _receivedAt: Date.now() };
+        if (running && phase === "MEASURE") {
+            const d = directions[directionIndex];
+            updateCurrentReadouts(d);
+        }
     };
 
     // The manual calibration button is always available. No sensor connection
