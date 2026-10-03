@@ -1786,8 +1786,7 @@
 
         <button
     id="connect-left"
-    type="button"
-    onclick="connectSensor('LEFT')">
+    type="button">
     CONNECT LEFT SENSOR
 </button>
 
@@ -2514,6 +2513,13 @@ document.querySelector("#close-feedback").addEventListener("click", () => {
 document.querySelector("#retry-session").addEventListener("click", () => {
     feedbackDialog.close();
     startButton.click();
+});
+        document.getElementById("connect-left").addEventListener("click", function () {
+    connectSensor("LEFT");
+});
+
+document.getElementById("connect-right").addEventListener("click", function () {
+    connectSensor("RIGHT");
 });
     </script>
 
