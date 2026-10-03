@@ -2719,24 +2719,24 @@ function updateGameCursor() {
     // SETTINGS
     // ==========================================
 
-    const DEADZONE = 1.5;
+    // Smaller = reacts to smaller wrist movements
+    const HORIZONTAL_DEADZONE = 0.7;
+    const VERTICAL_DEADZONE = 1.2;
 
-    // Cursor sensitivity
+    // Horizontal needs more sensitivity
+    const HORIZONTAL_SENSITIVITY = 1.8;
+    const VERTICAL_SENSITIVITY = 1.15;
+
+    // Higher = faster response
+    const SMOOTHING = 0.45;
+
+    // Overall movement speed
     const CURSOR_SPEED = 1.2;
 
-    // Smoothing
-    // 0.1 = very smooth
-    // 0.25 = balanced
-    // 0.5 = fast response
-    const SMOOTHING = 0.50;
-
 
     // ==========================================
-    // MPU6050 AXES
+    // GET MPU6050 MOVEMENT
     // ==========================================
-
-    // Roll = LEFT / RIGHT
-    // Pitch = UP / DOWN
 
     let horizontal = leftRoll;
     let vertical = leftPitch;
@@ -2746,30 +2746,36 @@ function updateGameCursor() {
     // DEADZONE
     // ==========================================
 
-    if (Math.abs(horizontal) < DEADZONE) {
+    if (Math.abs(horizontal) < HORIZONTAL_DEADZONE) {
         horizontal = 0;
     }
 
-    if (Math.abs(vertical) < DEADZONE) {
+    if (Math.abs(vertical) < VERTICAL_DEADZONE) {
         vertical = 0;
     }
+
+
+    // ==========================================
+    // HORIZONTAL SENSITIVITY
+    // ==========================================
+
+    horizontal *= HORIZONTAL_SENSITIVITY;
+    vertical *= VERTICAL_SENSITIVITY;
 
 
     // ==========================================
     // SMOOTHING
     // ==========================================
 
-    smoothHorizontal =
-        smoothHorizontal +
+    smoothHorizontal +=
         (horizontal - smoothHorizontal) * SMOOTHING;
 
-    smoothVertical =
-        smoothVertical +
+    smoothVertical +=
         (vertical - smoothVertical) * SMOOTHING;
 
 
     // ==========================================
-    // CURSOR MOVEMENT
+    // MOVE CURSOR
     // ==========================================
 
     gameCursorX +=
@@ -2803,7 +2809,7 @@ function updateGameCursor() {
 
 
     // ==========================================
-    // CHECK TARGET COLLISION
+    // CHECK TARGET
     // ==========================================
 
     checkTargetCollision();
