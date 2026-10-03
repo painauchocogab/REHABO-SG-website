@@ -3757,7 +3757,18 @@ async function readSensorData(port, side) {
                     // The CONNECT button determines which wrist this serial stream belongs to.
                     // This prevents a missing/wrong side field in the ESP32 JSON from sending
                     // RIGHT-wrist readings into the LEFT calibration bucket.
-                    const data = { ...parsed, side };
+                    // The port assignment is the authoritative wrist identity.
+                    // Do NOT depend on the ESP32's JSON `side` field during calibration.
+                    const streamSide = String(side).toUpperCase();
+                    const data = { ...parsed, side: streamSide };
+
+                    // Feed calibration directly from this serial stream. This bypasses
+                    // the dashboard layer completely, so RIGHT calibration cannot be
+                    // lost because of a packet-side label or dashboard update.
+                    if (typeof window.__rehaboCalibrationSensorUpdateFromStream === "function") {
+                        window.__rehaboCalibrationSensorUpdateFromStream(streamSide, parsed);
+                    }
+
                     updateLiveDashboard(data);
 
                     const debugBox = document.getElementById("sensor-data");
@@ -4550,16 +4561,34 @@ requestAnimationFrame(cursorAnimationLoop);
         }, 100);
     }
 
-    // Called by the sensor stream after every valid JSON packet.
+    // Called directly by each Web Serial stream after every valid JSON packet.
+    // `streamSide` comes from the CONNECT LEFT/RIGHT button, so it is authoritative.
+    window.__rehaboCalibrationSensorUpdateFromStream = function(streamSide, packet) {
+        const side = String(streamSide).toUpperCase();
+        if (side !== "LEFT" && side !== "RIGHT") return;
+        if (!packet || !Number.isFinite(Number(packet.pitch)) || !Number.isFinite(Number(packet.roll))) return;
+
+        latest[side] = {
+            ...packet,
+            side,
+            pitch: Number(packet.pitch),
+            roll: Number(packet.roll),
+            _receivedAt: Date.now()
+        };
+
+        if (running && phase === "MEASURE") {
+            const d = directions[directionIndex];
+            if (d) updateCurrentReadouts(d);
+        }
+    };
+
+    // Keep the older callback available for compatibility with the dashboard.
     window.__rehaboCalibrationSensorUpdate = function(data) {
         if (!data || !data.side) return;
         const side = String(data.side).toUpperCase();
         if (side !== "LEFT" && side !== "RIGHT") return;
-        latest[side] = { ...data, _receivedAt: Date.now() };
-        if (running && phase === "MEASURE") {
-            const d = directions[directionIndex];
-            updateCurrentReadouts(d);
-        }
+        if (!Number.isFinite(Number(data.pitch)) || !Number.isFinite(Number(data.roll))) return;
+        latest[side] = { ...data, pitch: Number(data.pitch), roll: Number(data.roll), _receivedAt: Date.now() };
     };
 
     // The manual calibration button is always available. No sensor connection
