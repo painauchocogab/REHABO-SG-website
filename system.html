@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1951,44 +1952,6 @@
     font-weight: 500;
 }
 
-.game-target-panel {
-    margin-top: 0.85rem;
-    padding-top: 0.85rem;
-    border-top: 1px solid rgba(63, 190, 255, 0.22);
-}
-
-.game-target-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 0.75rem;
-    margin-bottom: 0.65rem;
-}
-
-.game-target-header .subpanel-title {
-    margin-bottom: 0;
-}
-
-.game-target-formula {
-    color: #63efc1;
-    font-size: 0.55rem;
-    letter-spacing: 0.07em;
-    white-space: nowrap;
-}
-
-.target-card {
-    border-color: rgba(99, 239, 193, 0.30);
-}
-
-.target-card.complete {
-    border-color: rgba(99, 239, 193, 0.65);
-    box-shadow: inset 0 0 12px rgba(99, 239, 193, 0.04);
-}
-
-.target-card strong {
-    color: #63efc1;
-}
-
 .manual-calibration-button {
     width: 100%;
     margin-top: 0.8rem;
@@ -2020,6 +1983,62 @@
     font-size: 0.62rem;
     letter-spacing: 0.04em;
     line-height: 1.4;
+}
+
+.calibration-average-dashboard {
+    margin-top: 0.8rem;
+    border: 1px solid rgba(99, 239, 193, 0.32);
+    background: rgba(4, 21, 42, 0.76);
+    padding: 0.85rem;
+}
+
+.average-dashboard-note {
+    margin: -0.25rem 0 0.7rem;
+    color: #6f9ab3;
+    font-size: 0.57rem;
+    letter-spacing: 0.045em;
+    line-height: 1.45;
+}
+
+.average-wrist-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+}
+
+.average-wrist-card {
+    min-width: 0;
+    padding: 0.75rem;
+    border: 1px solid rgba(99, 239, 193, 0.28);
+    background: rgba(3, 17, 37, 0.85);
+}
+
+.average-wrist-card span {
+    display: block;
+    color: #63cfff;
+    font-size: 0.62rem;
+    letter-spacing: 0.09em;
+}
+
+.average-wrist-card strong {
+    display: block;
+    margin-top: 0.35rem;
+    color: #63efc1;
+    font-family: "Orbitron", sans-serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.average-wrist-card small {
+    display: block;
+    margin-top: 0.3rem;
+    color: #6f9ab3;
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+}
+
+.average-wrist-card.complete {
+    border-color: rgba(99, 239, 193, 0.55);
 }
 
 .peak-grid {
@@ -2767,6 +2786,23 @@
                     </div>
                     <button class="manual-calibration-button" id="manual-calibrate-button" type="button">▶ START CALIBRATION</button>
                     <p class="manual-calibration-note" id="manual-calibration-note">CLICK START CALIBRATION TO BEGIN. CONNECTED SENSORS WILL BE MEASURED.</p>
+
+                    <section class="calibration-average-dashboard" id="calibration-average-dashboard" aria-live="polite">
+                        <h4 class="subpanel-title">CALIBRATION AVERAGE ANGLE</h4>
+                        <p class="average-dashboard-note">AVERAGE OF ALL VALID MOVEMENT READINGS DURING THE 4-DIRECTION CALIBRATION</p>
+                        <div class="average-wrist-grid">
+                            <div class="average-wrist-card">
+                                <span>LEFT WRIST</span>
+                                <strong id="calibration-average-left">—</strong>
+                                <small id="calibration-average-left-status">PENDING</small>
+                            </div>
+                            <div class="average-wrist-card">
+                                <span>RIGHT WRIST</span>
+                                <strong id="calibration-average-right">—</strong>
+                                <small id="calibration-average-right-status">PENDING</small>
+                            </div>
+                        </div>
+                    </section>
                 </section>
             </div>
 
@@ -4193,6 +4229,13 @@ requestAnimationFrame(cursorAnimationLoop);
         RIGHT: { UP: null, DOWN: null, LEFT: null, RIGHT: null }
     };
 
+    // Average movement angle across every valid movement sample collected
+    // during the four 5-second directional calibration tests.
+    const calibrationAverage = {
+        LEFT: { sum: 0, count: 0, angle: null },
+        RIGHT: { sum: 0, count: 0, angle: null }
+    };
+
     const neutral = {
         LEFT: { pitch: null, roll: null },
         RIGHT: { pitch: null, roll: null }
@@ -4211,7 +4254,6 @@ requestAnimationFrame(cursorAnimationLoop);
         RIGHT: { pitch: { value: 0, abs: 0 }, roll: { value: 0, abs: 0 } }
     };
 
-    const TARGET_RATIO = 0.80;
     const PREP_SECONDS = 0;
     const MEASURE_MS = 5000;
     const TRANSITION_SECONDS = 2;
@@ -4364,6 +4406,28 @@ requestAnimationFrame(cursorAnimationLoop);
         setText("calibration-right-peak", "0.0°");
     }
 
+    function resetCalibrationAverages() {
+        for (const side of ["LEFT", "RIGHT"]) {
+            calibrationAverage[side].sum = 0;
+            calibrationAverage[side].count = 0;
+            calibrationAverage[side].angle = null;
+            setText("calibration-average-" + side.toLowerCase(), "—");
+            setText("calibration-average-" + side.toLowerCase() + "-status", "PENDING");
+            const card = document.querySelector(".average-wrist-card" + (side === "LEFT" ? ":first-child" : ":last-child"));
+            if (card) card.classList.remove("complete");
+        }
+    }
+
+    function updateCalibrationAverageDashboard() {
+        for (const side of ["LEFT", "RIGHT"]) {
+            const stats = calibrationAverage[side];
+            const average = stats.count > 0 ? stats.sum / stats.count : null;
+            stats.angle = average;
+            setText("calibration-average-" + side.toLowerCase(), average === null ? "—" : average.toFixed(1) + "°");
+            setText("calibration-average-" + side.toLowerCase() + "-status", average === null ? "PENDING" : "LIVE AVERAGE");
+        }
+    }
+
     function countdown(seconds, done) {
         let remaining = seconds;
         countdownEl.textContent = String(remaining);
@@ -4434,8 +4498,17 @@ requestAnimationFrame(cursorAnimationLoop);
                 if (movement > (peaks[side][direction.key] ?? 0)) {
                     peaks[side][direction.key] = movement;
                 }
+
+                // Every valid movement sample contributes to that wrist's
+                // calibration-session average. Missing/invalid packets are
+                // excluded rather than treated as 0°.
+                if (raw !== null) {
+                    calibrationAverage[side].sum += movement;
+                    calibrationAverage[side].count += 1;
+                }
             }
             updateCurrentReadouts(direction);
+            updateCalibrationAverageDashboard();
 
             if (elapsed >= MEASURE_MS) {
                 measureFrame = null;
@@ -4511,25 +4584,6 @@ requestAnimationFrame(cursorAnimationLoop);
             const card = document.getElementById(peakId + "-card");
             if (card) card.classList.add("complete");
         }
-        updatePersonalizedTargetCards();
-    }
-
-    function updatePersonalizedTargetCards() {
-        for (const side of ["LEFT", "RIGHT"]) {
-            for (const d of directions) {
-                const sideKey = side.toLowerCase();
-                const dirKey = d.key.toLowerCase();
-                const peak = Number(peaks[side][d.key] ?? 0);
-                const target = +(peak * TARGET_RATIO).toFixed(1);
-                const id = `target-${sideKey}-${dirKey}`;
-                const cardId = `${id}-card`;
-                const statusId = `${id}-status`;
-                setText(id, target.toFixed(1) + "°");
-                setText(statusId, peak > 0 ? "80% TARGET" : "PENDING");
-                const card = document.getElementById(cardId);
-                if (card) card.classList.toggle("complete", peak > 0);
-            }
-        }
     }
 
     function finishCalibration() {
@@ -4543,21 +4597,25 @@ requestAnimationFrame(cursorAnimationLoop);
         directionIcon.textContent = "✓";
         title.textContent = "CALIBRATION COMPLETE";
         kicker.textContent = "PERSONALIZED WRIST PROFILE SAVED";
-        message.textContent = "Both wrists have been calibrated using their highest comfortable movement. Game targets are set to 80% of each comfortable peak.";
+        message.textContent = "Both wrists have been calibrated using their highest comfortable movement. The dashboard now shows the average angle from all valid movement readings collected during the calibration.";
         countdownEl.textContent = "✓";
         resultMessage.textContent = "Calibration complete. You may now continue to the rehabilitation exercise.";
+        updateCalibrationAverageDashboard();
 
         const record = {
             timestamp: new Date().toISOString(),
             neutral: JSON.parse(JSON.stringify(neutral)),
             orientationSign: JSON.parse(JSON.stringify(orientationSign)),
             comfortablePeaks: JSON.parse(JSON.stringify(peaks)),
-            targets80: { LEFT: {}, RIGHT: {} }
+            averageAngle: {
+                LEFT: calibrationAverage.LEFT.angle,
+                RIGHT: calibrationAverage.RIGHT.angle
+            },
+            averageSampleCount: {
+                LEFT: calibrationAverage.LEFT.count,
+                RIGHT: calibrationAverage.RIGHT.count
+            }
         };
-        for (const side of ["LEFT","RIGHT"]) {
-            for (const d of directions) record.targets80[side][d.key] = +(peaks[side][d.key] * TARGET_RATIO).toFixed(1);
-        }
-        updatePersonalizedTargetCards();
         window.__rehaboCalibrationRecord = record;
 
         // Ensure every final value is written to the permanent BOTH-WRISTS table.
@@ -4612,6 +4670,7 @@ requestAnimationFrame(cursorAnimationLoop);
         directionIndex = 0;
         resetPeaks();
         resetLivePanel();
+        resetCalibrationAverages();
         resultGrid.hidden = true;
         showOverlay();
         title.textContent = "WRIST CALIBRATION";
@@ -4657,53 +4716,6 @@ requestAnimationFrame(cursorAnimationLoop);
 /* Wrist calibration is measurement-only; the MPU6050 must not control a cursor. */
 #game-cursor { display: none !important; }
 
-</style>
-
-<style>
-/* FINAL FIX: keep both-wrist calibration cards inside their panel. */
-.two-wrist-results {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 0.8rem;
-    width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-}
-
-.wrist-result-column {
-    min-width: 0;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.wrist-result-column .peak-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.55rem;
-    width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-}
-
-.wrist-result-column .peak-card {
-    min-width: 0;
-    width: 100%;
-    box-sizing: border-box;
-    overflow: hidden;
-}
-
-.wrist-result-column .peak-card strong,
-.wrist-result-column .peak-card span,
-.wrist-result-column .peak-card small {
-    min-width: 0;
-    overflow-wrap: anywhere;
-}
-
-@media (max-width: 900px) {
-    .two-wrist-results {
-        grid-template-columns: 1fr;
-    }
-}
 </style>
 </body>
 </html>
