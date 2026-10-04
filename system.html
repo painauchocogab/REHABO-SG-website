@@ -2694,6 +2694,228 @@
 }
 </style>
 
+
+<style id="rehabo-futuristic-hands-hud">
+/* FUTURISTIC TWO-WRIST HUD VISUALIZATION */
+.hand-visual-stage {
+    position: relative !important;
+    min-height: 535px !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background-color: #020d1d !important;
+    background-image: url("rehabo-hands-hud.png") !important;
+    background-size: 100% 100% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    box-shadow: none !important;
+}
+.hand-visual-stage::before,
+.hand-visual-stage::after {
+    display: none !important;
+}
+.hand-visual-stage .wrist-hands-visual,
+.hand-visual-stage .stage-instruction,
+.hand-visual-stage .calibration-axis,
+.hand-visual-stage .calibration-center,
+.hand-visual-stage .target-button,
+.hand-visual-stage #game-cursor {
+    display: none !important;
+}
+@media (max-width: 700px) {
+    .hand-visual-stage {
+        min-height: 430px !important;
+    }
+}
+</style>
+<style id="rehabo-hand-dashboard-enhancement">
+/* =========================================================
+   REHABO-SG — ENHANCED DUAL-HAND DASHBOARD
+   Decorative layer only: preserves the existing hand layout.
+   ========================================================= */
+.hand-visual-stage {
+    background-color: #020d1d !important;
+    background-image:
+        radial-gradient(circle at 25% 46%, rgba(0, 195, 255, 0.12), transparent 23%),
+        radial-gradient(circle at 75% 46%, rgba(0, 195, 255, 0.12), transparent 23%),
+        linear-gradient(90deg, transparent 49.9%, rgba(56, 195, 255, 0.10) 50%, transparent 50.1%),
+        linear-gradient(rgba(43, 157, 214, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(43, 157, 214, 0.035) 1px, transparent 1px) !important;
+    background-size: auto, auto, 100% 100%, 36px 36px, 36px 36px !important;
+    background-position: center !important;
+    box-shadow: inset 0 0 80px rgba(0, 105, 180, 0.10) !important;
+}
+
+/* Thin futuristic HUD border accents without adding a frame. */
+.hand-visual-stage::before {
+    display: block !important;
+    content: "" !important;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background:
+        linear-gradient(90deg, #36cfff 0 42px, transparent 42px) top left / 120px 1px no-repeat,
+        linear-gradient(90deg, transparent calc(100% - 42px), #36cfff calc(100% - 42px)) top right / 120px 1px no-repeat,
+        linear-gradient(90deg, #36cfff 0 42px, transparent 42px) bottom left / 120px 1px no-repeat,
+        linear-gradient(90deg, transparent calc(100% - 42px), #36cfff calc(100% - 42px)) bottom right / 120px 1px no-repeat;
+    opacity: .65;
+}
+
+/* Subtle central scanning beam. */
+.hand-visual-stage::after {
+    display: block !important;
+    content: "" !important;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    pointer-events: none;
+    z-index: 1;
+    background: linear-gradient(transparent, rgba(53, 204, 255, .35) 28%, rgba(53, 204, 255, .08) 72%, transparent);
+    box-shadow: 0 0 18px rgba(0, 174, 255, .35);
+}
+
+.wrist-hands-visual {
+    z-index: 3;
+}
+
+.wrist-hand::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 275px;
+    height: 275px;
+    transform: translate(-50%, -43%);
+    border: 1px solid rgba(48, 195, 255, .16);
+    border-radius: 50%;
+    box-shadow:
+        0 0 0 22px rgba(40, 185, 255, .025),
+        0 0 0 48px rgba(40, 185, 255, .018),
+        0 0 35px rgba(0, 170, 255, .10);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.wrist-hand::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 315px;
+    height: 315px;
+    transform: translate(-50%, -43%) rotate(0deg);
+    border: 1px dashed rgba(66, 202, 255, .13);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+    animation: rehabo-orbit 14s linear infinite;
+}
+
+.right-hand::after {
+    animation-direction: reverse;
+}
+
+@keyframes rehabo-orbit {
+    to { transform: translate(-50%, -43%) rotate(360deg); }
+}
+
+.wrist-hand img {
+    position: relative;
+    z-index: 2;
+    filter:
+        drop-shadow(0 0 10px rgba(52, 203, 255, .30))
+        drop-shadow(0 0 28px rgba(0, 132, 255, .12));
+    animation: rehabo-hand-pulse 4s ease-in-out infinite;
+}
+
+.right-hand img {
+    animation-delay: -1.8s;
+}
+
+@keyframes rehabo-hand-pulse {
+    0%, 100% { filter: drop-shadow(0 0 10px rgba(52, 203, 255, .28)) drop-shadow(0 0 28px rgba(0, 132, 255, .10)); }
+    50% { filter: drop-shadow(0 0 17px rgba(52, 215, 255, .46)) drop-shadow(0 0 36px rgba(0, 132, 255, .16)); }
+}
+
+.hand-label {
+    top: 1.05rem;
+    z-index: 5;
+    padding: .35rem 1.05rem;
+    border-top: 1px solid rgba(58, 201, 255, .55);
+    border-bottom: 1px solid rgba(58, 201, 255, .25);
+    background: linear-gradient(90deg, transparent, rgba(0, 130, 205, .10), transparent);
+    text-shadow: 0 0 10px rgba(66, 202, 255, .85), 0 0 24px rgba(0, 153, 255, .30);
+}
+
+/* Small HUD ticks around each wrist without changing positioning. */
+.left-hand .hand-label::before,
+.right-hand .hand-label::before,
+.left-hand .hand-label::after,
+.right-hand .hand-label::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 24px;
+    height: 1px;
+    background: #3bcfff;
+    box-shadow: 0 0 8px rgba(59, 207, 255, .7);
+}
+
+.left-hand .hand-label::before,
+.right-hand .hand-label::before { right: 100%; }
+.left-hand .hand-label::after,
+.right-hand .hand-label::after { left: 100%; }
+
+.stage-instruction {
+    z-index: 8 !important;
+    left: 1.5rem !important;
+    right: 1.5rem !important;
+    bottom: 1.25rem !important;
+    padding: .9rem 1.2rem !important;
+    border-top: 1px solid rgba(61, 204, 255, .55) !important;
+    border-bottom: 1px solid rgba(61, 204, 255, .30) !important;
+    background: linear-gradient(90deg, rgba(2, 17, 35, .88), rgba(4, 35, 61, .72), rgba(2, 17, 35, .88)) !important;
+    box-shadow: 0 0 22px rgba(0, 147, 220, .08), inset 0 0 22px rgba(0, 145, 220, .04) !important;
+    text-shadow: 0 0 8px rgba(115, 218, 255, .35);
+}
+
+.stage-instruction::before,
+.stage-instruction::after {
+    content: "";
+    position: absolute;
+    top: -1px;
+    width: 38px;
+    height: calc(100% + 2px);
+    pointer-events: none;
+}
+
+.stage-instruction::before {
+    left: -1px;
+    border-left: 2px solid #35cfff;
+    border-top: 1px solid #35cfff;
+    border-bottom: 1px solid #35cfff;
+    clip-path: polygon(0 0, 100% 0, 72% 50%, 100% 100%, 0 100%);
+}
+
+.stage-instruction::after {
+    right: -1px;
+    border-right: 2px solid #35cfff;
+    border-top: 1px solid #35cfff;
+    border-bottom: 1px solid #35cfff;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 28% 50%);
+}
+
+@media (max-width: 700px) {
+    .wrist-hand::before { width: 210px; height: 210px; }
+    .wrist-hand::after { width: 245px; height: 245px; }
+    .stage-instruction { left: .8rem !important; right: .8rem !important; }
+}
+</style>
+
 </head>
 <body>
     <a href="index.html" aria-label="Return to REHABO-SG home">
