@@ -2695,40 +2695,7 @@
 </style>
 
 
-<style id="rehabo-futuristic-hands-hud">
-/* FUTURISTIC TWO-WRIST HUD VISUALIZATION */
-.hand-visual-stage {
-    position: relative !important;
-    min-height: 535px !important;
-    margin: 0 !important;
-    overflow: hidden !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    background-color: #020d1d !important;
-    background-image: url("rehabo-hands-hud.png") !important;
-    background-size: 100% 100% !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    box-shadow: none !important;
-}
-.hand-visual-stage::before,
-.hand-visual-stage::after {
-    display: none !important;
-}
-.hand-visual-stage .wrist-hands-visual,
-.hand-visual-stage .stage-instruction,
-.hand-visual-stage .calibration-axis,
-.hand-visual-stage .calibration-center,
-.hand-visual-stage .target-button,
-.hand-visual-stage #game-cursor {
-    display: none !important;
-}
-@media (max-width: 700px) {
-    .hand-visual-stage {
-        min-height: 430px !important;
-    }
-}
-</style>
+
 <style id="rehabo-hand-dashboard-enhancement">
 /* =========================================================
    REHABO-SG — ENHANCED DUAL-HAND DASHBOARD
@@ -2913,6 +2880,18 @@
     .wrist-hand::before { width: 210px; height: 210px; }
     .wrist-hand::after { width: 245px; height: 245px; }
     .stage-instruction { left: .8rem !important; right: .8rem !important; }
+}
+
+/* Keep the actual uploaded hand visuals above decorative effects. */
+.hand-visual-stage .wrist-hands-visual {
+    display: grid !important;
+    position: absolute !important;
+    z-index: 4 !important;
+}
+.hand-visual-stage .stage-instruction {
+    display: block !important;
+    position: absolute !important;
+    z-index: 6 !important;
 }
 </style>
 
