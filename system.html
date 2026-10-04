@@ -5199,34 +5199,15 @@ requestAnimationFrame(cursorAnimationLoop);
     }
 
     function startSelectedGame() {
-        // Transfer the completed calibration to the standalone game page.
-        if (!selectedGame || !Number.isFinite(finalAverage)) return;
-
-        let record = window.__rehaboCalibrationRecord || null;
-        if (!record) {
-            try {
-                record = JSON.parse(localStorage.getItem("rehabo-sg-latest-calibration") || "null");
-            } catch (_) {
-                record = null;
-            }
-        }
-
-        // Keep the full calibration record and explicitly store the final
-        // bilateral average + selected personalized level for game.html.
-        record = record && typeof record === "object" ? { ...record } : {};
-        record.bilateralAverage = Number(finalAverage.toFixed(1));
-        record.personalizedGameLevel = selectedGame;
-
-        try {
-            localStorage.setItem("rehabo-sg-latest-calibration", JSON.stringify(record));
-            localStorage.setItem("rehabo-sg-game-session", JSON.stringify(record));
-        } catch (error) {
-            console.warn("Could not save game session.", error);
-        }
-
-        // Open the single standalone game.html. That page selects Level 1–5
-        // from bilateralAverage and loads the matching LevelX-background.png.
-        window.location.href = "./game.html";
+        if (!selectedGame || !stage || !finalAverage) return;
+        gameActive = true;
+        gameScoreValue = 0;
+        gameScore.textContent = "0";
+        gameAverageDisplay.textContent = finalAverage.toFixed(1) + "°";
+        setGameTheme(selectedGame);
+        stage.classList.add("game-active");
+        invitation.hidden = true;
+        nextTarget();
     }
 
     function stopSelectedGame() {
@@ -5260,7 +5241,32 @@ requestAnimationFrame(cursorAnimationLoop);
         }
     }
 
-    if (yesButton) yesButton.addEventListener("click", startSelectedGame);
+    if (yesButton) yesButton.addEventListener("click", () => {
+        const record = window.__rehaboCalibrationRecord || (() => {
+            try { return JSON.parse(localStorage.getItem("rehabo-sg-latest-calibration") || "null"); }
+            catch (_) { return null; }
+        })();
+
+        if (record) {
+            try {
+                localStorage.setItem("rehabo-sg-game-session", JSON.stringify(record));
+            } catch (_) {}
+        }
+
+        // Tell game.html that this launch is the handoff from the calibrated
+        // system page. The actual SerialPort objects cannot be stored in
+        // localStorage; game.html restores the browser-authorized ports with
+        // navigator.serial.getPorts().
+        try {
+            localStorage.setItem("rehabo-sg-sensor-handoff", JSON.stringify({
+                leftConnected: !!leftPort,
+                rightConnected: !!rightPort,
+                timestamp: Date.now()
+            }));
+        } catch (_) {}
+
+        window.location.href = "game.html";
+    });
     if (noButton) noButton.addEventListener("click", () => { if (invitation) invitation.hidden = true; });
     if (gameExit) gameExit.addEventListener("click", stopSelectedGame);
     if (gameTarget) gameTarget.addEventListener("click", registerCollection);
