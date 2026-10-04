@@ -16,12 +16,9 @@
       --line: rgba(125, 225, 255, 0.42);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html,
-    body {
+    html, body {
       width: 100%;
       min-height: 100%;
       margin: 0;
@@ -32,23 +29,14 @@
       overflow: hidden;
       color: var(--white);
       background:
-        radial-gradient(
-          circle at 50% 35%,
-          rgba(0, 205, 255, 0.09),
-          transparent 42%
-        ),
+        radial-gradient(circle at 50% 35%, rgba(0, 205, 255, 0.09), transparent 42%),
         #010914;
       font-family: "Share Tech Mono", monospace;
     }
 
-    button {
-      font: inherit;
-    }
+    button { font: inherit; }
 
-    /* =========================================================
-       FULL-PAGE SHELL
-       ========================================================= */
-
+    /* ---------- Full-page shell ---------- */
     .game-shell {
       min-height: 100vh;
       display: grid;
@@ -62,43 +50,21 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      opacity: 0.34;
-
+      opacity: .34;
       background:
-        linear-gradient(
-          rgba(110, 235, 255, 0.02) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          90deg,
-          rgba(110, 235, 255, 0.02) 1px,
-          transparent 1px
-        );
-
+        linear-gradient(rgba(110, 235, 255, .02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(110, 235, 255, .02) 1px, transparent 1px);
       background-size: 38px 38px;
-
-      mask-image:
-        linear-gradient(
-          to bottom,
-          #000,
-          transparent 92%
-        );
+      mask-image: linear-gradient(to bottom, #000, transparent 92%);
     }
 
-    .topbar {
-      display: none;
-    }
+    .topbar { display: none; }
 
-    /* =========================================================
-       WHOLE GAME FRAME
-       ========================================================= */
-
+    /* ---------- Whole dashboard ---------- */
     .game-area {
       position: relative;
-
       width: min(92vw, 1320px);
       height: min(78vh, 720px);
-
       aspect-ratio: 16 / 9;
     }
 
@@ -108,855 +74,373 @@
       --warning: #ff9a9a;
 
       position: relative;
-
       width: 100%;
       height: 100%;
-
       overflow: hidden;
-
-      border:
-        1px solid rgba(150, 240, 255, 0.62);
-
+      border: 1px solid rgba(150, 240, 255, .62);
       border-radius: 22px;
-
-      background:
-        #04111e
-        center /
-        cover
-        no-repeat;
-
+      background: #04111e center / cover no-repeat;
       box-shadow:
-        0 0 0 1px rgba(99, 239, 193, 0.05),
-        0 0 42px rgba(0, 170, 255, 0.14),
-        0 18px 80px rgba(0, 0, 0, 0.34),
-        inset 0 0 55px rgba(0, 12, 25, 0.25);
+        0 0 0 1px rgba(99, 239, 193, .05),
+        0 0 42px rgba(0, 170, 255, .14),
+        0 18px 80px rgba(0, 0, 0, .34),
+        inset 0 0 55px rgba(0, 12, 25, .25);
     }
 
     .game-world::before {
       content: "";
-
       position: absolute;
       inset: 0;
-
       z-index: 1;
-
       pointer-events: none;
-
       background:
-        linear-gradient(
-          180deg,
-          rgba(2, 12, 24, 0.02),
-          rgba(1, 8, 18, 0.24)
-        ),
-        radial-gradient(
-          circle at 50% 44%,
-          transparent 38%,
-          rgba(1, 8, 18, 0.18)
-        );
+        linear-gradient(180deg, rgba(2, 12, 24, .02), rgba(1, 8, 18, .24)),
+        radial-gradient(circle at 50% 44%, transparent 38%, rgba(1, 8, 18, .18));
     }
 
     .game-world::after {
       content: "";
-
       position: absolute;
-
       inset: 8px;
-
       z-index: 1;
-
       pointer-events: none;
-
-      border:
-        1px solid rgba(220, 250, 255, 0.14);
-
+      border: 1px solid rgba(220, 250, 255, .14);
       border-radius: 16px;
-
-      box-shadow:
-        inset 0 0 30px rgba(90, 220, 255, 0.06);
+      box-shadow: inset 0 0 30px rgba(90, 220, 255, .06);
     }
 
-    /* =========================================================
-       LEVEL THEMES
-       ========================================================= */
+    /* ---------- Level themes ---------- */
+    .level-1 { --accent: #63efc1; --accent2: #63dfff; --warning: #ffce7a; }
+    .level-2 { --accent: #ffd36b; --accent2: #63dfff; --warning: #ff9f7a; }
+    .level-3 { --accent: #76e8ff; --accent2: #b4f6ff; --warning: #ffcf72; }
+    .level-4 { --accent: #ad8cff; --accent2: #67d9ff; --warning: #ff8fcb; }
+    .level-5 { --accent: #ff75c8; --accent2: #ff5f86; --warning: #ffcc7a; }
 
-    .level-1 {
-      --accent: #63efc1;
-      --accent2: #63dfff;
-      --warning: #ffce7a;
-
-      background-image:
-        url("./Level1-background.png");
-    }
-
-    .level-2 {
-      --accent: #ffd36b;
-      --accent2: #63dfff;
-      --warning: #ff9f7a;
-
-      background-image:
-        url("./Level2-background.png");
-    }
-
-    .level-3 {
-      --accent: #76e8ff;
-      --accent2: #b4f6ff;
-      --warning: #ffcf72;
-
-      background-image:
-        url("./Level3-background.png");
-    }
-
-    .level-4 {
-      --accent: #ad8cff;
-      --accent2: #67d9ff;
-      --warning: #ff8fcb;
-
-      background-image:
-        url("./Level4-background.png");
-    }
-
-    .level-5 {
-      --accent: #ff75c8;
-      --accent2: #ff5f86;
-      --warning: #ffcc7a;
-
-      background-image:
-        url("./Level5-background.png");
-    }
-
-    /* =========================================================
-       AMBIENT BLINKING LIGHTS
-       ========================================================= */
-
+    /* ---------- Background lights ---------- */
     .ambient-lights {
       position: absolute;
       inset: 0;
-
       z-index: 2;
-
       overflow: hidden;
-
       pointer-events: none;
-
       mix-blend-mode: screen;
     }
 
     .ambient-lights i {
       position: absolute;
-
       width: 7px;
       height: 7px;
-
       border-radius: 50%;
-
-      background:
-        rgba(255, 242, 180, 0.98);
-
+      background: rgba(255, 242, 180, .98);
       box-shadow:
-        0 0 7px rgba(255, 244, 180, 0.95),
-        0 0 18px rgba(110, 235, 255, 0.72),
-        0 0 34px rgba(110, 235, 255, 0.38);
-
-      opacity: 0.12;
-
-      animation:
-        ambientBlink 3.8s ease-in-out infinite;
+        0 0 7px rgba(255, 244, 180, .95),
+        0 0 18px rgba(110, 235, 255, .72),
+        0 0 34px rgba(110, 235, 255, .38);
+      opacity: .12;
+      animation: ambientBlink 3.8s ease-in-out infinite;
     }
 
-    .ambient-lights i:nth-child(1) {
-      left: 12%;
-      top: 35%;
-      animation-delay: 0.2s;
-    }
-
-    .ambient-lights i:nth-child(2) {
-      left: 27%;
-      top: 22%;
-      animation-delay: 1.4s;
-    }
-
-    .ambient-lights i:nth-child(3) {
-      left: 47%;
-      top: 31%;
-      animation-delay: 2.1s;
-    }
-
-    .ambient-lights i:nth-child(4) {
-      left: 61%;
-      top: 18%;
-      animation-delay: 0.9s;
-    }
-
-    .ambient-lights i:nth-child(5) {
-      left: 76%;
-      top: 39%;
-      animation-delay: 2.7s;
-    }
-
-    .ambient-lights i:nth-child(6) {
-      left: 88%;
-      top: 26%;
-      animation-delay: 1.9s;
-    }
-
-    .ambient-lights i:nth-child(7) {
-      left: 71%;
-      top: 68%;
-      animation-delay: 3.2s;
-    }
-
-    .ambient-lights i:nth-child(8) {
-      left: 40%;
-      top: 66%;
-      animation-delay: 0.5s;
-    }
+    .ambient-lights i:nth-child(1) { left: 12%; top: 35%; animation-delay: .2s; }
+    .ambient-lights i:nth-child(2) { left: 27%; top: 22%; animation-delay: 1.4s; }
+    .ambient-lights i:nth-child(3) { left: 47%; top: 31%; animation-delay: 2.1s; }
+    .ambient-lights i:nth-child(4) { left: 61%; top: 18%; animation-delay: .9s; }
+    .ambient-lights i:nth-child(5) { left: 76%; top: 39%; animation-delay: 2.7s; }
+    .ambient-lights i:nth-child(6) { left: 88%; top: 26%; animation-delay: 1.9s; }
+    .ambient-lights i:nth-child(7) { left: 71%; top: 68%; animation-delay: 3.2s; }
+    .ambient-lights i:nth-child(8) { left: 40%; top: 66%; animation-delay: .5s; }
 
     @keyframes ambientBlink {
-      0%,
-      100% {
-        opacity: 0.10;
-        transform: scale(0.7);
-        filter: brightness(0.8);
-      }
-
-      38% {
-        opacity: 0.92;
-        transform: scale(1.2);
-        filter: brightness(1.5);
-      }
-
-      70% {
-        opacity: 0.64;
-        transform: scale(1);
-      }
-
-      86% {
-        opacity: 0.12;
-      }
+      0%, 100% { opacity: .10; transform: scale(.7); filter: brightness(.8); }
+      38% { opacity: .92; transform: scale(1.2); filter: brightness(1.5); }
+      70% { opacity: .64; transform: scale(1); }
+      86% { opacity: .12; }
     }
 
-    /* =========================================================
-       SHARED HUD PANEL
-       ========================================================= */
-
+    /* ---------- Shared HUD panels ---------- */
     .hud-panel {
       position: absolute;
-
       z-index: 5;
-
-      border:
-        1px solid
-        color-mix(
-          in srgb,
-          var(--accent2) 62%,
-          transparent
-        );
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(2, 15, 30, 0.88),
-          rgba(3, 27, 44, 0.66)
-        );
-
+      border: 1px solid color-mix(in srgb, var(--accent2) 62%, transparent);
+      background: linear-gradient(145deg, rgba(2, 15, 30, .88), rgba(3, 27, 44, .66));
       box-shadow:
-        0 10px 28px rgba(0, 0, 0, 0.24),
-        inset 0 0 20px rgba(0, 190, 255, 0.035),
-        0 0 18px
-          color-mix(
-            in srgb,
-            var(--accent2) 9%,
-            transparent
-          );
-
-      backdrop-filter:
-        blur(8px);
-
-      clip-path:
-        polygon(
-          0 10px,
-          10px 0,
-          calc(100% - 10px) 0,
-          100% 10px,
-          100% calc(100% - 10px),
-          calc(100% - 10px) 100%,
-          10px 100%,
-          0 calc(100% - 10px)
-        );
+        0 10px 28px rgba(0, 0, 0, .24),
+        inset 0 0 20px rgba(0, 190, 255, .035),
+        0 0 18px color-mix(in srgb, var(--accent2) 9%, transparent);
+      backdrop-filter: blur(8px);
+      clip-path: polygon(0 10px, 10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px));
     }
 
-    /* =========================================================
-       GAME TITLE BOX
-       ========================================================= */
-
+    /* ---------- Game identity ---------- */
     .game-header {
       left: 26px;
       top: 24px;
-
       width: 255px;
       min-height: 135px;
-
       padding: 18px 20px;
     }
 
     .game-header::before {
       content: "01 // SESSION";
-
       position: absolute;
-
       right: 16px;
       top: 10px;
-
-      color:
-        rgba(185, 242, 255, 0.48);
-
+      color: rgba(185, 242, 255, .48);
       font-size: 7px;
-
-      letter-spacing:
-        0.15em;
+      letter-spacing: .15em;
     }
 
     .eyebrow {
-      color:
-        var(--accent);
-
+      color: var(--accent);
       font-size: 9px;
-
-      letter-spacing:
-        0.18em;
+      letter-spacing: .18em;
     }
 
     .game-header h1 {
       margin: 10px 0 8px;
-
-      font-family:
-        Orbitron,
-        sans-serif;
-
-      font-size:
-        clamp(20px, 2vw, 28px);
-
+      font-family: Orbitron, sans-serif;
+      font-size: clamp(20px, 2vw, 28px);
       line-height: 1.02;
-
-      letter-spacing:
-        0.06em;
+      letter-spacing: .06em;
     }
 
     .game-header p {
       max-width: 210px;
-
       margin: 0;
-
-      color:
-        #c7e8f4;
-
+      color: #c7e8f4;
       font-size: 9px;
-
       line-height: 1.45;
     }
 
-    /* =========================================================
-       OBJECTIVE
-       ========================================================= */
-
+    /* ---------- Objective ---------- */
     .objective {
       right: 26px;
       top: 24px;
-
       width: 225px;
       min-height: 128px;
-
       padding: 18px 19px;
     }
 
     .objective::before {
       content: "02 // MISSION";
-
       display: block;
-
       margin-bottom: 8px;
-
-      color:
-        rgba(185, 242, 255, 0.48);
-
+      color: rgba(185, 242, 255, .48);
       font-size: 7px;
-
-      letter-spacing:
-        0.15em;
+      letter-spacing: .15em;
     }
 
     .objective b {
       display: block;
-
       margin-bottom: 8px;
-
-      color:
-        var(--accent2);
-
+      color: var(--accent2);
       font-size: 10px;
-
-      letter-spacing:
-        0.14em;
+      letter-spacing: .14em;
     }
 
     .objective span {
-      color:
-        #e8f8ff;
-
+      color: #e8f8ff;
       font-size: 9px;
-
       line-height: 1.5;
     }
 
-    /* =========================================================
-       LIVE LEFT / RIGHT WRIST PANELS
-       ========================================================= */
-
+    /* ---------- Live wrist cards ---------- */
     .wrist-live-panel {
       position: absolute;
-
       top: 182px;
-
       z-index: 5;
-
       width: 230px;
       min-height: 218px;
-
       padding: 14px;
-
-      border:
-        1px solid
-        color-mix(
-          in srgb,
-          var(--accent2) 58%,
-          transparent
-        );
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(2, 15, 30, 0.86),
-          rgba(3, 25, 43, 0.66)
-        );
-
+      border: 1px solid color-mix(in srgb, var(--accent2) 58%, transparent);
+      background: linear-gradient(145deg, rgba(2,15,30,.86), rgba(3,25,43,.66));
       box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.25),
-        inset 0 0 22px rgba(0, 190, 255, 0.035),
-        0 0 22px
-          color-mix(
-            in srgb,
-            var(--accent2) 8%,
-            transparent
-          );
-
-      backdrop-filter:
-        blur(9px);
-
-      clip-path:
-        polygon(
-          0 11px,
-          11px 0,
-          calc(100% - 11px) 0,
-          100% 11px,
-          100% calc(100% - 11px),
-          calc(100% - 11px) 100%,
-          11px 100%,
-          0 calc(100% - 11px)
-        );
+        0 10px 30px rgba(0,0,0,.25),
+        inset 0 0 22px rgba(0,190,255,.035),
+        0 0 22px color-mix(in srgb, var(--accent2) 8%, transparent);
+      backdrop-filter: blur(9px);
+      clip-path: polygon(0 11px, 11px 0, calc(100% - 11px) 0, 100% 11px, 100% calc(100% - 11px), calc(100% - 11px) 100%, 11px 100%, 0 calc(100% - 11px));
     }
 
-    .wrist-live-panel.left {
-      left: 26px;
-    }
-
-    .wrist-live-panel.right {
-      right: 26px;
-    }
+    .wrist-live-panel.left { left: 26px; }
+    .wrist-live-panel.right { right: 26px; }
 
     .wrist-live-panel::before {
-      content:
-        "LIVE TELEMETRY";
-
+      content: "LIVE TELEMETRY";
       display: block;
-
       margin-bottom: 7px;
-
-      color:
-        rgba(185, 242, 255, 0.48);
-
+      color: rgba(185,242,255,.48);
       font-size: 7px;
-
-      letter-spacing:
-        0.16em;
+      letter-spacing: .16em;
     }
 
     .wrist-live-header {
       display: flex;
-
       align-items: center;
-
-      justify-content:
-        space-between;
-
+      justify-content: space-between;
       padding-bottom: 9px;
-
       margin-bottom: 10px;
-
-      border-bottom:
-        1px solid
-        rgba(130, 225, 255, 0.12);
+      border-bottom: 1px solid rgba(130,225,255,.12);
     }
 
     .wrist-live-title {
-      font-family:
-        Orbitron,
-        sans-serif;
-
+      font-family: Orbitron, sans-serif;
       font-size: 13px;
-
-      letter-spacing:
-        0.08em;
+      letter-spacing: .08em;
     }
 
-    .wrist-live-title.left {
-      color:
-        var(--accent);
-    }
-
-    .wrist-live-title.right {
-      color:
-        var(--accent2);
-    }
+    .wrist-live-title.left { color: var(--accent); }
+    .wrist-live-title.right { color: var(--accent2); }
 
     .wrist-live-indicator {
       width: 8px;
       height: 8px;
-
       border-radius: 50%;
-
-      background:
-        #687b8b;
+      background: #687b8b;
     }
 
-    .wrist-live-panel.connected
-    .wrist-live-indicator {
-      background:
-        var(--accent);
-
-      box-shadow:
-        0 0 8px var(--accent),
-        0 0 18px
-          color-mix(
-            in srgb,
-            var(--accent) 45%,
-            transparent
-          );
-
-      animation:
-        telemetryPulse 1.8s
-        ease-in-out
-        infinite;
+    .wrist-live-panel.connected .wrist-live-indicator {
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent), 0 0 18px color-mix(in srgb, var(--accent) 45%, transparent);
+      animation: telemetryPulse 1.8s ease-in-out infinite;
     }
 
     @keyframes telemetryPulse {
-      0%,
-      100% {
-        transform: scale(0.9);
-        opacity: 0.72;
-      }
-
-      50% {
-        transform: scale(1.15);
-        opacity: 1;
-      }
+      0%, 100% { transform: scale(.9); opacity: .72; }
+      50% { transform: scale(1.15); opacity: 1; }
     }
 
     .wrist-live-grid {
       display: grid;
-
-      grid-template-columns:
-        1fr 1fr;
-
+      grid-template-columns: 1fr 1fr;
       gap: 7px;
     }
 
     .wrist-live-metric {
       min-width: 0;
-
-      padding:
-        7px 8px 6px;
-
-      border:
-        1px solid
-        rgba(110, 220, 255, 0.12);
-
-      background:
-        rgba(1, 12, 24, 0.38);
+      padding: 7px 8px 6px;
+      border: 1px solid rgba(110,220,255,.12);
+      background: rgba(1,12,24,.38);
     }
 
-    .wrist-live-metric.wide {
-      grid-column:
-        1 / -1;
-    }
+    .wrist-live-metric.wide { grid-column: 1 / -1; }
 
     .wrist-live-label {
       display: block;
-
       margin-bottom: 3px;
-
-      color:
-        rgba(185, 242, 255, 0.48);
-
+      color: rgba(185,242,255,.48);
       font-size: 6.5px;
-
-      letter-spacing:
-        0.10em;
+      letter-spacing: .10em;
     }
 
     .wrist-live-value {
       display: block;
-
       overflow: hidden;
-
       text-overflow: ellipsis;
-
       white-space: nowrap;
-
-      color:
-        #f5fcff;
-
-      font-family:
-        Orbitron,
-        sans-serif;
-
+      color: #f5fcff;
+      font-family: Orbitron, sans-serif;
       font-size: 10px;
     }
 
-    .wrist-live-value.accent {
-      color:
-        var(--accent);
-    }
+    .wrist-live-value.accent { color: var(--accent); }
+    .wrist-live-value.state { color: #bcecff; }
 
-    .wrist-live-value.state {
-      color:
-        #bcecff;
-    }
-
-    /* =========================================================
-       CENTRAL MOVEMENT TARGET
-       ========================================================= */
-
+    /* ---------- Center target ---------- */
     .target {
       position: absolute;
-
       left: 50%;
       top: 49%;
-
       z-index: 6;
-
       width: 108px;
       height: 108px;
-
-      transform:
-        translate(-50%, -50%);
-
+      transform: translate(-50%, -50%);
       display: grid;
-
       place-items: center;
-
-      border:
-        2px solid
-        var(--accent);
-
+      border: 2px solid var(--accent);
       border-radius: 50%;
-
-      background:
-        rgba(4, 30, 42, 0.40);
-
+      background: rgba(4,30,42,.40);
       box-shadow:
-        0 0 18px
-          var(--accent),
-        0 0 46px
-          color-mix(
-            in srgb,
-            var(--accent) 38%,
-            transparent
-          ),
-        inset 0 0 24px
-          color-mix(
-            in srgb,
-            var(--accent) 15%,
-            transparent
-          );
-
+        0 0 18px var(--accent),
+        0 0 46px color-mix(in srgb, var(--accent) 38%, transparent),
+        inset 0 0 24px color-mix(in srgb, var(--accent) 15%, transparent);
       color: #fff;
-
       font-size: 46px;
     }
 
     .target::before,
     .target::after {
       content: "";
-
       position: absolute;
-
       inset: -11px;
-
-      border:
-        1px solid
-        color-mix(
-          in srgb,
-          var(--accent2) 28%,
-          transparent
-        );
-
+      border: 1px solid color-mix(in srgb, var(--accent2) 28%, transparent);
       border-radius: 50%;
-
-      animation:
-        targetRing 2.8s
-        ease-in-out
-        infinite;
+      animation: targetRing 2.8s ease-in-out infinite;
     }
 
     .target::after {
       inset: -18px;
-
-      opacity: 0.45;
-
-      animation-delay:
-        0.8s;
+      opacity: .45;
+      animation-delay: .8s;
     }
 
-    .target.hidden {
-      display: none;
-    }
-
-    .target.hit {
-      animation:
-        targetHit 0.35s ease;
-    }
+    .target.hidden { display: none; }
+    .target.hit { animation: targetHit .35s ease; }
 
     @keyframes targetRing {
-      0%,
-      100% {
-        transform: scale(0.96);
-        opacity: 0.25;
-      }
-
-      50% {
-        transform: scale(1.06);
-        opacity: 0.9;
-      }
+      0%, 100% { transform: scale(.96); opacity: .25; }
+      50% { transform: scale(1.06); opacity: .9; }
     }
 
     @keyframes targetHit {
-      50% {
-        transform:
-          translate(-50%, -50%)
-          scale(1.28);
-
-        opacity: 0.32;
-      }
-
-      100% {
-        transform:
-          translate(-50%, -50%)
-          scale(1);
-
-        opacity: 1;
-      }
+      50% { transform: translate(-50%, -50%) scale(1.28); opacity: .32; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
     }
 
-    /* =========================================================
-       WRIST MOVEMENT REQUIRED
-       ========================================================= */
-
+    /* ---------- Motion input ---------- */
     .direction-card {
       left: 50%;
       bottom: 84px;
-
       z-index: 7;
-
       width: 255px;
       min-height: 90px;
-
-      padding:
-        12px 18px;
-
-      transform:
-        translateX(-50%);
-
-      text-align:
-        center;
-
-      border:
-        1px solid
-        color-mix(
-          in srgb,
-          var(--accent2) 70%,
-          transparent
-        );
+      padding: 12px 18px;
+      transform: translateX(-50%);
+      text-align: center;
+      border: 1px solid color-mix(in srgb, var(--accent2) 70%, transparent);
     }
 
     .direction-card::before {
-      content:
-        "03 // MOTION INPUT";
-
+      content: "03 // MOTION INPUT";
       display: block;
-
       margin-bottom: 5px;
-
-      color:
-        rgba(185, 242, 255, 0.46);
-
+      color: rgba(185,242,255,.46);
       font-size: 7px;
-
-      letter-spacing:
-        0.16em;
+      letter-spacing: .16em;
     }
 
     .direction-card .label {
-      color:
-        #80b9cc;
-
+      color: #80b9cc;
       font-size: 8px;
-
-      letter-spacing:
-        0.17em;
+      letter-spacing: .17em;
     }
 
     .direction-card strong {
       display: block;
-
       margin-top: 5px;
-
-      color:
-        var(--accent);
-
-      font-family:
-        Orbitron,
-        sans-serif;
-
+      color: var(--accent);
+      font-family: Orbitron, sans-serif;
       font-size: 22px;
     }
 
-    /* =========================================================
-       BOTTOM HUD RAIL
-       ========================================================= */
-
+    /* ---------- Bottom control rail ---------- */
     .bottom-rail {
       position: absolute;
-
       left: 26px;
       right: 26px;
       bottom: 24px;
-
       z-index: 8;
-
       display: flex;
-
       align-items: center;
-
       gap: 8px;
     }
 
@@ -965,3123 +449,882 @@
     .reconnect,
     .exit {
       min-height: 46px;
-
       display: flex;
-
       align-items: center;
-
       justify-content: center;
-
-      border:
-        1px solid
-        rgba(110, 220, 255, 0.36);
-
-      background:
-        rgba(2, 15, 30, 0.84);
-
-      box-shadow:
-        inset 0 0 18px
-        rgba(0, 180, 255, 0.03);
-
-      color:
-        #eaf8ff;
+      border: 1px solid rgba(110,220,255,.36);
+      background: rgba(2,15,30,.84);
+      box-shadow: inset 0 0 18px rgba(0,180,255,.03);
+      color: #eaf8ff;
     }
 
     .rail-tag {
       margin-right: auto;
-
-      padding:
-        0 13px;
-
-      color:
-        rgba(185, 242, 255, 0.5);
-
+      padding: 0 13px;
+      color: rgba(185,242,255,.5);
       font-size: 7px;
-
-      letter-spacing:
-        0.14em;
-
-      clip-path:
-        polygon(
-          0 8px,
-          8px 0,
-          100% 0,
-          100% calc(100% - 8px),
-          calc(100% - 8px) 100%,
-          0 100%
-        );
+      letter-spacing: .14em;
+      clip-path: polygon(0 8px,8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%);
     }
 
     .lives {
       min-width: 105px;
-
-      padding:
-        0 13px;
-
+      padding: 0 13px;
       min-height: 46px;
-
       display: flex;
-
       align-items: center;
-
       gap: 8px;
-
-      border:
-        1px solid
-        rgba(255, 140, 140, 0.36);
-
-      background:
-        rgba(2, 15, 30, 0.84);
-
-      color:
-        #fff;
-
+      border: 1px solid rgba(255,140,140,.36);
+      background: rgba(2,15,30,.84);
+      color: #fff;
       font-size: 10px;
-
-      letter-spacing:
-        0.12em;
+      letter-spacing: .12em;
     }
 
     .lives span {
-      color:
-        #ff9a9a;
-
-      font-family:
-        Orbitron,
-        sans-serif;
-
+      color: #ff9a9a;
+      font-family: Orbitron, sans-serif;
       font-size: 8px;
     }
 
-    .lives b {
-      font-size: 15px;
-    }
+    .lives b { font-size: 15px; }
 
     .sensor-chip,
     .reconnect,
     .exit {
-      padding:
-        0 12px;
-
+      padding: 0 12px;
       font-size: 8px;
-
-      white-space:
-        nowrap;
-
-      border-radius:
-        8px;
+      white-space: nowrap;
+      border-radius: 8px;
     }
 
     .sensor-chip.connected {
-      color:
-        var(--accent);
-
-      border-color:
-        color-mix(
-          in srgb,
-          var(--accent) 60%,
-          transparent
-        );
-
-      box-shadow:
-        0 0 16px
-          color-mix(
-            in srgb,
-            var(--accent) 10%,
-            transparent
-          );
+      color: var(--accent);
+      border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+      box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 10%, transparent);
     }
 
     .reconnect,
     .exit {
-      cursor:
-        pointer;
+      cursor: pointer;
     }
 
     .reconnect:hover,
     .exit:hover {
-      border-color:
-        var(--accent2);
-
-      background:
-        rgba(6, 55, 76, 0.86);
+      border-color: var(--accent2);
+      background: rgba(6,55,76,.86);
     }
 
     .exit {
-      border-color:
-        rgba(255, 111, 155, 0.48);
+      border-color: rgba(255,111,155,.48);
     }
 
-    /* =========================================================
-       FEEDBACK
-       ========================================================= */
-
+    /* ---------- Feedback ---------- */
     .feedback {
       position: absolute;
-
       left: 50%;
       top: 50%;
-
       z-index: 10;
-
-      transform:
-        translate(-50%, -50%);
-
-      padding:
-        17px 24px;
-
-      border:
-        1px solid
-        var(--accent);
-
-      background:
-        rgba(2, 20, 30, 0.93);
-
-      color:
-        var(--accent);
-
-      font-family:
-        Orbitron,
-        sans-serif;
-
+      transform: translate(-50%, -50%);
+      padding: 17px 24px;
+      border: 1px solid var(--accent);
+      background: rgba(2,20,30,.93);
+      color: var(--accent);
+      font-family: Orbitron, sans-serif;
       font-size: 21px;
-
-      letter-spacing:
-        0.09em;
-
+      letter-spacing: .09em;
       opacity: 0;
-
-      pointer-events:
-        none;
+      pointer-events: none;
     }
 
-    .feedback.show {
-      animation:
-        feedback 0.65s ease;
-    }
-
-    .feedback.bad {
-      border-color:
-        #ff8a8a;
-
-      color:
-        #ff9a9a;
-    }
+    .feedback.show { animation: feedback .65s ease; }
+    .feedback.bad { border-color: #ff8a8a; color: #ff9a9a; }
 
     @keyframes feedback {
-
-      0% {
-        opacity: 0;
-
-        transform:
-          translate(-50%, -50%)
-          scale(0.82);
-      }
-
-      25%,
-      75% {
-        opacity: 1;
-
-        transform:
-          translate(-50%, -50%)
-          scale(1);
-      }
-
-      100% {
-        opacity: 0;
-
-        transform:
-          translate(-50%, -50%)
-          scale(1.05);
-      }
+      0% { opacity: 0; transform: translate(-50%,-50%) scale(.82); }
+      25%, 75% { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%,-50%) scale(1.05); }
     }
 
-    /* =========================================================
-       RESULT MODAL
-       ========================================================= */
-
+    /* ---------- Result modal ---------- */
     .overlay {
       position: fixed;
-
       inset: 0;
-
       z-index: 30;
-
       display: grid;
-
       place-items: center;
-
-      background:
-        rgba(0, 5, 13, 0.82);
-
-      backdrop-filter:
-        blur(8px);
+      background: rgba(0,5,13,.82);
+      backdrop-filter: blur(8px);
     }
 
-    .overlay.hidden {
-      display: none;
-    }
+    .overlay.hidden { display: none; }
 
     .modal {
-      width:
-        min(560px, calc(100% - 30px));
-
+      width: min(560px, calc(100% - 30px));
       padding: 30px;
-
-      border:
-        1px solid
-        var(--cyan);
-
-      background:
-        linear-gradient(
-          145deg,
-          #061b31,
-          #020d1d
-        );
-
-      box-shadow:
-        0 0 50px
-        rgba(0, 170, 255, 0.2);
-
-      text-align:
-        center;
+      border: 1px solid var(--cyan);
+      background: linear-gradient(145deg,#061b31,#020d1d);
+      box-shadow: 0 0 50px rgba(0,170,255,.2);
+      text-align: center;
     }
 
     .modal .kicker {
-      color:
-        var(--mint);
-
+      color: var(--mint);
       font-size: 11px;
-
-      letter-spacing:
-        0.18em;
+      letter-spacing: .18em;
     }
 
     .modal h2 {
-      margin:
-        12px 0;
-
-      font-family:
-        Orbitron,
-        sans-serif;
-
+      margin: 12px 0;
+      font-family: Orbitron, sans-serif;
       font-size: 26px;
     }
 
     .modal p {
-      color:
-        #b8d9e8;
-
-      line-height:
-        1.6;
+      color: #b8d9e8;
+      line-height: 1.6;
     }
 
     .modal .big {
-      color:
-        #8fe6ff;
-
-      font-family:
-        Orbitron,
-        sans-serif;
-
+      color: #8fe6ff;
+      font-family: Orbitron, sans-serif;
       font-size: 20px;
     }
 
     .modal button {
       margin: 8px;
-
-      padding:
-        11px 18px;
-
-      border:
-        1px solid
-        var(--cyan);
-
-      color:
-        #fff;
-
-      background:
-        #07577e;
-
-      cursor:
-        pointer;
+      padding: 11px 18px;
+      border: 1px solid var(--cyan);
+      color: #fff;
+      background: #07577e;
+      cursor: pointer;
     }
 
-    .modal button.secondary {
-      background:
-        transparent;
-    }
+    .modal button.secondary { background: transparent; }
 
-    /* =========================================================
-       RESPONSIVE
-       ========================================================= */
-
+    /* ---------- Responsive ---------- */
     @media (max-width: 1180px) {
-
-      .game-area {
-        width: 94vw;
-        height: 76vh;
-      }
-
-      .wrist-live-panel {
-        width: 200px;
-      }
-
-      .objective {
-        width: 205px;
-      }
-
-      .game-header {
-        width: 235px;
-      }
+      .game-area { width: 94vw; height: 76vh; }
+      .wrist-live-panel { width: 200px; }
+      .objective { width: 205px; }
+      .game-header { width: 235px; }
     }
 
     @media (max-width: 900px) {
-
-      body {
-        overflow:
-          auto;
-      }
-
-      .game-shell {
-        padding:
-          12px;
-      }
-
-      .game-area {
-        width:
-          96vw;
-
-        height:
-          auto;
-
-        aspect-ratio:
-          16 / 10;
-      }
-
-      .game-header {
-        left:
-          14px;
-
-        top:
-          14px;
-
-        width:
-          220px;
-
-        min-height:
-          118px;
-      }
-
-      .objective {
-        right:
-          14px;
-
-        top:
-          14px;
-
-        width:
-          190px;
-
-        min-height:
-          112px;
-      }
-
-      .wrist-live-panel {
-        top:
-          auto;
-
-        bottom:
-          126px;
-
-        width:
-          190px;
-
-        min-height:
-          176px;
-      }
-
-      .wrist-live-panel.left {
-        left:
-          14px;
-      }
-
-      .wrist-live-panel.right {
-        right:
-          14px;
-      }
-
-      .direction-card {
-        bottom:
-          82px;
-
-        width:
-          215px;
-
-        min-height:
-          82px;
-      }
-
-      .bottom-rail {
-        left:
-          14px;
-
-        right:
-          14px;
-
-        bottom:
-          14px;
-      }
-
-      .rail-tag {
-        display:
-          none;
-      }
+      body { overflow: auto; }
+      .game-shell { padding: 12px; }
+      .game-area { width: 96vw; height: auto; aspect-ratio: 16 / 10; }
+      .game-header { left: 14px; top: 14px; width: 220px; min-height: 118px; }
+      .objective { right: 14px; top: 14px; width: 190px; min-height: 112px; }
+      .wrist-live-panel { top: auto; bottom: 126px; width: 190px; min-height: 176px; }
+      .wrist-live-panel.left { left: 14px; }
+      .wrist-live-panel.right { right: 14px; }
+      .direction-card { bottom: 82px; width: 215px; min-height: 82px; }
+      .bottom-rail { left: 14px; right: 14px; bottom: 14px; }
+      .rail-tag { display: none; }
     }
 
     @media (max-width: 650px) {
-
-      .game-area {
-        width:
-          96vw;
-
-        aspect-ratio:
-          4 / 3;
-      }
-
-      .game-header {
-        width:
-          180px;
-
-        min-height:
-          102px;
-
-        padding:
-          12px;
-      }
-
-      .game-header h1 {
-        font-size:
-          18px;
-      }
-
-      .game-header p {
-        font-size:
-          8px;
-      }
-
-      .objective {
-        width:
-          165px;
-
-        min-height:
-          96px;
-
-        padding:
-          11px;
-      }
-
-      .objective span {
-        font-size:
-          8px;
-      }
-
-      .wrist-live-panel {
-        bottom:
-          150px;
-
-        width:
-          calc(50% - 18px);
-
-        min-height:
-          0;
-
-        padding:
-          10px;
-      }
-
-      .wrist-live-panel.left {
-        left:
-          12px;
-      }
-
-      .wrist-live-panel.right {
-        right:
-          12px;
-      }
-
-      .wrist-live-title {
-        font-size:
-          10px;
-      }
-
-      .wrist-live-grid {
-        gap:
-          4px;
-      }
-
-      .wrist-live-metric {
-        padding:
-          5px 6px 4px;
-      }
-
-      .wrist-live-label {
-        font-size:
-          5.5px;
-      }
-
-      .wrist-live-value {
-        font-size:
-          8px;
-      }
-
-      .direction-card {
-        width:
-          190px;
-
-        bottom:
-          108px;
-
-        min-height:
-          76px;
-      }
-
-      .bottom-rail {
-        flex-wrap:
-          wrap;
-      }
-
-      .lives {
-        min-height:
-          40px;
-      }
-
+      .game-area { width: 96vw; aspect-ratio: 4 / 3; }
+      .game-header { width: 180px; min-height: 102px; padding: 12px; }
+      .game-header h1 { font-size: 18px; }
+      .game-header p { font-size: 8px; }
+      .objective { width: 165px; min-height: 96px; padding: 11px; }
+      .objective span { font-size: 8px; }
+      .wrist-live-panel { bottom: 150px; width: calc(50% - 18px); min-height: 0; padding: 10px; }
+      .wrist-live-panel.left { left: 12px; }
+      .wrist-live-panel.right { right: 12px; }
+      .wrist-live-title { font-size: 10px; }
+      .wrist-live-grid { gap: 4px; }
+      .wrist-live-metric { padding: 5px 6px 4px; }
+      .wrist-live-label { font-size: 5.5px; }
+      .wrist-live-value { font-size: 8px; }
+      .direction-card { width: 190px; bottom: 108px; min-height: 76px; }
+      .bottom-rail { flex-wrap: wrap; }
+      .lives { min-height: 40px; }
       .sensor-chip,
       .reconnect,
-      .exit {
-        min-height:
-          40px;
-      }
+      .exit { min-height: 40px; }
     }
   </style>
 </head>
 
 <body>
-
   <div class="game-shell">
-
     <main class="game-area">
+      <section id="gameWorld" class="game-world level-1">
 
-      <section
-        id="gameWorld"
-        class="game-world level-1"
-      >
-
-        <!-- ==================================================
-             AMBIENT LIGHTS
-             ================================================== -->
-
-        <div
-          class="ambient-lights"
-          aria-hidden="true"
-        >
-          <i></i>
-          <i></i>
-          <i></i>
-          <i></i>
-          <i></i>
-          <i></i>
-          <i></i>
-          <i></i>
+        <div class="ambient-lights" aria-hidden="true">
+          <i></i><i></i><i></i><i></i>
+          <i></i><i></i><i></i><i></i>
         </div>
 
-        <!-- ==================================================
-             GAME TITLE
-             ================================================== -->
-
-        <header
-          class="game-header hud-panel"
-        >
-
-          <div class="eyebrow">
-            PERSONALIZED REHABILITATION
-          </div>
-
-          <h1 id="gameName">
-            LOADING...
-          </h1>
-
-          <p id="gameSubtitle">
-            Preparing your game...
-          </p>
-
+        <header class="game-header hud-panel">
+          <div class="eyebrow">PERSONALIZED REHABILITATION</div>
+          <h1 id="gameName">LOADING...</h1>
+          <p id="gameSubtitle">Preparing your game...</p>
         </header>
 
-        <!-- ==================================================
-             OBJECTIVE
-             ================================================== -->
-
-        <section
-          class="objective hud-panel"
-          aria-label="Game objective"
-        >
-
-          <b>
-            OBJECTIVE
-          </b>
-
-          <span id="objectiveText">
-            Loading...
-          </span>
-
+        <section class="objective hud-panel" aria-label="Game objective">
+          <b>OBJECTIVE</b>
+          <span id="objectiveText">Loading...</span>
         </section>
 
-        <!-- ==================================================
-             LEFT WRIST LIVE READINGS
-             ================================================== -->
-
-        <section
-          id="leftWristLive"
-          class="wrist-live-panel left"
-          aria-label="Left wrist live readings"
-        >
-
+        <section id="leftWristLive" class="wrist-live-panel" aria-label="Left wrist live readings">
           <div class="wrist-live-header">
-
-            <span
-              class="wrist-live-title left"
-            >
-              LEFT WRIST
-            </span>
-
-            <span
-              id="leftLiveIndicator"
-              class="wrist-live-indicator"
-            ></span>
-
+            <span class="wrist-live-title left">LEFT WRIST</span>
+            <span id="leftLiveIndicator" class="wrist-live-indicator"></span>
           </div>
-
           <div class="wrist-live-grid">
-
             <div class="wrist-live-metric">
-
-              <span class="wrist-live-label">
-                PITCH
-              </span>
-
-              <span
-                id="leftLivePitch"
-                class="wrist-live-value accent"
-              >
-                —
-              </span>
-
+              <span class="wrist-live-label">PITCH</span>
+              <span id="leftLivePitch" class="wrist-live-value accent">—</span>
             </div>
-
             <div class="wrist-live-metric">
-
-              <span class="wrist-live-label">
-                ROLL
-              </span>
-
-              <span
-                id="leftLiveRoll"
-                class="wrist-live-value accent"
-              >
-                —
-              </span>
-
+              <span class="wrist-live-label">ROLL</span>
+              <span id="leftLiveRoll" class="wrist-live-value accent">—</span>
             </div>
-
             <div class="wrist-live-metric">
-
-              <span class="wrist-live-label">
-                ANGLE
-              </span>
-
-              <span
-                id="leftLiveAngle"
-                class="wrist-live-value"
-              >
-                —
-              </span>
-
+              <span class="wrist-live-label">ANGLE</span>
+              <span id="leftLiveAngle" class="wrist-live-value">—</span>
             </div>
-
             <div class="wrist-live-metric">
-
-              <span class="wrist-live-label">
-                ANGULAR VELOCITY
-              </span>
-
-              <span
-                id="leftLiveAngular"
-                class="wrist-live-value"
-              >
-                —
-              </span>
-
+              <span class="wrist-live-label">ANGULAR VELOCITY</span>
+              <span id="leftLiveAngular" class="wrist-live-value">—</span>
             </div>
-
             <div class="wrist-live-metric">
-
-              <span class="wrist-live-label">
-                ACCELERATION
-              </span>
-
-              <span
-                id="leftLiveAcceleration"
-                class="wrist-live-value"
-              >
-                —
-              </span>
-
+              <span class="wrist-live-label">ACCELERATION</span>
+              <span id="leftLiveAcceleration" class="wrist-live-value">—</span>
             </div>
-
             <div class="wrist-live-metric">
-
-              <span class="wrist-live-label">
-                STATE
-              </span>
-
-              <span
-                id="leftLiveState"
-                class="wrist-live-value state"
-              >
-                —
-              </span>
-
+              <span class="wrist-live-label">STATE</span>
+              <span id="leftLiveState" class="wrist-live-value state">—</span>
             </div>
-
-            <div
-              class="wrist-live-metric wide"
-            >
-
-              <span class="wrist-live-label">
-                DIRECTION
-              </span>
-
-              <span
-                id="leftLiveDirection"
-                class="wrist-live-value"
-              >
-                WAITING
-              </span>
-
+            <div class="wrist-live-metric wide">
+              <span class="wrist-live-label">DIRECTION</span>
+              <span id="leftLiveDirection" class="wrist-live-value">WAITING</span>
             </div>
-
           </div>
-
         </section>
 
-        <!-- ==================================================
-             RIGHT WRIST LIVE READINGS
-             ================================================== -->
-
-        <section
-          id="rightWristLive"
-          class="wrist-live-panel right"
-          aria-label="Right wrist live readings"
-        >
-
+        <section id="rightWristLive" class="wrist-live-panel" aria-label="Right wrist live readings">
           <div class="wrist-live-header">
-
-            <span
-              class="wrist-live-title right"
-            >
-              RIGHT WRIST
-            </span>
-
-            <span
-              id="rightLiveIndicator"
-              class="wrist-live-indicator"
-            ></span>
-
+            <span class="wrist-live-title right">RIGHT WRIST</span>
+            <span id="rightLiveIndicator" class="wrist-live-indicator"></span>
           </div>
-
           <div class="wrist-live-grid">
-
             <div class="wrist-live-metric">
-
-              <span class="wrist-live-label">
-                PITCH
-              </span>
-
-              <span
-                id="rightLivePitch"
-                class="wrist-live-value accent"
-              >
-                —
-              </span>
-
+              <span class="wrist-live-label">PITCH</span>
+              <span id="rightLivePitch" class="wrist-live-value accent">—</span>
             </div>
-
             <div class="wrist-live-metric">
-
-              <span class="wrist-live-label">
-                ROLL
-              </span>
-
-              <span
-                id="rightLiveRoll"
-                class="wrist-live-value accent"
-              >
-                —
-              </span>
-
+              <span class="wrist-live-label">ROLL</span>
+              <span id="rightLiveRoll" class="wrist-live-value accent">—</span>
             </div>
-
             <div class="wrist-live-metric">
-
-              <span class="wrist-live-label">
-                ANGLE
-              </span>
-
-              <span
-                id="rightLiveAngle"
-                class="wrist-live-value"
-              >
-                —
-              </span>
-
+              <span class="wrist-live-label">ANGLE</span>
+              <span id="rightLiveAngle" class="wrist-live-value">—</span>
             </div>
-
             <div class="wrist-live-metric">
-
-              <span class="wrist-live-label">
-                ANGULAR VELOCITY
-              </span>
-
-              <span
-                id="rightLiveAngular"
-                class="wrist-live-value"
-              >
-                —
-              </span>
-
+              <span class="wrist-live-label">ANGULAR VELOCITY</span>
+              <span id="rightLiveAngular" class="wrist-live-value">—</span>
             </div>
-
             <div class="wrist-live-metric">
-
-              <span class="wrist-live-label">
-                ACCELERATION
-              </span>
-
-              <span
-                id="rightLiveAcceleration"
-                class="wrist-live-value"
-              >
-                —
-              </span>
-
+              <span class="wrist-live-label">ACCELERATION</span>
+              <span id="rightLiveAcceleration" class="wrist-live-value">—</span>
             </div>
-
             <div class="wrist-live-metric">
-
-              <span class="wrist-live-label">
-                STATE
-              </span>
-
-              <span
-                id="rightLiveState"
-                class="wrist-live-value state"
-              >
-                —
-              </span>
-
+              <span class="wrist-live-label">STATE</span>
+              <span id="rightLiveState" class="wrist-live-value state">—</span>
             </div>
-
-            <div
-              class="wrist-live-metric wide"
-            >
-
-              <span class="wrist-live-label">
-                DIRECTION
-              </span>
-
-              <span
-                id="rightLiveDirection"
-                class="wrist-live-value"
-              >
-                WAITING
-              </span>
-
+            <div class="wrist-live-metric wide">
+              <span class="wrist-live-label">DIRECTION</span>
+              <span id="rightLiveDirection" class="wrist-live-value">WAITING</span>
             </div>
-
           </div>
-
         </section>
 
-        <!-- ==================================================
-             MOVEMENT TARGET
-             ================================================== -->
+        <div id="target" class="target">↑</div>
 
-        <div
-          id="target"
-          class="target"
-        >
-          ↑
+        <div class="direction-card hud-panel">
+          <div class="label">WRIST MOVEMENT REQUIRED</div>
+          <strong id="directionText">READY</strong>
         </div>
 
-        <!-- ==================================================
-             MOVEMENT INSTRUCTION
-             ================================================== -->
-
-        <div
-          class="direction-card hud-panel"
-        >
-
-          <div class="label">
-            WRIST MOVEMENT REQUIRED
-          </div>
-
-          <strong id="directionText">
-            READY
-          </strong>
-
-        </div>
-
-        <!-- ==================================================
-             FEEDBACK
-             ================================================== -->
-
-        <div
-          id="feedback"
-          class="feedback"
-        ></div>
-
-        <!-- ==================================================
-             BOTTOM CONTROL RAIL
-             ================================================== -->
+        <div id="feedback" class="feedback"></div>
 
         <div class="bottom-rail">
-
           <div class="lives">
-
-            <span>
-              HP
-            </span>
-
-            <b id="livesText">
-              —
-            </b>
-
+            <span>HP</span>
+            <b id="livesText">—</b>
           </div>
 
-          <div class="rail-tag">
-            04 // HARDWARE LINK
-          </div>
+          <div class="rail-tag">04 // HARDWARE LINK</div>
 
-          <span
-            id="serialStatus"
-            class="sensor-chip"
-          >
-            CHECKING SENSOR CONNECTION...
-          </span>
+          <span id="serialStatus" class="sensor-chip">CHECKING SENSOR CONNECTION...</span>
+          <span id="leftSensorStatus" class="sensor-chip">LEFT • CHECKING</span>
+          <span id="rightSensorStatus" class="sensor-chip">RIGHT • CHECKING</span>
 
-          <span
-            id="leftSensorStatus"
-            class="sensor-chip"
-          >
-            LEFT • CHECKING
-          </span>
-
-          <span
-            id="rightSensorStatus"
-            class="sensor-chip"
-          >
-            RIGHT • CHECKING
-          </span>
-
-          <button
-            id="reconnectSensors"
-            class="reconnect"
-          >
-            RECONNECT
-          </button>
-
-          <button
-            id="exitGame"
-            class="exit"
-          >
-            EXIT GAME
-          </button>
-
+          <button id="reconnectSensors" class="reconnect">RECONNECT</button>
+          <button id="exitGame" class="exit">EXIT GAME</button>
         </div>
-
       </section>
-
     </main>
-
   </div>
 
-  <!-- ========================================================
-       RESULT OVERLAY
-       ======================================================== -->
-
-  <div
-    id="resultOverlay"
-    class="overlay hidden"
-  >
-
+  <div id="resultOverlay" class="overlay hidden">
     <section class="modal">
-
-      <div
-        id="resultKicker"
-        class="kicker"
-      >
-        MISSION COMPLETE
-      </div>
-
-      <h2 id="resultTitle">
-        GREAT WORK
-      </h2>
-
-      <p id="resultMessage">
-        Your session is complete.
-      </p>
-
-      <p class="big">
-        FINAL SCORE:
-
-        <span id="resultScore">
-          0
-        </span>
-      </p>
-
-      <button id="playAgain">
-        PLAY AGAIN
-      </button>
-
-      <button
-        id="returnSystem"
-        class="secondary"
-      >
-        RETURN TO SYSTEM
-      </button>
-
+      <div id="resultKicker" class="kicker">MISSION COMPLETE</div>
+      <h2 id="resultTitle">GREAT WORK</h2>
+      <p id="resultMessage">Your session is complete.</p>
+      <p class="big">FINAL SCORE: <span id="resultScore">0</span></p>
+      <button id="playAgain">PLAY AGAIN</button>
+      <button id="returnSystem" class="secondary">RETURN TO SYSTEM</button>
     </section>
-
   </div>
-
-  <!-- ========================================================
-       JAVASCRIPT
-       ======================================================== -->
 
   <script>
     (() => {
-
-      /* ======================================================
-         GAME DEFINITIONS
-         ====================================================== */
-
       const games = {
-
         1: {
-          name:
-            "GARDEN ADVENTURE",
-
-          subtitle:
-            "COLLECT 10 GARDEN SIGNALS USING COMFORTABLE WRIST MOVEMENTS",
-
-          objective:
-            "Collect 10 garden items. Move in the displayed direction to collect the next item."
+          name: 'GARDEN ADVENTURE',
+          subtitle: 'COLLECT 10 GARDEN SIGNALS USING COMFORTABLE WRIST MOVEMENTS',
+          objective: 'Collect 10 garden items. Move in the displayed direction to collect the next item.'
         },
-
         2: {
-          name:
-            "TREASURE HUNT",
-
-          subtitle:
-            "FOLLOW THE DIRECTION SEQUENCE TO FIND HIDDEN TREASURE",
-
-          objective:
-            "Complete 5 directional sequences. A wrong direction resets the current sequence."
+          name: 'TREASURE HUNT',
+          subtitle: 'FOLLOW THE DIRECTION SEQUENCE TO FIND HIDDEN TREASURE',
+          objective: 'Complete 5 directional sequences. A wrong direction resets the current sequence.'
         },
-
         3: {
-          name:
-            "SKY PILOT",
-
-          subtitle:
-            "GUIDE THE AIRCRAFT THROUGH 15 DIRECTIONAL CHECKPOINTS",
-
-          objective:
-            "Pass 15 checkpoints. Missing a checkpoint costs a life."
+          name: 'SKY PILOT',
+          subtitle: 'GUIDE THE AIRCRAFT THROUGH 15 DIRECTIONAL CHECKPOINTS',
+          objective: 'Pass 15 checkpoints. Missing a checkpoint costs a life.'
         },
-
         4: {
-          name:
-            "SPACE ESCAPE",
-
-          subtitle:
-            "SURVIVE 60 SECONDS AND DODGE THE ASTEROIDS",
-
-          objective:
-            "Dodge incoming obstacles by moving your wrist in the opposite direction."
+          name: 'SPACE ESCAPE',
+          subtitle: 'SURVIVE 60 SECONDS AND DODGE THE ASTEROIDS',
+          objective: 'Dodge incoming obstacles by moving your wrist in the opposite direction.'
         },
-
         5: {
-          name:
-            "NINJA DODGE",
-
-          subtitle:
-            "BUILD YOUR COMBO AND REACH 100 POINTS",
-
-          objective:
-            "Dodge incoming attacks. Correct reactions build your combo; wrong reactions cost a life."
+          name: 'NINJA DODGE',
+          subtitle: 'BUILD YOUR COMBO AND REACH 100 POINTS',
+          objective: 'Dodge incoming attacks. Correct reactions build your combo; wrong reactions cost a life.'
         }
-
       };
 
-
-      /* ======================================================
-         DIRECTIONS
-         ====================================================== */
-
-      const dirs = [
-        "UP",
-        "DOWN",
-        "LEFT",
-        "RIGHT"
-      ];
-
-      const arrows = {
-        UP:
-          "↑",
-
-        DOWN:
-          "↓",
-
-        LEFT:
-          "←",
-
-        RIGHT:
-          "→"
-      };
-
-
-      /* ======================================================
-         GAME STATE
-         ====================================================== */
+      const dirs = ['UP', 'DOWN', 'LEFT', 'RIGHT'];
+      const arrows = { UP: '↑', DOWN: '↓', LEFT: '←', RIGHT: '→' };
 
       let record = null;
-
       let level = 1;
-
       let average = 0;
-
       let score = 0;
-
       let lives = 3;
-
       let active = false;
-
-      let targetDirection =
-        "UP";
-
+      let targetDirection = 'UP';
       let sequence = [];
-
       let sequenceIndex = 0;
-
       let checkpoints = 0;
-
       let timeLeft = 60;
-
       let timer = null;
-
       let combo = 0;
-
       let lastDirectionAt = 0;
-
       let autoConnectBusy = false;
 
+      const ports = { LEFT: null, RIGHT: null };
+      const sensorSeen = { LEFT: false, RIGHT: false };
 
-      /* ======================================================
-         SENSOR STATE
-         ====================================================== */
+      const $ = id => document.getElementById(id);
+      const world = $('gameWorld');
+      const target = $('target');
 
-      const ports = {
-        LEFT:
-          null,
-
-        RIGHT:
-          null
-      };
-
-      const sensorSeen = {
-        LEFT:
-          false,
-
-        RIGHT:
-          false
-      };
-
-
-      /* ======================================================
-         DOM HELPER
-         ====================================================== */
-
-      const $ =
-        id =>
-          document.getElementById(id);
-
-      const world =
-        $("gameWorld");
-
-      const target =
-        $("target");
-
-
-      /* ======================================================
-         LOAD CALIBRATION RECORD
-         ====================================================== */
-
+      /* ---------- Calibration record ---------- */
       function loadRecord() {
-
         try {
-
-          record =
-            JSON.parse(
-
-              localStorage.getItem(
-                "rehabo-sg-game-session"
-              )
-
-              ||
-
-              localStorage.getItem(
-                "rehabo-sg-latest-calibration"
-              )
-
-              ||
-
-              "null"
-
-            );
-
+          record = JSON.parse(
+            localStorage.getItem('rehabo-sg-game-session') ||
+            localStorage.getItem('rehabo-sg-latest-calibration') ||
+            'null'
+          );
         } catch (_) {
-
-          record =
-            null;
-
+          record = null;
         }
 
+        const left = Number(record?.calibrationBaselineAverage?.LEFT);
+        const right = Number(record?.calibrationBaselineAverage?.RIGHT);
+        const storedAverage = Number(record?.bilateralAverage);
 
-        const left =
-          Number(
-            record
-              ?.calibrationBaselineAverage
-              ?.LEFT
-          );
+        average = Number.isFinite(storedAverage)
+          ? storedAverage
+          : (Number.isFinite(left) && Number.isFinite(right)
+              ? +((left + right) / 2).toFixed(1)
+              : 0);
 
-
-        const right =
-          Number(
-            record
-              ?.calibrationBaselineAverage
-              ?.RIGHT
-          );
-
-
-        const storedAverage =
-          Number(
-            record
-              ?.bilateralAverage
-          );
-
-
-        average =
-          Number.isFinite(
-            storedAverage
-          )
-
-            ? storedAverage
-
-            : (
-
-                Number.isFinite(left)
-
-                &&
-
-                Number.isFinite(right)
-
-                  ? +(
-                      (left + right) / 2
-                    ).toFixed(1)
-
-                  : 0
-
-              );
-
-
-        /* ====================================================
-           LEVEL SELECTION
-           ==================================================== */
-
-        if (
-          average <= 20
-        ) {
-
-          level =
-            1;
-
-        } else if (
-          average <= 40
-        ) {
-
-          level =
-            2;
-
-        } else if (
-          average <= 60
-        ) {
-
-          level =
-            3;
-
-        } else if (
-          average <= 80
-        ) {
-
-          level =
-            4;
-
-        } else {
-
-          level =
-            5;
-
-        }
-
+        if (average <= 20) level = 1;
+        else if (average <= 40) level = 2;
+        else if (average <= 60) level = 3;
+        else if (average <= 80) level = 4;
+        else level = 5;
       }
-
-
-      /* ======================================================
-         BACKGROUND
-         ====================================================== */
 
       function loadLevelBackground() {
-
         const backgrounds = {
-
-          1:
-            "Level1-background.png",
-
-          2:
-            "Level2-background.png",
-
-          3:
-            "Level3-background.png",
-
-          4:
-            "Level4-background.png",
-
-          5:
-            "Level5-background.png"
-
+          1: 'Level1-background.png',
+          2: 'Level2-background.png',
+          3: 'Level3-background.png',
+          4: 'Level4-background.png',
+          5: 'Level5-background.png'
         };
 
+        const file = backgrounds[level] || backgrounds[1];
+        const version = '20261004-3';
 
-        const file =
-          backgrounds[level]
-          ||
-          backgrounds[1];
-
-
-        const src =
-          "./" +
-          file +
-          "?v=20261004";
-
-
-        world.style.backgroundImage =
-          `url("${src}")`;
-
-      }
-
-
-      /* ======================================================
-         GAME INFORMATION
-         ====================================================== */
-
-      function showGameInfo() {
-
-        const game =
-          games[level];
-
-
-        $("gameName")
-          .textContent =
-          game.name;
-
-
-        $("gameSubtitle")
-          .textContent =
-          game.subtitle;
-
-
-        $("objectiveText")
-          .textContent =
-          game.objective;
-
-
-        $("livesText")
-          .textContent =
-          level <= 2
-            ? "∞"
-            : "3";
-
-
-        world.className =
-          `game-world level-${level}`;
-
-
-        loadLevelBackground();
-
-      }
-
-
-      /* ======================================================
-         SET DIRECTION
-         ====================================================== */
-
-      function setDirection(
-        direction
-      ) {
-
-        targetDirection =
-          direction;
-
-
-        $("directionText")
-          .textContent =
-          `${arrows[direction]}  ${direction}`;
-
-
-        target.textContent =
-          arrows[direction];
-
-
-        target.classList.remove(
-          "hidden"
-        );
-
-
-        const pos = {
-
-          UP:
-            [50, 28],
-
-          DOWN:
-            [50, 68],
-
-          LEFT:
-            [23, 48],
-
-          RIGHT:
-            [77, 48]
-
-        };
-
-
-        target.style.left =
-          `${pos[direction][0]}%`;
-
-
-        target.style.top =
-          `${pos[direction][1]}%`;
-
-      }
-
-
-      /* ======================================================
-         RANDOM DIRECTION
-         ====================================================== */
-
-      function randomDir() {
-
-        return dirs[
-          Math.floor(
-            Math.random() *
-            dirs.length
-          )
+        // Use the actual GitHub Pages URL first. Then try the raw GitHub URL,
+        // followed by the local relative path as a final fallback.
+        const sources = [
+          `https://painauchocogab.github.io/REHABO-SG-website/${encodeURIComponent(file)}?v=${version}`,
+          `https://raw.githubusercontent.com/painauchocogab/REHABO-SG-website/main/${encodeURIComponent(file)}?v=${version}`,
+          `./${file}?v=${version}`
         ];
 
-      }
+        world.style.backgroundImage = 'none';
 
+        let index = 0;
 
-      /* ======================================================
-         FEEDBACK
-         ====================================================== */
+        function tryNextBackground() {
+          if (index >= sources.length) {
+            console.error('REHABO-SG: could not load background:', file);
+            return;
+          }
 
-      function feedback(
-        message,
-        bad = false
-      ) {
+          const src = sources[index++];
+          const image = new Image();
 
-        const element =
-          $("feedback");
+          image.onload = () => {
+            world.style.backgroundImage = `url("${src}")`;
+            world.style.backgroundSize = 'cover';
+            world.style.backgroundPosition = 'center';
+            world.style.backgroundRepeat = 'no-repeat';
+            console.log('REHABO-SG background loaded:', src);
+          };
 
+          image.onerror = () => {
+            console.warn('REHABO-SG background failed:', src);
+            tryNextBackground();
+          };
 
-        element.textContent =
-          message;
-
-
-        element.className =
-          `feedback ${
-            bad
-              ? "bad "
-              : ""
-          }show`;
-
-
-        setTimeout(
-          () => {
-
-            element.className =
-              "feedback";
-
-          },
-          650
-        );
-
-      }
-
-
-      /* ======================================================
-         SCORE
-         ====================================================== */
-
-      function setScore(
-        value
-      ) {
-
-        score =
-          Math.max(
-            0,
-            value
-          );
-
-      }
-
-
-      /* ======================================================
-         LIVES
-         ====================================================== */
-
-      function setLives(
-        value
-      ) {
-
-        lives =
-          value;
-
-
-        $("livesText")
-          .textContent =
-          Number.isFinite(
-            value
-          )
-            ? value
-            : "∞";
-
-      }
-
-
-      /* ======================================================
-         END GAME
-         ====================================================== */
-
-      function endGame(
-        success
-      ) {
-
-        active =
-          false;
-
-
-        if (
-          timer
-        ) {
-
-          clearInterval(
-            timer
-          );
-
-          timer =
-            null;
-
+          image.src = src;
         }
 
-
-        $("resultKicker")
-          .textContent =
-          success
-            ? "MISSION COMPLETE"
-            : "GAME OVER";
-
-
-        $("resultTitle")
-          .textContent =
-          success
-            ? "GREAT WORK"
-            : "KEEP PRACTICING";
-
-
-        $("resultMessage")
-          .textContent =
-          success
-
-            ? "You completed your personalized rehabilitation game."
-
-            : "The game ended. You can try again using the same personalized level.";
-
-
-        $("resultScore")
-          .textContent =
-          score;
-
-
-        $("resultOverlay")
-          .classList
-          .remove(
-            "hidden"
-          );
-
+        tryNextBackground();
       }
 
+      function showGameInfo() {
+        const game = games[level];
 
-      /* ======================================================
-         START GAME
-         ====================================================== */
+        $('gameName').textContent = game.name;
+        $('gameSubtitle').textContent = game.subtitle;
+        $('objectiveText').textContent = game.objective;
+        $('livesText').textContent = level <= 2 ? '∞' : '3';
+
+        world.className = `game-world level-${level}`;
+        loadLevelBackground();
+      }
+
+      /* ---------- Game mechanics ---------- */
+      function setDirection(direction) {
+        targetDirection = direction;
+        $('directionText').textContent = `${arrows[direction]}  ${direction}`;
+        target.textContent = arrows[direction];
+        target.classList.remove('hidden');
+
+        const pos = {
+          UP: [50, 28],
+          DOWN: [50, 68],
+          LEFT: [23, 48],
+          RIGHT: [77, 48]
+        };
+
+        target.style.left = `${pos[direction][0]}%`;
+        target.style.top = `${pos[direction][1]}%`;
+      }
+
+      function randomDir() {
+        return dirs[Math.floor(Math.random() * dirs.length)];
+      }
+
+      function feedback(message, bad = false) {
+        const element = $('feedback');
+        element.textContent = message;
+        element.className = `feedback ${bad ? 'bad ' : ''}show`;
+        setTimeout(() => { element.className = 'feedback'; }, 650);
+      }
+
+      function setScore(value) {
+        score = Math.max(0, value);
+      }
+
+      function setLives(value) {
+        lives = value;
+        $('livesText').textContent = Number.isFinite(value) ? value : '∞';
+      }
+
+      function endGame(success) {
+        active = false;
+        if (timer) {
+          clearInterval(timer);
+          timer = null;
+        }
+
+        $('resultKicker').textContent = success ? 'MISSION COMPLETE' : 'GAME OVER';
+        $('resultTitle').textContent = success ? 'GREAT WORK' : 'KEEP PRACTICING';
+        $('resultMessage').textContent = success
+          ? 'You completed your personalized rehabilitation game.'
+          : 'The game ended. You can try again using the same personalized level.';
+        $('resultScore').textContent = score;
+        $('resultOverlay').classList.remove('hidden');
+      }
 
       function start() {
+        score = 0;
+        combo = 0;
+        sequenceIndex = 0;
+        checkpoints = 0;
+        timeLeft = 60;
 
-        score =
-          0;
+        setScore(0);
+        setLives(level <= 2 ? Infinity : 3);
 
-        combo =
-          0;
+        active = true;
+        $('resultOverlay').classList.add('hidden');
 
-        sequenceIndex =
-          0;
-
-        checkpoints =
-          0;
-
-        timeLeft =
-          60;
-
-
-        setScore(
-          0
-        );
-
-
-        setLives(
-          level <= 2
-            ? Infinity
-            : 3
-        );
-
-
-        active =
-          true;
-
-
-        $("resultOverlay")
-          .classList
-          .add(
-            "hidden"
-          );
-
-
-        /* LEVEL 1 */
-
-        if (
-          level === 1
-        ) {
-
-          setDirection(
-            randomDir()
-          );
-
+        if (level === 1) setDirection(randomDir());
+        if (level === 2) {
+          sequence = Array.from({ length: 4 }, randomDir);
+          setDirection(sequence[0]);
         }
+        if (level === 3) setDirection(randomDir());
+        if (level === 4) setDirection(randomDir());
+        if (level === 5) setDirection(randomDir());
 
-
-        /* LEVEL 2 */
-
-        if (
-          level === 2
-        ) {
-
-          sequence =
-            Array.from(
-              {
-                length:
-                  4
-              },
-              randomDir
-            );
-
-
-          setDirection(
-            sequence[0]
-          );
-
+        if (level === 4) {
+          if (timer) clearInterval(timer);
+          timer = setInterval(() => {
+            if (!active) return;
+            timeLeft--;
+            $('directionText').textContent = `SURVIVE ${timeLeft}s`;
+            if (timeLeft <= 0) endGame(true);
+          }, 1000);
         }
-
-
-        /* LEVEL 3 */
-
-        if (
-          level === 3
-        ) {
-
-          setDirection(
-            randomDir()
-          );
-
-        }
-
-
-        /* LEVEL 4 */
-
-        if (
-          level === 4
-        ) {
-
-          setDirection(
-            randomDir()
-          );
-
-        }
-
-
-        /* LEVEL 5 */
-
-        if (
-          level === 5
-        ) {
-
-          setDirection(
-            randomDir()
-          );
-
-        }
-
-
-        /* LEVEL 4 TIMER */
-
-        if (
-          level === 4
-        ) {
-
-          if (
-            timer
-          ) {
-
-            clearInterval(
-              timer
-            );
-
-          }
-
-
-          timer =
-            setInterval(
-              () => {
-
-                if (
-                  !active
-                ) {
-
-                  return;
-
-                }
-
-
-                timeLeft--;
-
-
-                $("directionText")
-                  .textContent =
-                  `SURVIVE ${timeLeft}s`;
-
-
-                if (
-                  timeLeft <= 0
-                ) {
-
-                  endGame(
-                    true
-                  );
-
-                }
-
-              },
-              1000
-            );
-
-        }
-
       }
-
-
-      /* ======================================================
-         CORRECT MOVEMENT
-         ====================================================== */
 
       function correct() {
-
-        target.classList.remove(
-          "hit"
-        );
-
-
+        target.classList.remove('hit');
         void target.offsetWidth;
+        target.classList.add('hit');
+        feedback('✓ MOVEMENT DETECTED');
 
-
-        target.classList.add(
-          "hit"
-        );
-
-
-        feedback(
-          "✓ MOVEMENT DETECTED"
-        );
-
-
-        /* LEVEL 1 */
-
-        if (
-          level === 1
-        ) {
-
-          setScore(
-            score + 1
-          );
-
-
-          if (
-            score >= 10
-          ) {
-
-            return endGame(
-              true
-            );
-
-          }
-
-
-          setDirection(
-            randomDir()
-          );
-
+        if (level === 1) {
+          setScore(score + 1);
+          if (score >= 10) return endGame(true);
+          setDirection(randomDir());
         }
-
-
-        /* LEVEL 2 */
-
-        else if (
-          level === 2
-        ) {
-
+        else if (level === 2) {
           sequenceIndex++;
-
-
-          setScore(
-            sequenceIndex
-          );
-
-
-          if (
-            sequenceIndex >=
-            sequence.length
-          ) {
-
-            setScore(
-              score + 10
-            );
-
-
-            sequenceIndex =
-              0;
-
-
-            sequence =
-              Array.from(
-                {
-                  length:
-                    4
-                },
-                randomDir
-              );
-
-
-            feedback(
-              "★ TREASURE FOUND"
-            );
-
+          setScore(sequenceIndex);
+          if (sequenceIndex >= sequence.length) {
+            setScore(score + 10);
+            sequenceIndex = 0;
+            sequence = Array.from({ length: 4 }, randomDir);
+            feedback('★ TREASURE FOUND');
           }
-
-
-          setDirection(
-            sequence[
-              sequenceIndex
-            ]
-          );
-
+          setDirection(sequence[sequenceIndex]);
         }
-
-
-        /* LEVEL 3 */
-
-        else if (
-          level === 3
-        ) {
-
+        else if (level === 3) {
           checkpoints++;
-
-
-          setScore(
-            checkpoints
-          );
-
-
-          if (
-            checkpoints >= 15
-          ) {
-
-            return endGame(
-              true
-            );
-
-          }
-
-
-          setDirection(
-            randomDir()
-          );
-
+          setScore(checkpoints);
+          if (checkpoints >= 15) return endGame(true);
+          setDirection(randomDir());
         }
-
-
-        /* LEVEL 4 */
-
-        else if (
-          level === 4
-        ) {
-
-          setScore(
-            score + 1
-          );
-
-
-          setDirection(
-            randomDir()
-          );
-
+        else if (level === 4) {
+          setScore(score + 1);
+          setDirection(randomDir());
         }
-
-
-        /* LEVEL 5 */
-
-        else if (
-          level === 5
-        ) {
-
+        else if (level === 5) {
           combo++;
-
-
-          setScore(
-            score +
-            10 +
-            Math.min(
-              combo,
-              5
-            ) * 2
-          );
-
-
-          if (
-            score >= 100
-          ) {
-
-            return endGame(
-              true
-            );
-
-          }
-
-
-          setDirection(
-            randomDir()
-          );
-
+          setScore(score + 10 + Math.min(combo, 5) * 2);
+          if (score >= 100) return endGame(true);
+          setDirection(randomDir());
         }
-
       }
-
-
-      /* ======================================================
-         WRONG MOVEMENT
-         ====================================================== */
 
       function wrong() {
-
-        if (
-          level === 1 ||
-          level === 2
-        ) {
-
-          feedback(
-            "× WRONG DIRECTION",
-            true
-          );
-
-
+        if (level === 1 || level === 2) {
+          feedback('× WRONG DIRECTION', true);
           return;
-
         }
-
 
         lives--;
+        combo = 0;
+        setLives(lives);
+        feedback('× WRONG DIRECTION', true);
 
-
-        combo =
-          0;
-
-
-        setLives(
-          lives
-        );
-
-
-        feedback(
-          "× WRONG DIRECTION",
-          true
-        );
-
-
-        if (
-          lives <= 0
-        ) {
-
-          return endGame(
-            false
-          );
-
-        }
-
-
-        if (
-          level === 3 ||
-          level === 5
-        ) {
-
-          setDirection(
-            randomDir()
-          );
-
-        }
-
+        if (lives <= 0) return endGame(false);
+        if (level === 3 || level === 5) setDirection(randomDir());
       }
 
+      function handleDirection(direction) {
+        if (!active || !dirs.includes(direction)) return;
 
-      /* ======================================================
-         HANDLE DIRECTION
-         ====================================================== */
+        const now = Date.now();
+        if (now - lastDirectionAt < 250) return;
+        lastDirectionAt = now;
 
-      function handleDirection(
-        direction
-      ) {
-
-        if (
-          !active ||
-          !dirs.includes(
-            direction
-          )
-        ) {
-
+        if (level === 4) {
+          if (direction === targetDirection) correct();
+          else wrong();
           return;
-
         }
 
-
-        const now =
-          Date.now();
-
-
-        if (
-          now -
-          lastDirectionAt <
-          250
-        ) {
-
-          return;
-
-        }
-
-
-        lastDirectionAt =
-          now;
-
-
-        /* LEVEL 4 */
-
-        if (
-          level === 4
-        ) {
-
-          if (
-            direction ===
-            targetDirection
-          ) {
-
+        if (level === 2) {
+          if (direction === targetDirection) {
             correct();
-
           } else {
-
-            wrong();
-
+            sequenceIndex = 0;
+            feedback('× SEQUENCE RESET', true);
+            setDirection(sequence[0]);
           }
-
-
           return;
-
         }
 
+        if (direction === targetDirection) correct();
+        else wrong();
+      }
 
-        /* LEVEL 2 */
+      /* ---------- Live telemetry ---------- */
+      function setSensorStatus(side, state, detail = '') {
+        const element = $(side === 'LEFT' ? 'leftSensorStatus' : 'rightSensorStatus');
+        if (!element) return;
 
-        if (
-          level === 2
-        ) {
+        element.classList.remove('connected');
 
-          if (
-            direction ===
-            targetDirection
-          ) {
-
-            correct();
-
-          } else {
-
-            sequenceIndex =
-              0;
-
-
-            feedback(
-              "× SEQUENCE RESET",
-              true
-            );
-
-
-            setDirection(
-              sequence[0]
-            );
-
-          }
-
-
-          return;
-
-        }
-
-
-        /* OTHER LEVELS */
-
-        if (
-          direction ===
-          targetDirection
-        ) {
-
-          correct();
-
+        if (state === 'connected') {
+          element.textContent = `${side} • CONNECTED`;
+          element.classList.add('connected');
+        } else if (state === 'connecting') {
+          element.textContent = `${side} • CONNECTING`;
+        } else if (state === 'error') {
+          element.textContent = `${side} • ${detail || 'ERROR'}`;
         } else {
-
-          wrong();
-
+          element.textContent = `${side} • WAITING`;
         }
-
       }
-
-
-      /* ======================================================
-         SENSOR STATUS
-         ====================================================== */
-
-      function setSensorStatus(
-        side,
-        state
-      ) {
-
-        const element =
-          $(
-            side === "LEFT"
-              ? "leftSensorStatus"
-              : "rightSensorStatus"
-          );
-
-
-        if (
-          !element
-        ) {
-
-          return;
-
-        }
-
-
-        element.classList.remove(
-          "connected"
-        );
-
-
-        if (
-          state ===
-          "connected"
-        ) {
-
-          element.textContent =
-            `${side} • CONNECTED`;
-
-
-          element.classList.add(
-            "connected"
-          );
-
-        }
-
-        else if (
-          state ===
-          "connecting"
-        ) {
-
-          element.textContent =
-            `${side} • CONNECTING`;
-
-        }
-
-        else {
-
-          element.textContent =
-            `${side} • WAITING`;
-
-        }
-
-      }
-
-
-      /* ======================================================
-         SENSOR SUMMARY
-         ====================================================== */
 
       function updateSensorSummary() {
+        const status = $('serialStatus');
 
-        const status =
-          $("serialStatus");
-
-
-        if (
-          sensorSeen.LEFT &&
-          sensorSeen.RIGHT
-        ) {
-
-          status.textContent =
-            "● LEFT + RIGHT SENSORS READY";
-
+        if (sensorSeen.LEFT && sensorSeen.RIGHT) {
+          status.textContent = '● LEFT + RIGHT SENSORS READY';
+        } else if (sensorSeen.LEFT) {
+          status.textContent = '● LEFT SENSOR READY — WAITING FOR RIGHT';
+        } else if (sensorSeen.RIGHT) {
+          status.textContent = '● RIGHT SENSOR READY — WAITING FOR LEFT';
+        } else {
+          status.textContent = '● WAITING FOR AUTHORIZED SENSORS';
         }
-
-        else if (
-          sensorSeen.LEFT
-        ) {
-
-          status.textContent =
-            "● LEFT SENSOR READY — WAITING FOR RIGHT";
-
-        }
-
-        else if (
-          sensorSeen.RIGHT
-        ) {
-
-          status.textContent =
-            "● RIGHT SENSOR READY — WAITING FOR LEFT";
-
-        }
-
-        else {
-
-          status.textContent =
-            "● WAITING FOR AUTHORIZED SENSORS";
-
-        }
-
       }
 
+      function identifySide(data) {
+        const side = String(
+          data?.side ?? data?.wrist ?? data?.sensorSide ?? ''
+        ).toUpperCase();
 
-      /* ======================================================
-         IDENTIFY LEFT / RIGHT SENSOR
-         ====================================================== */
-
-      function identifySide(
-        data
-      ) {
-
-        const side =
-          String(
-
-            data?.side
-
-            ??
-
-            data?.wrist
-
-            ??
-
-            data?.sensorSide
-
-            ??
-
-            ""
-
-          ).toUpperCase();
-
-
-        return (
-          side === "LEFT" ||
-          side === "RIGHT"
-        )
-
-          ? side
-
-          : null;
-
+        return side === 'LEFT' || side === 'RIGHT' ? side : null;
       }
 
+      function updateLiveWristPanel(data) {
+        const side = identifySide(data);
+        if (!side) return;
 
-      /* ======================================================
-         LIVE WRIST PANEL
-         ====================================================== */
+        const prefix = side === 'LEFT' ? 'left' : 'right';
+        const panel = $(`${prefix}WristLive`);
+        if (!panel) return;
 
-      function updateLiveWristPanel(
-        data
-      ) {
+        panel.classList.add('connected');
 
-        const side =
-          identifySide(
-            data
-          );
+        const setNumeric = (id, value, decimals = 1, suffix = '°') => {
+          const element = $(id);
+          if (!element) return;
+          const number = Number(value);
+          element.textContent = Number.isFinite(number)
+            ? `${number.toFixed(decimals)}${suffix}`
+            : '—';
+        };
 
+        setNumeric(`${prefix}LivePitch`, data.pitch);
+        setNumeric(`${prefix}LiveRoll`, data.roll);
+        setNumeric(`${prefix}LiveAngle`, data.angle);
+        setNumeric(`${prefix}LiveAngular`, data.angularVelocity, 2, ' °/s');
+        setNumeric(`${prefix}LiveAcceleration`, data.acceleration, 2, ' m/s²');
 
-        if (
-          !side
-        ) {
+        $(`${prefix}LiveDirection`).textContent =
+          String(data.direction || 'NEUTRAL').toUpperCase();
 
-          return;
-
-        }
-
-
-        const prefix =
-          side === "LEFT"
-            ? "left"
-            : "right";
-
-
-        const panel =
-          $(
-            `${prefix}WristLive`
-          );
-
-
-        if (
-          !panel
-        ) {
-
-          return;
-
-        }
-
-
-        panel.classList.add(
-          "connected"
-        );
-
-
-        const setNumeric =
-          (
-            id,
-            value,
-            decimals = 1,
-            suffix = "°"
-          ) => {
-
-            const element =
-              $(id);
-
-
-            if (
-              !element
-            ) {
-
-              return;
-
-            }
-
-
-            const number =
-              Number(value);
-
-
-            element.textContent =
-              Number.isFinite(
-                number
-              )
-
-                ? `${number.toFixed(
-                    decimals
-                  )}${suffix}`
-
-                : "—";
-
-          };
-
-
-        setNumeric(
-          `${prefix}LivePitch`,
-          data.pitch
-        );
-
-
-        setNumeric(
-          `${prefix}LiveRoll`,
-          data.roll
-        );
-
-
-        setNumeric(
-          `${prefix}LiveAngle`,
-          data.angle
-        );
-
-
-        setNumeric(
-          `${prefix}LiveAngular`,
-          data.angularVelocity,
-          2,
-          " °/s"
-        );
-
-
-        setNumeric(
-          `${prefix}LiveAcceleration`,
-          data.acceleration,
-          2,
-          " m/s²"
-        );
-
-
-        $(
-          `${prefix}LiveDirection`
-        ).textContent =
-          String(
-            data.direction ||
-            "NEUTRAL"
-          ).toUpperCase();
-
-
-        $(
-          `${prefix}LiveState`
-        ).textContent =
-          String(
-            data.state ||
-            "IDLE"
-          ).toUpperCase();
-
+        $(`${prefix}LiveState`).textContent =
+          String(data.state || 'IDLE').toUpperCase();
       }
 
+      function processSensorPacket(data) {
+        const side = identifySide(data);
+        if (!side) return;
 
-      /* ======================================================
-         PROCESS SENSOR PACKET
-         ====================================================== */
-
-      function processSensorPacket(
-        data
-      ) {
-
-        const side =
-          identifySide(
-            data
-          );
-
-
-        if (
-          !side
-        ) {
-
-          console.warn(
-            "REHABO-SG: sensor packet has no LEFT/RIGHT side field:",
-            data
-          );
-
-
-          return;
-
-        }
-
-
-        sensorSeen[side] =
-          true;
-
-
-        setSensorStatus(
-          side,
-          "connected"
-        );
-
-
-        updateLiveWristPanel(
-          data
-        );
-
-
+        sensorSeen[side] = true;
+        setSensorStatus(side, 'connected');
+        updateLiveWristPanel(data);
         updateSensorSummary();
 
-
-        const direction =
-          String(
-            data.direction ||
-            ""
-          ).toUpperCase();
-
-
-        if (
-          direction
-        ) {
-
-          handleDirection(
-            direction
-          );
-
-        }
-
+        const direction = String(data.direction || '').toUpperCase();
+        if (direction) handleDirection(direction);
       }
 
-
-      /* ======================================================
-         READ AN AUTHORIZED SERIAL PORT
-         ====================================================== */
-
-      async function readGrantedPort(
-        port
-      ) {
-
-        if (
-          !port
-        ) {
-
-          return;
-
-        }
-
+      async function readGrantedPort(port) {
+        if (!port) return;
 
         try {
-
-          if (
-            !port.readable
-          ) {
-
-            await port.open({
-              baudRate:
-                115200
-            });
-
+          if (!port.readable) {
+            await port.open({ baudRate: 115200 });
           }
-
-        } catch (
-          error
-        ) {
-
-          console.warn(
-            "REHABO-SG could not open authorized sensor port:",
-            error
-          );
-
-
+        } catch (error) {
+          console.warn('REHABO-SG could not open authorized port:', error);
           return;
-
         }
 
-
-        let buffer =
-          "";
-
-
-        const reader =
-          port
-            .readable
-            .getReader();
-
+        let buffer = '';
+        const reader = port.readable.getReader();
 
         try {
+          while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            if (!value) continue;
 
-          while (
-            true
-          ) {
+            buffer += new TextDecoder().decode(value, { stream: true });
+            const lines = buffer.split(/\r?\n/);
+            buffer = lines.pop() || '';
 
-            const {
-              value,
-              done
-            } =
-              await reader.read();
-
-
-            if (
-              done
-            ) {
-
-              break;
-
-            }
-
-
-            if (
-              !value
-            ) {
-
-              continue;
-
-            }
-
-
-            buffer +=
-              new TextDecoder()
-                .decode(
-                  value,
-                  {
-                    stream:
-                      true
-                  }
-                );
-
-
-            const lines =
-              buffer.split(
-                /\r?\n/
-              );
-
-
-            buffer =
-              lines.pop() ||
-              "";
-
-
-            for (
-              const line
-              of lines
-            ) {
-
-              const text =
-                line.trim();
-
-
-              if (
-                !text ||
-                !text.startsWith(
-                  "{"
-                )
-              ) {
-
-                continue;
-
-              }
-
+            for (const line of lines) {
+              const text = line.trim();
+              if (!text || !text.startsWith('{')) continue;
 
               try {
-
-                const data =
-                  JSON.parse(
-                    text
-                  );
-
-
-                processSensorPacket(
-                  data
-                );
-
+                processSensorPacket(JSON.parse(text));
               } catch (_) {
-
-                /* Ignore malformed JSON packets. */
-
+                // Ignore malformed JSON packets.
               }
-
             }
-
           }
-
-        } catch (
-          error
-        ) {
-
-          console.warn(
-            "REHABO-SG sensor stream ended:",
-            error
-          );
-
+        } catch (error) {
+          console.warn('REHABO-SG sensor stream ended:', error);
         } finally {
-
-          try {
-
-            reader.releaseLock();
-
-          } catch (_) {}
-
+          try { reader.releaseLock(); } catch (_) {}
         }
-
       }
-
-
-      /* ======================================================
-         AUTOMATIC SENSOR RECONNECT
-         ====================================================== */
 
       async function autoConnectAuthorizedSensors() {
+        if (autoConnectBusy) return;
+        autoConnectBusy = true;
 
-        if (
-          autoConnectBusy
-        ) {
-
+        if (!('serial' in navigator)) {
+          $('serialStatus').textContent = '● WEB SERIAL NOT SUPPORTED';
+          autoConnectBusy = false;
           return;
-
         }
 
-
-        autoConnectBusy =
-          true;
-
-
-        if (
-          !("serial" in navigator)
-        ) {
-
-          $(
-            "serialStatus"
-          ).textContent =
-            "● WEB SERIAL NOT SUPPORTED";
-
-
-          autoConnectBusy =
-            false;
-
-
+        if (!window.isSecureContext) {
+          $('serialStatus').textContent = '● SERIAL REQUIRES HTTPS OR LOCALHOST';
+          autoConnectBusy = false;
           return;
-
         }
 
-
-        if (
-          !window.isSecureContext
-        ) {
-
-          $(
-            "serialStatus"
-          ).textContent =
-            "● SERIAL REQUIRES HTTPS OR LOCALHOST";
-
-
-          autoConnectBusy =
-            false;
-
-
-          return;
-
-        }
-
-
-        setSensorStatus(
-          "LEFT",
-          "connecting"
-        );
-
-
-        setSensorStatus(
-          "RIGHT",
-          "connecting"
-        );
-
-
-        $(
-          "serialStatus"
-        ).textContent =
-          "● RESTORING AUTHORIZED SENSORS...";
-
+        setSensorStatus('LEFT', 'connecting');
+        setSensorStatus('RIGHT', 'connecting');
+        $('serialStatus').textContent = '● RESTORING AUTHORIZED SENSORS...';
 
         try {
+          const authorizedPorts = await navigator.serial.getPorts();
 
-          const authorizedPorts =
-            await navigator
-              .serial
-              .getPorts();
-
-
-          if (
-            !authorizedPorts.length
-          ) {
-
-            setSensorStatus(
-              "LEFT",
-              "waiting"
-            );
-
-
-            setSensorStatus(
-              "RIGHT",
-              "waiting"
-            );
-
-
-            $(
-              "serialStatus"
-            ).textContent =
-              "● NO AUTHORIZED SENSOR PORTS FOUND";
-
-
+          if (!authorizedPorts.length) {
+            setSensorStatus('LEFT', 'waiting');
+            setSensorStatus('RIGHT', 'waiting');
+            $('serialStatus').textContent = '● NO AUTHORIZED SENSOR PORTS FOUND';
             return;
-
           }
-
 
           console.log(
-            "REHABO-SG: found",
+            'REHABO-SG: found',
             authorizedPorts.length,
-            "authorized serial port(s)."
+            'authorized serial port(s).'
           );
 
-
-          for (
-            const port
-            of authorizedPorts
-          ) {
-
-            /*
-              Each authorized port is read independently.
-
-              The ESP32 JSON packet must contain:
-              side: "LEFT"
-              or
-              side: "RIGHT"
-            */
-
-            readGrantedPort(
-              port
-            );
-
+          for (const port of authorizedPorts) {
+            readGrantedPort(port);
           }
 
-
-          setTimeout(
-            updateSensorSummary,
-            700
-          );
-
-        } catch (
-          error
-        ) {
-
-          console.error(
-            "REHABO-SG automatic sensor restore failed:",
-            error
-          );
-
-
-          $(
-            "serialStatus"
-          ).textContent =
-            "● AUTOMATIC SENSOR RESTORE FAILED";
-
+          setTimeout(updateSensorSummary, 700);
+        } catch (error) {
+          console.error('REHABO-SG auto-connect failed:', error);
+          $('serialStatus').textContent = '● AUTOMATIC SENSOR RESTORE FAILED';
         } finally {
-
-          autoConnectBusy =
-            false;
-
+          autoConnectBusy = false;
         }
-
       }
 
+      /* ---------- Buttons ---------- */
+      $('reconnectSensors').addEventListener('click', () => {
+        sensorSeen.LEFT = false;
+        sensorSeen.RIGHT = false;
 
-      /* ======================================================
-         RECONNECT BUTTON
-         ====================================================== */
+        $('leftWristLive').classList.remove('connected');
+        $('rightWristLive').classList.remove('connected');
 
-      $(
-        "reconnectSensors"
-      ).addEventListener(
-        "click",
-        () => {
+        setSensorStatus('LEFT', 'waiting');
+        setSensorStatus('RIGHT', 'waiting');
 
-          sensorSeen.LEFT =
-            false;
+        autoConnectAuthorizedSensors();
+      });
 
-          sensorSeen.RIGHT =
-            false;
+      $('exitGame').addEventListener('click', () => {
+        active = false;
+        if (timer) clearInterval(timer);
+        window.location.href = 'system.html';
+      });
 
+      $('playAgain').addEventListener('click', start);
+      $('returnSystem').addEventListener('click', () => {
+        window.location.href = 'system.html';
+      });
 
-          $(
-            "leftWristLive"
-          )
-            .classList
-            .remove(
-              "connected"
-            );
+      window.addEventListener('keydown', event => {
+        const map = {
+          ArrowUp: 'UP',
+          ArrowDown: 'DOWN',
+          ArrowLeft: 'LEFT',
+          ArrowRight: 'RIGHT'
+        };
 
-
-          $(
-            "rightWristLive"
-          )
-            .classList
-            .remove(
-              "connected"
-            );
-
-
-          setSensorStatus(
-            "LEFT",
-            "waiting"
-          );
-
-
-          setSensorStatus(
-            "RIGHT",
-            "waiting"
-          );
-
-
-          autoConnectAuthorizedSensors();
-
+        if (map[event.key]) {
+          event.preventDefault();
+          handleDirection(map[event.key]);
         }
-      );
+      });
 
-
-      /* ======================================================
-         EXIT GAME
-         ====================================================== */
-
-      $(
-        "exitGame"
-      ).addEventListener(
-        "click",
-        () => {
-
-          active =
-            false;
-
-
-          if (
-            timer
-          ) {
-
-            clearInterval(
-              timer
-            );
-
-          }
-
-
-          window.location.href =
-            "system.html";
-
-        }
-      );
-
-
-      /* ======================================================
-         PLAY AGAIN
-         ====================================================== */
-
-      $(
-        "playAgain"
-      ).addEventListener(
-        "click",
-        start
-      );
-
-
-      /* ======================================================
-         RETURN TO SYSTEM
-         ====================================================== */
-
-      $(
-        "returnSystem"
-      ).addEventListener(
-        "click",
-        () => {
-
-          window.location.href =
-            "system.html";
-
-        }
-      );
-
-
-      /* ======================================================
-         KEYBOARD TEST CONTROLS
-         ====================================================== */
-
-      window.addEventListener(
-        "keydown",
-        event => {
-
-          const map = {
-
-            ArrowUp:
-              "UP",
-
-            ArrowDown:
-              "DOWN",
-
-            ArrowLeft:
-              "LEFT",
-
-            ArrowRight:
-              "RIGHT"
-
-          };
-
-
-          if (
-            map[event.key]
-          ) {
-
-            event.preventDefault();
-
-            handleDirection(
-              map[event.key]
-            );
-
-          }
-
-        }
-      );
-
-
-      /* ======================================================
-         INITIALIZE
-         ====================================================== */
-
+      /* ---------- Initialize ---------- */
       loadRecord();
-
       showGameInfo();
-
       start();
-
       autoConnectAuthorizedSensors();
-
     })();
   </script>
-
 </body>
 </html>
