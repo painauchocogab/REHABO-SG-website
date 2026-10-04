@@ -31,6 +31,7 @@
       min-height: 100vh;
       overflow: hidden;
       color: var(--white);
+      font-family: "Share Tech Mono", monospace;
       background:
         radial-gradient(
           circle at 50% 35%,
@@ -38,7 +39,6 @@
           transparent 42%
         ),
         #010914;
-      font-family: "Share Tech Mono", monospace;
     }
 
     button {
@@ -46,14 +46,14 @@
     }
 
     /* =========================================================
-       FULL-PAGE SHELL
+       MAIN SHELL
        ========================================================= */
 
     .game-shell {
       min-height: 100vh;
       display: grid;
       place-items: center;
-      padding: 24px;
+      padding: 22px;
       position: relative;
     }
 
@@ -62,7 +62,7 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      opacity: 0.34;
+      opacity: 0.3;
 
       background:
         linear-gradient(
@@ -85,27 +85,20 @@
         );
     }
 
-    .topbar {
-      display: none;
+    .game-area {
+      position: relative;
+      width: min(94vw, 1380px);
+      height: min(84vh, 760px);
+      aspect-ratio: 16 / 9;
     }
 
     /* =========================================================
-       INITIAL GAME AREA
+       GAME WORLD
        ========================================================= */
-
-    .game-area {
-      position: relative;
-
-      width: min(92vw, 1320px);
-      height: min(78vh, 720px);
-
-      aspect-ratio: 16 / 9;
-    }
 
     .game-world {
       --accent: var(--mint);
       --accent2: var(--cyan);
-      --warning: #ff9a9a;
 
       position: relative;
 
@@ -115,7 +108,8 @@
       overflow: hidden;
 
       border:
-        1px solid rgba(150, 240, 255, 0.62);
+        1px solid
+        rgba(150, 240, 255, 0.62);
 
       border-radius: 22px;
 
@@ -139,6 +133,7 @@
       inset: 0;
 
       z-index: 1;
+
       pointer-events: none;
 
       background:
@@ -158,67 +153,66 @@
       content: "";
 
       position: absolute;
+
       inset: 8px;
 
       z-index: 1;
+
       pointer-events: none;
 
       border:
-        1px solid rgba(220, 250, 255, 0.14);
+        1px solid
+        rgba(220, 250, 255, 0.14);
 
       border-radius: 16px;
 
       box-shadow:
-        inset 0 0 30px rgba(90, 220, 255, 0.06);
+        inset 0 0 30px
+        rgba(90, 220, 255, 0.06);
     }
 
     /* =========================================================
-       LEVEL THEMES
+       LEVEL COLORS + BACKGROUNDS
        ========================================================= */
 
     .level-1 {
       --accent: #63efc1;
       --accent2: #63dfff;
-      --warning: #ffce7a;
 
       background-image:
-        url("./Level1-background.png");
+        url("https://painauchocogab.github.io/REHABO-SG-website/Level1-background.png?v=final1");
     }
 
     .level-2 {
       --accent: #ffd36b;
       --accent2: #63dfff;
-      --warning: #ff9f7a;
 
       background-image:
-        url("./Level2-background.png");
+        url("https://painauchocogab.github.io/REHABO-SG-website/Level2-background.png?v=final1");
     }
 
     .level-3 {
       --accent: #76e8ff;
       --accent2: #b4f6ff;
-      --warning: #ffcf72;
 
       background-image:
-        url("./Level3-background.png");
+        url("https://painauchocogab.github.io/REHABO-SG-website/Level3-background.png?v=final1");
     }
 
     .level-4 {
       --accent: #ad8cff;
       --accent2: #67d9ff;
-      --warning: #ff8fcb;
 
       background-image:
-        url("./Level4-background.png");
+        url("https://painauchocogab.github.io/REHABO-SG-website/Level4-background.png?v=final1");
     }
 
     .level-5 {
       --accent: #ff75c8;
       --accent2: #ff5f86;
-      --warning: #ffcc7a;
 
       background-image:
-        url("./Level5-background.png");
+        url("https://painauchocogab.github.io/REHABO-SG-website/Level5-background.png?v=final1");
     }
 
     /* =========================================================
@@ -231,7 +225,6 @@
 
       z-index: 2;
 
-      overflow: hidden;
       pointer-events: none;
 
       mix-blend-mode: screen;
@@ -256,7 +249,10 @@
       opacity: 0.12;
 
       animation:
-        ambientBlink 3.8s ease-in-out infinite;
+        ambientBlink
+        3.8s
+        ease-in-out
+        infinite;
     }
 
     .ambient-lights i:nth-child(1) {
@@ -310,7 +306,7 @@
     @keyframes ambientBlink {
       0%,
       100% {
-        opacity: 0.10;
+        opacity: 0.1;
         transform: scale(0.7);
         filter: brightness(0.8);
       }
@@ -332,7 +328,7 @@
     }
 
     /* =========================================================
-       SHARED HUD PANEL
+       SHARED HUD
        ========================================================= */
 
     .hud-panel {
@@ -382,21 +378,190 @@
     }
 
     /* =========================================================
-       ORIGINAL GAME IDENTITY PANEL
+       TOP HEADER
+       ========================================================= */
+
+    .game-titlebar {
+      position: absolute;
+
+      left: 18px;
+      right: 18px;
+      top: 14px;
+
+      height: 52px;
+
+      z-index: 6;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 18px;
+
+      padding: 0 18px;
+
+      border:
+        1px solid
+        rgba(110, 220, 255, 0.34);
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(2, 17, 31, 0.82),
+          rgba(3, 29, 47, 0.56),
+          rgba(2, 17, 31, 0.82)
+        );
+
+      box-shadow:
+        0 0 22px
+        rgba(0, 190, 255, 0.06),
+
+        inset 0 0 16px
+        rgba(0, 190, 255, 0.035);
+
+      backdrop-filter:
+        blur(7px);
+    }
+
+    .game-titlebar::before,
+    .game-titlebar::after {
+      content: "";
+
+      position: absolute;
+
+      top: -1px;
+
+      width: 110px;
+      height: 2px;
+
+      background:
+        var(--accent2);
+
+      box-shadow:
+        0 0 10px
+        var(--accent2);
+    }
+
+    .game-titlebar::before {
+      left: 0;
+    }
+
+    .game-titlebar::after {
+      right: 0;
+    }
+
+    .titlebar-left,
+    .titlebar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      min-width: 0;
+    }
+
+    .titlebar-left {
+      font-family: Orbitron, sans-serif;
+
+      font-size: 10px;
+
+      letter-spacing: 0.11em;
+
+      color: #dff8ff;
+    }
+
+    .system-mark {
+      color: var(--accent2);
+
+      font-size: 13px;
+
+      letter-spacing: 0.12em;
+    }
+
+    .titlebar-divider {
+      color:
+        rgba(185, 242, 255, 0.42);
+    }
+
+    #gameTitlebarName {
+      color: #eaf8ff;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+    }
+
+    .titlebar-right {
+      flex-shrink: 0;
+
+      font-size: 7px;
+
+      letter-spacing: 0.12em;
+    }
+
+    .chip {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      min-height: 28px;
+
+      padding: 0 10px;
+
+      border:
+        1px solid
+        rgba(110, 220, 255, 0.22);
+
+      background:
+        rgba(2, 15, 30, 0.62);
+
+      color:
+        rgba(196, 236, 247, 0.58);
+    }
+
+    .chip b {
+      color: var(--accent);
+    }
+
+    .chip.avg b {
+      color: var(--accent2);
+    }
+
+    .chip.score b {
+      color: #fff;
+    }
+
+    .chip.items {
+      border-color:
+        rgba(99, 239, 193, 0.34);
+    }
+
+    .chip.items b {
+      color:
+        #63efc1;
+    }
+
+    /* =========================================================
+       GAME IDENTITY
        ========================================================= */
 
     .game-header {
       left: 26px;
-      top: 24px;
+      top: 82px;
 
-      width: 255px;
-      min-height: 135px;
+      width: 250px;
+      min-height: 114px;
 
-      padding: 18px 20px;
+      padding:
+        16px 18px;
     }
 
     .game-header::before {
-      content: "01 // SESSION";
+      content:
+        "01 // GAME";
 
       position: absolute;
 
@@ -407,11 +572,14 @@
         rgba(185, 242, 255, 0.48);
 
       font-size: 7px;
-      letter-spacing: 0.15em;
+
+      letter-spacing:
+        0.15em;
     }
 
     .eyebrow {
-      color: var(--accent);
+      color:
+        var(--accent);
 
       font-size: 9px;
 
@@ -459,25 +627,26 @@
     }
 
     /* =========================================================
-       ORIGINAL OBJECTIVE
+       OBJECTIVE
        ========================================================= */
 
     .objective {
       right: 26px;
-      top: 24px;
+      top: 82px;
 
-      width: 225px;
-      min-height: 128px;
+      width: 235px;
+      min-height: 114px;
 
       padding:
-        18px 19px;
+        16px 18px;
     }
 
     .objective::before {
       content:
-        "02 // MISSION";
+        "02 // OBJECTIVE";
 
-      display: block;
+      display:
+        block;
 
       margin-bottom:
         8px;
@@ -493,7 +662,8 @@
     }
 
     .objective b {
-      display: block;
+      display:
+        block;
 
       margin-bottom:
         8px;
@@ -520,21 +690,21 @@
     }
 
     /* =========================================================
-       WRIST LIVE CARDS
+       LEFT + RIGHT WRIST LIVE DASHBOARDS
        ========================================================= */
 
     .wrist-live-panel {
       position: absolute;
 
-      top: 182px;
+      top: 220px;
 
-      z-index: 5;
-
-      width: 230px;
-      min-height: 218px;
+      width: 248px;
+      min-height: 246px;
 
       padding:
         14px;
+
+      z-index: 5;
 
       border:
         1px solid
@@ -553,13 +723,16 @@
 
       box-shadow:
         0 10px 30px rgba(0, 0, 0, 0.25),
-        inset 0 0 22px rgba(0, 190, 255, 0.035),
+
+        inset 0 0 22px
+        rgba(0, 190, 255, 0.035),
+
         0 0 22px
-          color-mix(
-            in srgb,
-            var(--accent2) 8%,
-            transparent
-          );
+        color-mix(
+          in srgb,
+          var(--accent2) 8%,
+          transparent
+        );
 
       backdrop-filter:
         blur(9px);
@@ -578,20 +751,19 @@
     }
 
     .wrist-live-panel.left {
-      left:
-        26px;
+      left: 26px;
     }
 
     .wrist-live-panel.right {
-      right:
-        26px;
+      right: 26px;
     }
 
     .wrist-live-panel::before {
       content:
         "LIVE TELEMETRY";
 
-      display: block;
+      display:
+        block;
 
       margin-bottom:
         7px;
@@ -606,8 +778,32 @@
         0.16em;
     }
 
+    .wrist-live-panel::after {
+      content:
+        "LIVE";
+
+      position:
+        absolute;
+
+      right:
+        13px;
+
+      top:
+        12px;
+
+      color:
+        rgba(190, 242, 255, 0.34);
+
+      font-size:
+        7px;
+
+      letter-spacing:
+        0.12em;
+    }
+
     .wrist-live-header {
-      display: flex;
+      display:
+        flex;
 
       align-items:
         center;
@@ -616,7 +812,7 @@
         space-between;
 
       padding-bottom:
-        9px;
+        10px;
 
       margin-bottom:
         10px;
@@ -686,7 +882,6 @@
     }
 
     @keyframes telemetryPulse {
-
       0%,
       100% {
         transform:
@@ -703,7 +898,6 @@
         opacity:
           1;
       }
-
     }
 
     .wrist-live-grid {
@@ -714,7 +908,7 @@
         1fr 1fr;
 
       gap:
-        7px;
+        6px;
     }
 
     .wrist-live-metric {
@@ -722,7 +916,7 @@
         0;
 
       padding:
-        7px 8px 6px;
+        8px 9px 7px;
 
       border:
         1px solid
@@ -751,7 +945,7 @@
         6.5px;
 
       letter-spacing:
-        0.10em;
+        0.1em;
     }
 
     .wrist-live-value {
@@ -789,32 +983,265 @@
     }
 
     /* =========================================================
-       CENTER TARGET
+       LEVEL 1 COLLECTIBLE
        ========================================================= */
 
-    .target {
-      position: absolute;
+    .garden-item {
+      position:
+        absolute;
 
       left:
         50%;
 
       top:
-        49%;
+        50%;
 
       z-index:
-        6;
+        7;
 
       width:
-        108px;
+        132px;
 
-      height:
-        108px;
+      min-height:
+        132px;
 
       transform:
         translate(
           -50%,
           -50%
         );
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      gap:
+        4px;
+
+      padding:
+        8px;
+
+      pointer-events:
+        none;
+
+      border-radius:
+        22px;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(4, 35, 42, 0.34),
+          rgba(4, 18, 30, 0.08) 68%,
+          transparent 72%
+        );
+
+      filter:
+        drop-shadow(
+          0 0 14px
+          rgba(99, 239, 193, 0.18)
+        );
+
+      animation:
+        gardenFloat
+        2.6s
+        ease-in-out
+        infinite;
+    }
+
+    .garden-item[hidden] {
+      display:
+        none;
+    }
+
+    .garden-item-image {
+      display:
+        block;
+
+      width:
+        88px;
+
+      height:
+        88px;
+
+      object-fit:
+        contain;
+
+      user-select:
+        none;
+
+      -webkit-user-drag:
+        none;
+
+      filter:
+        drop-shadow(
+          0 0 7px
+          rgba(255, 255, 255, 0.48)
+        )
+        drop-shadow(
+          0 0 16px
+          rgba(99, 239, 193, 0.58)
+        );
+
+      animation:
+        gardenGlow
+        2.8s
+        ease-in-out
+        infinite;
+    }
+
+    .garden-item-name {
+      max-width:
+        118px;
+
+      text-align:
+        center;
+
+      color:
+        rgba(235, 253, 255, 0.82);
+
+      font-size:
+        7px;
+
+      letter-spacing:
+        0.12em;
+
+      text-transform:
+        uppercase;
+
+      text-shadow:
+        0 0 8px
+        rgba(0, 0, 0, 0.7);
+    }
+
+    .garden-item.collecting {
+      animation:
+        gardenCollect
+        0.5s
+        ease
+        forwards;
+    }
+
+    .garden-item.collecting
+    .garden-item-image {
+      animation:
+        none;
+    }
+
+    .garden-item.collecting
+    .garden-item-name {
+      opacity:
+        0;
+    }
+
+    .level-1 .target {
+      display:
+        none;
+    }
+
+    @keyframes gardenFloat {
+      0%,
+      100% {
+        transform:
+          translate(-50%, -50%)
+          translateY(0);
+      }
+
+      50% {
+        transform:
+          translate(-50%, -50%)
+          translateY(-8px);
+      }
+    }
+
+    @keyframes gardenGlow {
+      0%,
+      100% {
+        filter:
+          drop-shadow(
+            0 0 6px
+            rgba(255, 255, 255, 0.42)
+          )
+          drop-shadow(
+            0 0 12px
+            rgba(99, 239, 193, 0.4)
+          );
+      }
+
+      50% {
+        filter:
+          drop-shadow(
+            0 0 10px
+            rgba(255, 255, 255, 0.86)
+          )
+          drop-shadow(
+            0 0 23px
+            rgba(99, 239, 193, 0.92)
+          );
+      }
+    }
+
+    @keyframes gardenCollect {
+      0% {
+        opacity:
+          1;
+
+        transform:
+          translate(-50%, -50%)
+          scale(1);
+      }
+
+      55% {
+        opacity:
+          0.9;
+
+        transform:
+          translate(-50%, -50%)
+          scale(1.32);
+      }
+
+      100% {
+        opacity:
+          0;
+
+        transform:
+          translate(-50%, -50%)
+          scale(0.2);
+      }
+    }
+
+    /* =========================================================
+       NORMAL DIRECTION TARGET
+       ========================================================= */
+
+    .target {
+      position:
+        absolute;
+
+      left:
+        50%;
+
+      top:
+        50%;
+
+      z-index:
+        6;
+
+      width:
+        112px;
+
+      height:
+        112px;
+
+      transform:
+        translate(-50%, -50%);
 
       display:
         grid;
@@ -830,30 +1257,25 @@
         50%;
 
       background:
-        rgba(
-          4,
-          30,
-          42,
-          0.40
-        );
+        rgba(4, 30, 42, 0.4);
 
       box-shadow:
         0 0 18px
-          var(--accent),
+        var(--accent),
 
         0 0 46px
-          color-mix(
-            in srgb,
-            var(--accent) 38%,
-            transparent
-          ),
+        color-mix(
+          in srgb,
+          var(--accent) 38%,
+          transparent
+        ),
 
         inset 0 0 24px
-          color-mix(
-            in srgb,
-            var(--accent) 15%,
-            transparent
-          );
+        color-mix(
+          in srgb,
+          var(--accent) 15%,
+          transparent
+        );
 
       color:
         #fff;
@@ -915,7 +1337,6 @@
     }
 
     @keyframes targetRing {
-
       0%,
       100% {
         transform:
@@ -932,17 +1353,12 @@
         opacity:
           0.9;
       }
-
     }
 
     @keyframes targetHit {
-
       50% {
         transform:
-          translate(
-            -50%,
-            -50%
-          )
+          translate(-50%, -50%)
           scale(1.28);
 
         opacity:
@@ -951,20 +1367,16 @@
 
       100% {
         transform:
-          translate(
-            -50%,
-            -50%
-          )
+          translate(-50%, -50%)
           scale(1);
 
         opacity:
           1;
       }
-
     }
 
     /* =========================================================
-       MOTION INPUT PANEL
+       MOVEMENT INSTRUCTION
        ========================================================= */
 
     .direction-card {
@@ -972,16 +1384,16 @@
         50%;
 
       bottom:
-        84px;
+        78px;
 
       z-index:
-        7;
+        8;
 
       width:
-        255px;
+        270px;
 
       min-height:
-        90px;
+        88px;
 
       padding:
         12px 18px;
@@ -991,14 +1403,6 @@
 
       text-align:
         center;
-
-      border:
-        1px solid
-        color-mix(
-          in srgb,
-          var(--accent2) 70%,
-          transparent
-        );
     }
 
     .direction-card::before {
@@ -1051,7 +1455,7 @@
     }
 
     /* =========================================================
-       BOTTOM RAIL
+       BOTTOM STATUS
        ========================================================= */
 
     .bottom-rail {
@@ -1065,10 +1469,10 @@
         26px;
 
       bottom:
-        24px;
+        18px;
 
       z-index:
-        8;
+        9;
 
       display:
         flex;
@@ -1080,6 +1484,7 @@
         8px;
     }
 
+    .lives,
     .rail-tag,
     .sensor-chip,
     .reconnect,
@@ -1111,33 +1516,6 @@
         #eaf8ff;
     }
 
-    .rail-tag {
-      margin-right:
-        auto;
-
-      padding:
-        0 13px;
-
-      color:
-        rgba(185, 242, 255, 0.5);
-
-      font-size:
-        7px;
-
-      letter-spacing:
-        0.14em;
-
-      clip-path:
-        polygon(
-          0 8px,
-          8px 0,
-          100% 0,
-          100% calc(100% - 8px),
-          calc(100% - 8px) 100%,
-          0 100%
-        );
-    }
-
     .lives {
       min-width:
         105px;
@@ -1145,27 +1523,11 @@
       padding:
         0 13px;
 
-      min-height:
-        46px;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
       gap:
         8px;
 
-      border:
-        1px solid
+      border-color:
         rgba(255, 140, 140, 0.36);
-
-      background:
-        rgba(2, 15, 30, 0.84);
-
-      color:
-        #fff;
 
       font-size:
         10px;
@@ -1189,6 +1551,36 @@
     .lives b {
       font-size:
         15px;
+    }
+
+    .rail-tag {
+      margin-right:
+        auto;
+
+      min-width:
+        128px;
+
+      padding:
+        0 13px;
+
+      color:
+        rgba(185, 242, 255, 0.5);
+
+      font-size:
+        7px;
+
+      letter-spacing:
+        0.14em;
+
+      clip-path:
+        polygon(
+          0 8px,
+          8px 0,
+          100% 0,
+          100% calc(100% - 8px),
+          calc(100% - 8px) 100%,
+          0 100%
+        );
     }
 
     .sensor-chip,
@@ -1262,7 +1654,7 @@
         50%;
 
       z-index:
-        10;
+        12;
 
       transform:
         translate(
@@ -1321,7 +1713,6 @@
     }
 
     @keyframes feedback {
-
       0% {
         opacity:
           0;
@@ -1358,11 +1749,10 @@
           )
           scale(1.05);
       }
-
     }
 
     /* =========================================================
-       RESULT MODAL
+       RESULT SCREEN
        ========================================================= */
 
     .overlay {
@@ -1506,69 +1896,27 @@
        ========================================================= */
 
     @media (max-width: 1180px) {
-
       .game-area {
         width:
-          94vw;
+          95vw;
 
         height:
-          76vh;
-      }
-
-      .wrist-live-panel {
-        width:
-          200px;
-      }
-
-      .objective {
-        width:
-          205px;
+          78vh;
       }
 
       .game-header {
         width:
-          235px;
-      }
-
-      .game-titlebar {
-        left:
-          14px;
-
-        right:
-          14px;
-      }
-
-      .game-header {
-        left:
-          14px;
+          230px;
       }
 
       .objective {
-        right:
-          14px;
+        width:
+          210px;
       }
 
       .wrist-live-panel {
         width:
           220px;
-      }
-
-      .wrist-live-panel.left {
-        left:
-          14px;
-      }
-
-      .wrist-live-panel.right {
-        right:
-          14px;
-      }
-
-      .bottom-rail {
-        left:
-          14px;
-
-        right:
-          14px;
       }
     }
 
@@ -1596,24 +1944,17 @@
       }
 
       .game-titlebar {
-        height:
-          48px;
+        left:
+          12px;
 
-        padding:
-          0 10px;
-      }
-
-      .titlebar-right {
-        gap:
-          5px;
-      }
-
-      .avg-chip {
-        display:
-          none;
+        right:
+          12px;
       }
 
       .game-header {
+        left:
+          12px;
+
         top:
           72px;
 
@@ -1622,6 +1963,9 @@
       }
 
       .objective {
+        right:
+          12px;
+
         top:
           72px;
 
@@ -1643,12 +1987,31 @@
           185px;
       }
 
+      .wrist-live-panel.left {
+        left:
+          12px;
+      }
+
+      .wrist-live-panel.right {
+        right:
+          12px;
+      }
+
       .direction-card {
         bottom:
           66px;
+
+        width:
+          215px;
       }
 
       .bottom-rail {
+        left:
+          12px;
+
+        right:
+          12px;
+
         bottom:
           12px;
       }
@@ -1665,17 +2028,11 @@
         width:
           96vw;
 
-        height:
-          auto;
-
         aspect-ratio:
           4 / 3;
       }
 
       .game-titlebar {
-        position:
-          absolute;
-
         top:
           10px;
 
@@ -1687,15 +2044,27 @@
 
         height:
           44px;
+
+        padding:
+          0 10px;
       }
 
-      .titlebar-right .level-chip,
-      .titlebar-right .score-chip {
+      .titlebar-right {
+        gap:
+          4px;
+      }
+
+      .titlebar-right .avg {
+        display:
+          none;
+      }
+
+      .chip {
         min-height:
           24px;
 
         padding:
-          0 7px;
+          0 6px;
 
         font-size:
           6px;
@@ -1706,13 +2075,13 @@
           10px;
 
         top:
-          66px;
+          64px;
 
         width:
           170px;
 
         min-height:
-          98px;
+          96px;
 
         padding:
           11px;
@@ -1733,13 +2102,13 @@
           10px;
 
         top:
-          66px;
+          64px;
 
         width:
           160px;
 
         min-height:
-          98px;
+          96px;
 
         padding:
           11px;
@@ -1777,6 +2146,22 @@
       .wrist-live-value {
         font-size:
           7px;
+      }
+
+      .garden-item {
+        width:
+          96px;
+
+        min-height:
+          96px;
+      }
+
+      .garden-item-image {
+        width:
+          66px;
+
+        height:
+          66px;
       }
 
       .target {
@@ -1826,485 +2211,11 @@
           34px;
 
         padding:
-          0 8px;
+          0 7px;
 
         font-size:
           6px;
       }
-    }
-
-    /* =========================================================
-       OPTION 6 // MODULAR SCI-FI CONSOLE LAYOUT
-       ========================================================= */
-
-    .game-area {
-      width:
-        min(
-          94vw,
-          1380px
-        );
-
-      height:
-        min(
-          84vh,
-          760px
-        );
-
-      aspect-ratio:
-        16 / 9;
-    }
-
-    /* =========================================================
-       TOP GAME TITLE BAR
-       ========================================================= */
-
-    .game-titlebar {
-      position:
-        absolute;
-
-      left:
-        18px;
-
-      right:
-        18px;
-
-      top:
-        14px;
-
-      height:
-        52px;
-
-      z-index:
-        6;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        space-between;
-
-      gap:
-        18px;
-
-      padding:
-        0 18px;
-
-      border:
-        1px solid
-        rgba(
-          110,
-          220,
-          255,
-          0.34
-        );
-
-      background:
-        linear-gradient(
-          90deg,
-          rgba(2, 17, 31, 0.82),
-          rgba(3, 29, 47, 0.56),
-          rgba(2, 17, 31, 0.82)
-        );
-
-      box-shadow:
-        0 0 22px
-        rgba(
-          0,
-          190,
-          255,
-          0.06
-        ),
-
-        inset 0 0 16px
-        rgba(
-          0,
-          190,
-          255,
-          0.035
-        );
-
-      backdrop-filter:
-        blur(7px);
-    }
-
-    .game-titlebar::before,
-    .game-titlebar::after {
-      content:
-        "";
-
-      position:
-        absolute;
-
-      top:
-        -1px;
-
-      width:
-        110px;
-
-      height:
-        2px;
-
-      background:
-        var(--accent2);
-
-      box-shadow:
-        0 0 10px
-        var(--accent2);
-    }
-
-    .game-titlebar::before {
-      left:
-        0;
-    }
-
-    .game-titlebar::after {
-      right:
-        0;
-    }
-
-    .titlebar-left,
-    .titlebar-right {
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        10px;
-
-      min-width:
-        0;
-    }
-
-    .titlebar-left {
-      font-family:
-        Orbitron,
-        sans-serif;
-
-      font-size:
-        10px;
-
-      letter-spacing:
-        0.11em;
-
-      color:
-        #dff8ff;
-    }
-
-    .system-mark {
-      color:
-        var(--accent2);
-
-      font-size:
-        13px;
-
-      letter-spacing:
-        0.12em;
-    }
-
-    .titlebar-divider {
-      color:
-        rgba(
-          185,
-          242,
-          255,
-          0.42
-        );
-    }
-
-    #gameTitlebarName {
-      color:
-        #eaf8ff;
-
-      white-space:
-        nowrap;
-
-      overflow:
-        hidden;
-
-      text-overflow:
-        ellipsis;
-    }
-
-    .titlebar-right {
-      flex-shrink:
-        0;
-
-      font-size:
-        7px;
-
-      letter-spacing:
-        0.12em;
-    }
-
-    .level-chip,
-    .avg-chip,
-    .score-chip {
-      display:
-        inline-flex;
-
-      align-items:
-        center;
-
-      gap:
-        7px;
-
-      min-height:
-        28px;
-
-      padding:
-        0 10px;
-
-      border:
-        1px solid
-        rgba(
-          110,
-          220,
-          255,
-          0.22
-        );
-
-      background:
-        rgba(
-          2,
-          15,
-          30,
-          0.62
-        );
-
-      color:
-        rgba(
-          196,
-          236,
-          247,
-          0.58
-        );
-    }
-
-    .level-chip b {
-      color:
-        var(--accent);
-    }
-
-    .avg-chip b {
-      color:
-        var(--accent2);
-    }
-
-    .score-chip b {
-      color:
-        #fff;
-    }
-
-    /* =========================================================
-       GAME IDENTITY POSITION
-       ========================================================= */
-
-    .game-header {
-      left:
-        26px;
-
-      top:
-        82px;
-
-      width:
-        250px;
-
-      min-height:
-        114px;
-
-      padding:
-        16px 18px;
-
-      z-index:
-        5;
-    }
-
-    .game-header::before {
-      content:
-        "01 // GAME";
-    }
-
-    /* =========================================================
-       OBJECTIVE POSITION
-       ========================================================= */
-
-    .objective {
-      right:
-        26px;
-
-      top:
-        82px;
-
-      width:
-        235px;
-
-      min-height:
-        114px;
-
-      padding:
-        16px 18px;
-
-      z-index:
-        5;
-    }
-
-    .objective::before {
-      content:
-        "02 // OBJECTIVE";
-    }
-
-    /* =========================================================
-       WRIST LIVE TELEMETRY POSITION
-       ========================================================= */
-
-    .wrist-live-panel {
-      top:
-        220px;
-
-      width:
-        248px;
-
-      min-height:
-        246px;
-
-      padding:
-        14px;
-
-      z-index:
-        5;
-    }
-
-    .wrist-live-panel.left {
-      left:
-        26px;
-    }
-
-    .wrist-live-panel.right {
-      right:
-        26px;
-    }
-
-    .wrist-live-panel::after {
-      content:
-        "LIVE";
-
-      position:
-        absolute;
-
-      right:
-        13px;
-
-      top:
-        12px;
-
-      color:
-        rgba(
-          190,
-          242,
-          255,
-          0.34
-        );
-
-      font-size:
-        7px;
-
-      letter-spacing:
-        0.12em;
-    }
-
-    .wrist-live-header {
-      padding-bottom:
-        10px;
-    }
-
-    .wrist-live-grid {
-      gap:
-        6px;
-    }
-
-    .wrist-live-metric {
-      padding:
-        8px 9px 7px;
-    }
-
-    .wrist-live-value {
-      font-size:
-        10px;
-    }
-
-    /* =========================================================
-       CENTER TARGET POSITION
-       ========================================================= */
-
-    .target {
-      left:
-        50%;
-
-      top:
-        50%;
-
-      width:
-        112px;
-
-      height:
-        112px;
-
-      z-index:
-        7;
-    }
-
-    /* =========================================================
-       MOTION INPUT POSITION
-       ========================================================= */
-
-    .direction-card {
-      bottom:
-        78px;
-
-      width:
-        270px;
-
-      min-height:
-        88px;
-
-      z-index:
-        8;
-    }
-
-    /* =========================================================
-       BOTTOM RAIL POSITION
-       ========================================================= */
-
-    .bottom-rail {
-      left:
-        26px;
-
-      right:
-        26px;
-
-      bottom:
-        18px;
-
-      z-index:
-        9;
-    }
-
-    .rail-tag {
-      display:
-        flex;
-
-      min-width:
-        128px;
-    }
-
-    .feedback {
-      z-index:
-        12;
     }
   </style>
 </head>
@@ -2320,9 +2231,7 @@
         class="game-world level-1"
       >
 
-        <!-- ==================================================
-             AMBIENT LIGHTS
-             ================================================== -->
+        <!-- Ambient blinking lights -->
 
         <div
           class="ambient-lights"
@@ -2338,13 +2247,11 @@
           <i></i>
         </div>
 
-        <!-- ==================================================
-             TOP GAME TITLE BAR
-             ================================================== -->
+        <!-- Top game bar -->
 
         <div
           class="game-titlebar"
-          aria-label="Game status header"
+          aria-label="Game status"
         >
 
           <div class="titlebar-left">
@@ -2365,28 +2272,39 @@
 
           <div class="titlebar-right">
 
-            <span class="level-chip">
+            <span class="chip">
               LEVEL
               <b id="levelHud">—</b>
             </span>
 
-            <span class="avg-chip">
+            <span class="chip avg">
               BILATERAL AVG
               <b id="averageHud">—</b>
             </span>
 
-            <span class="score-chip">
+            <span
+              id="gardenProgressChip"
+              class="chip items"
+              hidden
+            >
+              ITEMS
+              <b id="gardenProgress">
+                0 / 10
+              </b>
+            </span>
+
+            <span class="chip score">
               SCORE
-              <b id="scoreHud">0</b>
+              <b id="scoreHud">
+                0
+              </b>
             </span>
 
           </div>
 
         </div>
 
-        <!-- ==================================================
-             GAME IDENTITY
-             ================================================== -->
+        <!-- Game identity -->
 
         <header
           class="game-header hud-panel"
@@ -2406,9 +2324,7 @@
 
         </header>
 
-        <!-- ==================================================
-             OBJECTIVE
-             ================================================== -->
+        <!-- Objective -->
 
         <section
           class="objective hud-panel"
@@ -2425,9 +2341,7 @@
 
         </section>
 
-        <!-- ==================================================
-             LEFT WRIST
-             ================================================== -->
+        <!-- LEFT WRIST -->
 
         <section
           id="leftWristLive"
@@ -2435,9 +2349,7 @@
           aria-label="Left wrist live readings"
         >
 
-          <div
-            class="wrist-live-header"
-          >
+          <div class="wrist-live-header">
 
             <span
               class="wrist-live-title left"
@@ -2452,9 +2364,7 @@
 
           </div>
 
-          <div
-            class="wrist-live-grid"
-          >
+          <div class="wrist-live-grid">
 
             <div class="wrist-live-metric">
               <span class="wrist-live-label">
@@ -2534,9 +2444,7 @@
               </span>
             </div>
 
-            <div
-              class="wrist-live-metric wide"
-            >
+            <div class="wrist-live-metric wide">
 
               <span class="wrist-live-label">
                 DIRECTION
@@ -2555,9 +2463,7 @@
 
         </section>
 
-        <!-- ==================================================
-             RIGHT WRIST
-             ================================================== -->
+        <!-- RIGHT WRIST -->
 
         <section
           id="rightWristLive"
@@ -2565,9 +2471,7 @@
           aria-label="Right wrist live readings"
         >
 
-          <div
-            class="wrist-live-header"
-          >
+          <div class="wrist-live-header">
 
             <span
               class="wrist-live-title right"
@@ -2582,9 +2486,7 @@
 
           </div>
 
-          <div
-            class="wrist-live-grid"
-          >
+          <div class="wrist-live-grid">
 
             <div class="wrist-live-metric">
               <span class="wrist-live-label">
@@ -2664,9 +2566,7 @@
               </span>
             </div>
 
-            <div
-              class="wrist-live-metric wide"
-            >
+            <div class="wrist-live-metric wide">
 
               <span class="wrist-live-label">
                 DIRECTION
@@ -2685,9 +2585,7 @@
 
         </section>
 
-        <!-- ==================================================
-             MOVEMENT TARGET
-             ================================================== -->
+        <!-- Normal directional target for Levels 2-5 -->
 
         <div
           id="target"
@@ -2696,9 +2594,32 @@
           ↑
         </div>
 
-        <!-- ==================================================
-             MOVEMENT REQUIREMENT
-             ================================================== -->
+        <!-- Level 1 collectible -->
+
+        <div
+          id="gardenItem"
+          class="garden-item"
+          hidden
+          aria-live="polite"
+        >
+
+          <img
+            id="gardenItemImage"
+            class="garden-item-image"
+            src=""
+            alt="Garden collectible"
+          >
+
+          <div
+            id="gardenItemName"
+            class="garden-item-name"
+          >
+            GARDEN ITEM
+          </div>
+
+        </div>
+
+        <!-- Movement instruction -->
 
         <div
           class="direction-card hud-panel"
@@ -2714,18 +2635,14 @@
 
         </div>
 
-        <!-- ==================================================
-             FEEDBACK
-             ================================================== -->
+        <!-- Feedback -->
 
         <div
           id="feedback"
           class="feedback"
         ></div>
 
-        <!-- ==================================================
-             BOTTOM STATUS RAIL
-             ================================================== -->
+        <!-- Bottom status rail -->
 
         <div class="bottom-rail">
 
@@ -2788,9 +2705,7 @@
 
   </div>
 
-  <!-- ========================================================
-       RESULT OVERLAY
-       ======================================================== -->
+  <!-- Result screen -->
 
   <div
     id="resultOverlay"
@@ -2816,11 +2731,9 @@
 
       <p class="big">
         FINAL SCORE:
-
         <span id="resultScore">
           0
         </span>
-
       </p>
 
       <button id="playAgain">
@@ -2837,10 +2750,6 @@
     </section>
 
   </div>
-
-  <!-- ========================================================
-       JAVASCRIPT
-       ======================================================== -->
 
   <script>
     (() => {
@@ -2920,7 +2829,6 @@
       ];
 
       const arrows = {
-
         UP:
           "↑",
 
@@ -2932,8 +2840,95 @@
 
         RIGHT:
           "→"
-
       };
+
+      /* ======================================================
+         LEVEL 1 COLLECTIBLES
+         ====================================================== */
+
+      const level1Items = [
+
+        {
+          file:
+            "Level1-Bow.png",
+
+          name:
+            "BOW"
+        },
+
+        {
+          file:
+            "Level1-Butterfly.png",
+
+          name:
+            "BUTTERFLY"
+        },
+
+        {
+          file:
+            "Level1-Candy.png",
+
+          name:
+            "CANDY"
+        },
+
+        {
+          file:
+            "Level1-Cherry.png",
+
+          name:
+            "CHERRY"
+        },
+
+        {
+          file:
+            "Level1-Donut.png",
+
+          name:
+            "DONUT"
+        },
+
+        {
+          file:
+            "Level1-Emerald.png",
+
+          name:
+            "EMERALD"
+        },
+
+        {
+          file:
+            "Level-Flower.png",
+
+          name:
+            "FLOWER"
+        },
+
+        {
+          file:
+            "Level1-Leaf.png",
+
+          name:
+            "LEAF"
+        },
+
+        {
+          file:
+            "Level1-Mochi.png",
+
+          name:
+            "MOCHI"
+        },
+
+        {
+          file:
+            "Level1-Star.png",
+
+          name:
+            "STAR"
+        }
+
+      ];
 
       /* ======================================================
          GAME STATE
@@ -2985,31 +2980,40 @@
         false;
 
       /* ======================================================
-         SERIAL PORT STATE
+         LEVEL 1 STATE
+         ====================================================== */
+
+      let gardenItemIndex =
+        0;
+
+      let gardenLastDirection =
+        "";
+
+      let gardenCollecting =
+        false;
+
+      /* ======================================================
+         SENSOR STATE
          ====================================================== */
 
       const ports = {
-
         LEFT:
           null,
 
         RIGHT:
           null
-
       };
 
       const sensorSeen = {
-
         LEFT:
           false,
 
         RIGHT:
           false
-
       };
 
       /* ======================================================
-         ELEMENT HELPER
+         DOM
          ====================================================== */
 
       const $ =
@@ -3096,19 +3100,15 @@
                   right
                 )
 
-                ? +(
-                    (
-                      left +
-                      right
-                    ) / 2
-                  ).toFixed(1)
+                  ? +(
+                      (
+                        left +
+                        right
+                      ) / 2
+                    ).toFixed(1)
 
-                : 0
+                  : 0
               );
-
-        /* ====================================================
-           LEVEL SELECTION
-           ==================================================== */
 
         if (
           average <= 20
@@ -3148,7 +3148,7 @@
       }
 
       /* ======================================================
-         LOAD BACKGROUND
+         BACKGROUND
          ====================================================== */
 
       function loadLevelBackground() {
@@ -3173,13 +3173,12 @@
         };
 
         const file =
-          backgrounds[level] ||
-          backgrounds[1];
+          backgrounds[level];
 
         const src =
           "https://painauchocogab.github.io/REHABO-SG-website/" +
           file +
-          "?v=20261004-option6";
+          "?v=final1";
 
         world.style.backgroundImage =
           `url("${src}")`;
@@ -3187,7 +3186,7 @@
       }
 
       /* ======================================================
-         SHOW GAME INFORMATION
+         DISPLAY GAME INFORMATION
          ====================================================== */
 
       function showGameInfo() {
@@ -3195,21 +3194,22 @@
         const game =
           games[level];
 
+        $("levelHud")
+          .textContent =
+          level;
+
+        $("averageHud")
+          .textContent =
+          average.toFixed(1) +
+          "°";
+
         $("gameName")
           .textContent =
           game.name;
 
-        const titlebarName =
-          $("gameTitlebarName");
-
-        if (
-          titlebarName
-        ) {
-
-          titlebarName.textContent =
-            game.name;
-
-        }
+        $("gameTitlebarName")
+          .textContent =
+          game.name;
 
         $("gameSubtitle")
           .textContent =
@@ -3219,21 +3219,65 @@
           .textContent =
           game.objective;
 
+        world.className =
+          "game-world level-" +
+          level;
+
+        $("gardenProgressChip")
+          .hidden =
+          level !== 1;
+
+        $("gardenItem")
+          .hidden =
+          level !== 1;
+
         $("livesText")
           .textContent =
           level <= 2
             ? "∞"
             : "3";
 
-        world.className =
-          `game-world level-${level}`;
-
         loadLevelBackground();
 
       }
 
       /* ======================================================
-         SET DIRECTION
+         RANDOM DIRECTION
+         ====================================================== */
+
+      function randomDir(
+        exclude = ""
+      ) {
+
+        let direction =
+          dirs[
+            Math.floor(
+              Math.random() *
+              dirs.length
+            )
+          ];
+
+        while (
+          direction === exclude &&
+          dirs.length > 1
+        ) {
+
+          direction =
+            dirs[
+              Math.floor(
+                Math.random() *
+                dirs.length
+              )
+            ];
+
+        }
+
+        return direction;
+
+      }
+
+      /* ======================================================
+         SET STANDARD DIRECTION
          ====================================================== */
 
       function setDirection(
@@ -3254,7 +3298,7 @@
           "hidden"
         );
 
-        const pos = {
+        const positions = {
 
           UP:
             [50, 28],
@@ -3271,25 +3315,12 @@
         };
 
         target.style.left =
-          `${pos[direction][0]}%`;
+          positions[direction][0] +
+          "%";
 
         target.style.top =
-          `${pos[direction][1]}%`;
-
-      }
-
-      /* ======================================================
-         RANDOM DIRECTION
-         ====================================================== */
-
-      function randomDir() {
-
-        return dirs[
-          Math.floor(
-            Math.random() *
-            dirs.length
-          )
-        ];
+          positions[direction][1] +
+          "%";
 
       }
 
@@ -3309,17 +3340,26 @@
           message;
 
         element.className =
-          `feedback ${bad ? "bad " : ""}show`;
+          `feedback ${
+            bad
+              ? "bad "
+              : ""
+          }show`;
 
-        setTimeout(
-          () => {
-
-            element.className =
-              "feedback";
-
-          },
-          650
+        clearTimeout(
+          feedback.timer
         );
+
+        feedback.timer =
+          setTimeout(
+            () => {
+
+              element.className =
+                "feedback";
+
+            },
+            650
+          );
 
       }
 
@@ -3363,6 +3403,206 @@
             ? value
 
             : "∞";
+
+      }
+
+      /* ======================================================
+         LEVEL 1 PROGRESS
+         ====================================================== */
+
+      function setGardenProgress() {
+
+        $("gardenProgress")
+          .textContent =
+          `${Math.min(
+            gardenItemIndex,
+            10
+          )} / 10`;
+
+      }
+
+      /* ======================================================
+         SHOW LEVEL 1 ITEM
+         ====================================================== */
+
+      function showGardenItem() {
+
+        if (
+          level !== 1
+        ) {
+
+          return;
+
+        }
+
+        const item =
+          level1Items[
+            gardenItemIndex
+          ];
+
+        if (
+          !item
+        ) {
+
+          return;
+
+        }
+
+        let direction =
+          randomDir(
+            gardenLastDirection
+          );
+
+        gardenLastDirection =
+          direction;
+
+        const positions = {
+
+          UP: {
+            left: 50,
+            top: 32
+          },
+
+          DOWN: {
+            left: 50,
+            top: 60
+          },
+
+          LEFT: {
+            left: 36,
+            top: 46
+          },
+
+          RIGHT: {
+            left: 64,
+            top: 46
+          }
+
+        };
+
+        const position =
+          positions[
+            direction
+          ];
+
+        const box =
+          $("gardenItem");
+
+        const image =
+          $("gardenItemImage");
+
+        const name =
+          $("gardenItemName");
+
+        box.style.left =
+          position.left +
+          "%";
+
+        box.style.top =
+          position.top +
+          "%";
+
+        image.src =
+          "https://painauchocogab.github.io/REHABO-SG-website/" +
+          encodeURIComponent(
+            item.file
+          ) +
+          "?v=final1";
+
+        image.alt =
+          "Garden collectible: " +
+          item.name;
+
+        name.textContent =
+          item.name;
+
+        box.classList.remove(
+          "collecting"
+        );
+
+        box.hidden =
+          false;
+
+        setGardenProgress();
+
+        setDirection(
+          direction
+        );
+
+      }
+
+      /* ======================================================
+         COLLECT LEVEL 1 ITEM
+         ====================================================== */
+
+      function collectGardenItem() {
+
+        if (
+          gardenCollecting
+        ) {
+
+          return;
+
+        }
+
+        gardenCollecting =
+          true;
+
+        setScore(
+          score + 1
+        );
+
+        gardenItemIndex++;
+
+        setGardenProgress();
+
+        feedback(
+          "✓ ITEM COLLECTED"
+        );
+
+        const box =
+          $("gardenItem");
+
+        box.classList.remove(
+          "collecting"
+        );
+
+        void box.offsetWidth;
+
+        box.classList.add(
+          "collecting"
+        );
+
+        setTimeout(
+          () => {
+
+            if (
+              gardenItemIndex >=
+              level1Items.length
+            ) {
+
+              box.hidden =
+                true;
+
+              gardenCollecting =
+                false;
+
+              endGame(
+                true
+              );
+
+              return;
+
+            }
+
+            gardenCollecting =
+              false;
+
+            showGardenItem();
+
+          },
+          500
+        );
 
       }
 
@@ -3428,6 +3668,19 @@
 
       function start() {
 
+        if (
+          timer
+        ) {
+
+          clearInterval(
+            timer
+          );
+
+          timer =
+            null;
+
+        }
+
         score =
           0;
 
@@ -3462,17 +3715,40 @@
             "hidden"
           );
 
+        const gardenItem =
+          $("gardenItem");
+
         if (
-          level === 1
+          gardenItem
         ) {
 
-          setDirection(
-            randomDir()
+          gardenItem.hidden =
+            level !== 1;
+
+          gardenItem.classList.remove(
+            "collecting"
           );
 
         }
 
         if (
+          level === 1
+        ) {
+
+          gardenItemIndex =
+            0;
+
+          gardenLastDirection =
+            "";
+
+          gardenCollecting =
+            false;
+
+          showGardenItem();
+
+        }
+
+        else if (
           level === 2
         ) {
 
@@ -3482,7 +3758,8 @@
                 length:
                   4
               },
-              randomDir
+              () =>
+                randomDir()
             );
 
           setDirection(
@@ -3491,9 +3768,7 @@
 
         }
 
-        if (
-          level === 3
-        ) {
+        else {
 
           setDirection(
             randomDir()
@@ -3504,36 +3779,6 @@
         if (
           level === 4
         ) {
-
-          setDirection(
-            randomDir()
-          );
-
-        }
-
-        if (
-          level === 5
-        ) {
-
-          setDirection(
-            randomDir()
-          );
-
-        }
-
-        if (
-          level === 4
-        ) {
-
-          if (
-            timer
-          ) {
-
-            clearInterval(
-              timer
-            );
-
-          }
 
           timer =
             setInterval(
@@ -3591,33 +3836,13 @@
           "✓ MOVEMENT DETECTED"
         );
 
-        /* LEVEL 1 */
-
         if (
           level === 1
         ) {
 
-          setScore(
-            score + 1
-          );
-
-          if (
-            score >= 10
-          ) {
-
-            return endGame(
-              true
-            );
-
-          }
-
-          setDirection(
-            randomDir()
-          );
+          collectGardenItem();
 
         }
-
-        /* LEVEL 2 */
 
         else if (
           level === 2
@@ -3625,18 +3850,13 @@
 
           sequenceIndex++;
 
-          setScore(
-            sequenceIndex
-          );
-
           if (
             sequenceIndex >=
             sequence.length
           ) {
 
-            setScore(
-              score + 10
-            );
+            score +=
+              10;
 
             sequenceIndex =
               0;
@@ -3647,7 +3867,8 @@
                   length:
                     4
                 },
-                randomDir
+                () =>
+                  randomDir()
               );
 
             feedback(
@@ -3656,6 +3877,10 @@
 
           }
 
+          setScore(
+            score + 1
+          );
+
           setDirection(
             sequence[
               sequenceIndex
@@ -3663,8 +3888,6 @@
           );
 
         }
-
-        /* LEVEL 3 */
 
         else if (
           level === 3
@@ -3677,12 +3900,15 @@
           );
 
           if (
-            checkpoints >= 15
+            checkpoints >=
+            15
           ) {
 
-            return endGame(
+            endGame(
               true
             );
+
+            return;
 
           }
 
@@ -3691,8 +3917,6 @@
           );
 
         }
-
-        /* LEVEL 4 */
 
         else if (
           level === 4
@@ -3707,8 +3931,6 @@
           );
 
         }
-
-        /* LEVEL 5 */
 
         else if (
           level === 5
@@ -3726,12 +3948,15 @@
           );
 
           if (
-            score >= 100
+            score >=
+            100
           ) {
 
-            return endGame(
+            endGame(
               true
             );
+
+            return;
 
           }
 
@@ -3781,9 +4006,11 @@
           lives <= 0
         ) {
 
-          return endGame(
+          endGame(
             false
           );
+
+          return;
 
         }
 
@@ -3801,7 +4028,7 @@
       }
 
       /* ======================================================
-         HANDLE DIRECTION
+         HANDLE MOVEMENT DIRECTION
          ====================================================== */
 
       function handleDirection(
@@ -3835,31 +4062,6 @@
         lastDirectionAt =
           now;
 
-        /* LEVEL 4 */
-
-        if (
-          level === 4
-        ) {
-
-          if (
-            direction ===
-            targetDirection
-          ) {
-
-            correct();
-
-          } else {
-
-            wrong();
-
-          }
-
-          return;
-
-        }
-
-        /* LEVEL 2 */
-
         if (
           level === 2
         ) {
@@ -3891,8 +4093,6 @@
 
         }
 
-        /* OTHER LEVELS */
-
         if (
           direction ===
           targetDirection
@@ -3914,8 +4114,7 @@
 
       function setSensorStatus(
         side,
-        state,
-        detail = ""
+        state
       ) {
 
         const element =
@@ -3958,19 +4157,6 @@
 
           element.textContent =
             `${side} • CONNECTING`;
-
-        }
-
-        else if (
-          state ===
-          "error"
-        ) {
-
-          element.textContent =
-            `${side} • ${
-              detail ||
-              "ERROR"
-            }`;
 
         }
 
@@ -4030,7 +4216,7 @@
       }
 
       /* ======================================================
-         IDENTIFY SENSOR SIDE
+         IDENTIFY WRIST SIDE
          ====================================================== */
 
       function identifySide(
@@ -4060,13 +4246,15 @@
           side === "LEFT" ||
           side === "RIGHT"
         )
+
           ? side
+
           : null;
 
       }
 
       /* ======================================================
-         UPDATE LIVE WRIST PANEL
+         UPDATE LEFT / RIGHT LIVE READINGS
          ====================================================== */
 
       function updateLiveWristPanel(
@@ -4108,43 +4296,43 @@
           "connected"
         );
 
-        const setNumeric = (
-          id,
-          value,
-          decimals = 1,
-          suffix = "°"
-        ) => {
+        const setNumeric =
+          (
+            id,
+            value,
+            decimals = 1,
+            suffix = "°"
+          ) => {
 
-          const element =
-            $(
-              id
-            );
+            const element =
+              $(id);
 
-          if (
-            !element
-          ) {
+            if (
+              !element
+            ) {
 
-            return;
+              return;
 
-          }
+            }
 
-          const number =
-            Number(
-              value
-            );
+            const number =
+              Number(
+                value
+              );
 
-          element.textContent =
-            Number.isFinite(
-              number
-            )
+            element.textContent =
+              Number.isFinite(
+                number
+              )
 
-              ? `${number.toFixed(
-                  decimals
-                )}${suffix}`
+                ? number.toFixed(
+                    decimals
+                  ) +
+                  suffix
 
-              : "—";
+                : "—";
 
-        };
+          };
 
         setNumeric(
           `${prefix}LivePitch`,
@@ -4210,11 +4398,6 @@
           !side
         ) {
 
-          console.warn(
-            "REHABO-SG: sensor packet has no LEFT/RIGHT side field:",
-            data
-          );
-
           return;
 
         }
@@ -4273,10 +4456,12 @@
             !port.readable
           ) {
 
-            await port.open({
-              baudRate:
-                115200
-            });
+            await port.open(
+              {
+                baudRate:
+                  115200
+              }
+            );
 
           }
 
@@ -4377,7 +4562,7 @@
 
               } catch (_) {
 
-                /* Ignore malformed JSON packets. */
+                /* Ignore malformed packets. */
 
               }
 
@@ -4407,7 +4592,7 @@
       }
 
       /* ======================================================
-         AUTOMATIC AUTHORIZED SENSOR CONNECTION
+         AUTOMATIC SENSOR RESTORE
          ====================================================== */
 
       async function autoConnectAuthorizedSensors() {
@@ -4424,7 +4609,11 @@
           true;
 
         if (
-          !("serial" in navigator)
+          !(
+            "serial"
+            in
+            navigator
+          )
         ) {
 
           $("serialStatus")
@@ -4507,15 +4696,6 @@
             of authorizedPorts
           ) {
 
-            /*
-              Each authorized port is read independently.
-
-              Your ESP32 sensor packet should include:
-              side: "LEFT"
-              or
-              side: "RIGHT"
-            */
-
             readGrantedPort(
               port
             );
@@ -4532,7 +4712,7 @@
         ) {
 
           console.error(
-            "REHABO-SG automatic sensor restore failed:",
+            "REHABO-SG auto-connect failed:",
             error
           );
 
@@ -4550,99 +4730,107 @@
       }
 
       /* ======================================================
-         RECONNECT BUTTON
+         RECONNECT
          ====================================================== */
 
-      $("reconnectSensors")
-        .addEventListener(
-          "click",
-          () => {
+      $(
+        "reconnectSensors"
+      ).addEventListener(
+        "click",
+        () => {
 
-            sensorSeen.LEFT =
-              false;
+          sensorSeen.LEFT =
+            false;
 
-            sensorSeen.RIGHT =
-              false;
+          sensorSeen.RIGHT =
+            false;
 
-            $("leftWristLive")
-              .classList
-              .remove(
-                "connected"
-              );
-
-            $("rightWristLive")
-              .classList
-              .remove(
-                "connected"
-              );
-
-            setSensorStatus(
-              "LEFT",
-              "waiting"
+          $(
+            "leftWristLive"
+          )
+            .classList
+            .remove(
+              "connected"
             );
 
-            setSensorStatus(
-              "RIGHT",
-              "waiting"
+          $(
+            "rightWristLive"
+          )
+            .classList
+            .remove(
+              "connected"
             );
 
-            autoConnectAuthorizedSensors();
+          setSensorStatus(
+            "LEFT",
+            "waiting"
+          );
 
-          }
-        );
+          setSensorStatus(
+            "RIGHT",
+            "waiting"
+          );
+
+          autoConnectAuthorizedSensors();
+
+        }
+      );
 
       /* ======================================================
-         EXIT
+         EXIT GAME
          ====================================================== */
 
-      $("exitGame")
-        .addEventListener(
-          "click",
-          () => {
+      $(
+        "exitGame"
+      ).addEventListener(
+        "click",
+        () => {
 
-            active =
-              false;
+          active =
+            false;
 
-            if (
+          if (
+            timer
+          ) {
+
+            clearInterval(
               timer
-            ) {
-
-              clearInterval(
-                timer
-              );
-
-            }
-
-            window.location.href =
-              "system.html";
+            );
 
           }
-        );
+
+          window.location.href =
+            "system.html";
+
+        }
+      );
 
       /* ======================================================
          PLAY AGAIN
          ====================================================== */
 
-      $("playAgain")
-        .addEventListener(
-          "click",
-          start
-        );
+      $(
+        "playAgain"
+      ).addEventListener(
+        "click",
+        start
+      );
 
       /* ======================================================
          RETURN TO SYSTEM
          ====================================================== */
 
-      $("returnSystem")
-        .addEventListener(
-          "click",
-          () => {
+      $(
+        "returnSystem"
+      ).addEventListener(
+        "click",
+        () => {
 
-            window.location.href =
-              "system.html";
+          window.location.href =
+            "system.html";
 
-          }
-        );
+        }
+      );
 
       /* ======================================================
          KEYBOARD TEST CONTROLS
