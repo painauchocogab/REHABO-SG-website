@@ -2594,6 +2594,106 @@
 .calibration-safety-note{margin:1rem 0 0;color:#7899ad;font-size:.68rem;line-height:1.5;}
 @media(max-width:600px){.calibration-two-wrist-grid,.calibration-result-grid{grid-template-columns:1fr;}}
 </style>
+
+<style>
+/* =========================================================
+   FUTURISTIC DUAL-HAND WRIST VISUALIZATION
+   Replaces the old calibration grid, axes, frame and circle.
+   ========================================================= */
+.hand-visual-stage {
+    position: relative;
+    min-height: 535px;
+    margin: 0;
+    overflow: hidden;
+    border: none !important;
+    background: radial-gradient(ellipse at 50% 42%, rgba(0, 125, 205, 0.12), transparent 52%), #04152b !important;
+    box-shadow: none !important;
+}
+
+.hand-visual-stage::before,
+.hand-visual-stage::after {
+    display: none !important;
+    content: none !important;
+}
+
+.hand-visual-stage .calibration-axis,
+.hand-visual-stage .calibration-center {
+    display: none !important;
+}
+
+.wrist-hands-visual {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem 4.5rem;
+}
+
+.wrist-hand {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wrist-hand img {
+    display: block;
+    width: min(100%, 390px);
+    height: auto;
+    max-height: 470px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 18px rgba(66, 202, 255, 0.16));
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.hand-label {
+    position: absolute;
+    top: 0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #62d7ff;
+    font-family: "Orbitron", sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-shadow: 0 0 12px rgba(66, 202, 255, 0.7);
+    white-space: nowrap;
+}
+
+.stage-instruction {
+    z-index: 6;
+    border: none !important;
+    background: rgba(2, 15, 33, 0.72) !important;
+    box-shadow: none !important;
+    backdrop-filter: blur(2px);
+}
+
+@media (max-width: 700px) {
+    .hand-visual-stage {
+        min-height: 430px;
+    }
+
+    .wrist-hands-visual {
+        gap: 0;
+        padding-inline: 0.25rem;
+    }
+
+    .wrist-hand img {
+        max-height: 360px;
+    }
+
+    .hand-label {
+        font-size: 0.58rem;
+    }
+}
+</style>
+
 </head>
 <body>
     <a href="index.html" aria-label="Return to REHABO-SG home">
@@ -2671,7 +2771,23 @@
         <section class="exercise-panel" aria-labelledby="exercise-title">
             <h3 class="exercise-title" id="exercise-title">WRIST REHABILITATION</h3>
 
-            <div class="exercise-stage" aria-label="Wrist calibration area">
+            <div class="exercise-stage hand-visual-stage" aria-label="Left and right wrist visualization">
+                <div class="wrist-hands-visual" aria-hidden="true">
+                    <div class="wrist-hand left-hand">
+                        <img src="handleft.png" alt="Left futuristic wrist visualization">
+                        <span class="hand-label">LEFT WRIST</span>
+                    </div>
+                    <div class="wrist-hand right-hand">
+                        <img src="handright.png" alt="Right futuristic wrist visualization">
+                        <span class="hand-label">RIGHT WRIST</span>
+                    </div>
+                </div>
+
+                <p class="stage-instruction" id="exercise-instruction">
+                    Place your wrists in a comfortable neutral position to begin calibration.
+                </p>
+
+                <!-- Retained for existing JavaScript compatibility; hidden from the visual interface. -->
                 <div class="calibration-axis" aria-hidden="true">
                     <span class="up">UP</span>
                     <span class="down">DOWN</span>
@@ -2681,12 +2797,6 @@
                     <span class="axis-line-v"></span>
                 </div>
                 <div class="calibration-center" aria-hidden="true"></div>
-
-                <p class="stage-instruction" id="exercise-instruction">
-                    Place your wrist in a comfortable neutral position to begin calibration.
-                </p>
-
-                <!-- Retained for existing JavaScript compatibility; hidden by the new UI. -->
                 <button class="target-button" type="button"
                         aria-label="Rehabilitation target" disabled></button>
                 <div id="game-cursor" aria-hidden="true"></div>
@@ -2813,7 +2923,45 @@
             </div>
         </aside>
 
-        <!-- Calibration footer dashboards removed -->
+        <div class="calibration-footer">
+            <section class="info-card">
+                <h4>CALIBRATION STATUS</h4>
+                <p><strong id="calibration-step">READY</strong> — WAITING TO BEGIN</p>
+                <p class="progress-dots" aria-label="Calibration progress">
+                    <i class="active"></i><i></i><i></i><i></i><i></i>
+                </p>
+            </section>
+
+            <section class="info-card">
+                <h4>CALIBRATION RESULTS // COMFORTABLE PEAK</h4>
+                <div class="result-grid">
+                    <div class="result-item"><span>↑ UP</span><strong id="result-up">—</strong></div>
+                    <div class="result-item"><span>↓ DOWN</span><strong id="result-down">—</strong></div>
+                    <div class="result-item"><span>← LEFT</span><strong id="result-left">—</strong></div>
+                    <div class="result-item"><span>→ RIGHT</span><strong id="result-right">—</strong></div>
+                </div>
+            </section>
+
+            <section class="info-card game-targets">
+                <h4>GAME TARGETS // 80%</h4>
+                <div class="result-grid">
+                    <div class="result-item"><span>↑ UP</span><strong id="target-up">—</strong></div>
+                    <div class="result-item"><span>↓ DOWN</span><strong id="target-down">—</strong></div>
+                    <div class="result-item"><span>← LEFT</span><strong id="target-left">—</strong></div>
+                    <div class="result-item"><span>→ RIGHT</span><strong id="target-right">—</strong></div>
+                </div>
+            </section>
+
+            <div class="calibration-controls">
+                <span class="calibration-progress-text">
+                    CALIBRATION <span id="calibration-progress">READY</span>
+                    <span class="progress-dots" aria-hidden="true">
+                        <i class="active"></i><i></i><i></i><i></i><i></i>
+                    </span>
+                </span>
+                <button class="calibration-action" id="begin-calibration" type="button" disabled hidden>▶ BEGIN CALIBRATION</button>
+            </div>
+        </div>
     </div>
 </section>
 <section class="balance-workspace" id="balance-workspace" aria-labelledby="balance-title" hidden>
