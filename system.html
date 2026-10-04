@@ -1956,6 +1956,65 @@
     line-height: 1.4;
 }
 
+
+/* Calibration baseline average dashboard */
+.calibration-average-panel {
+    margin-top: 0.8rem;
+    border: 1px solid rgba(63, 190, 255, 0.42);
+    background: rgba(4, 21, 42, 0.82);
+    padding: 0.85rem;
+}
+
+.calibration-average-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.calibration-average-card {
+    min-height: 92px;
+    padding: 0.75rem;
+    border: 1px solid rgba(63, 190, 255, 0.30);
+    background: rgba(3, 17, 37, 0.86);
+}
+
+.calibration-average-card span {
+    display: block;
+    color: #83b7d0;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+}
+
+.calibration-average-card strong {
+    display: block;
+    margin-top: 0.35rem;
+    color: #69d8ff;
+    font-family: "Orbitron", sans-serif;
+    font-size: 1.25rem;
+}
+
+.calibration-average-card small {
+    display: block;
+    margin-top: 0.25rem;
+    color: #63efc1;
+    font-size: 0.56rem;
+    letter-spacing: 0.04em;
+}
+
+.calibration-average-note {
+    margin: 0.65rem 0 0;
+    color: #6f9ab3;
+    font-size: 0.60rem;
+    line-height: 1.45;
+    letter-spacing: 0.03em;
+}
+
+@media (max-width: 520px) {
+    .calibration-average-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .peak-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -2658,6 +2717,23 @@
                     </div>
                     <button class="manual-calibration-button" id="manual-calibrate-button" type="button">▶ START CALIBRATION</button>
                     <p class="manual-calibration-note" id="manual-calibration-note">CLICK START CALIBRATION TO BEGIN. CONNECTED SENSORS WILL BE MEASURED.</p>
+
+                    <section class="calibration-average-panel" aria-labelledby="calibration-average-title">
+                        <h4 class="subpanel-title" id="calibration-average-title">AVERAGE ANGLE // CALIBRATION BASELINE</h4>
+                        <div class="calibration-average-grid">
+                            <div class="calibration-average-card">
+                                <span>LEFT WRIST</span>
+                                <strong id="baseline-average-left">—</strong>
+                                <small id="baseline-average-left-status">PENDING</small>
+                            </div>
+                            <div class="calibration-average-card">
+                                <span>RIGHT WRIST</span>
+                                <strong id="baseline-average-right">—</strong>
+                                <small id="baseline-average-right-status">PENDING</small>
+                            </div>
+                        </div>
+                        <p class="calibration-average-note">AVERAGE OF THE 4 CALIBRATED DIRECTIONS (UP, DOWN, LEFT, RIGHT). THIS VALUE SERVES AS THE WRIST-SPECIFIC BASELINE FOR ACCUMULATED GAME PERFORMANCE DATA.</p>
+                    </section>
                 </section>
             </div>
 
@@ -4112,6 +4188,7 @@ requestAnimationFrame(cursorAnimationLoop);
     let latest = { LEFT: null, RIGHT: null };
 
     window.__rehaboCalibrationResults = peaks;
+    window.__rehaboCalibrationBaseline = { LEFT: null, RIGHT: null };
 
     function setText(id, value) {
         const el = document.getElementById(id);
@@ -4397,6 +4474,25 @@ requestAnimationFrame(cursorAnimationLoop);
         }
     }
 
+    function calculateCalibrationBaselineAverage(side) {
+        const values = directions
+            .map(direction => Number(peaks[side][direction.key]))
+            .filter(Number.isFinite);
+
+        if (values.length !== directions.length) return null;
+        return +(values.reduce((sum, value) => sum + value, 0) / values.length).toFixed(1);
+    }
+
+    function updateCalibrationBaselineDashboard(averages) {
+        for (const side of ["LEFT", "RIGHT"]) {
+            const average = averages[side];
+            const valueId = side === "LEFT" ? "baseline-average-left" : "baseline-average-right";
+            const statusId = side === "LEFT" ? "baseline-average-left-status" : "baseline-average-right-status";
+            setText(valueId, Number.isFinite(average) ? average.toFixed(1) + "°" : "—");
+            setText(statusId, Number.isFinite(average) ? "BASELINE RECORDED" : "PENDING");
+        }
+    }
+
     function finishCalibration() {
         stopTimers();
         running = false;
@@ -4408,7 +4504,14 @@ requestAnimationFrame(cursorAnimationLoop);
         directionIcon.textContent = "✓";
         title.textContent = "CALIBRATION COMPLETE";
         kicker.textContent = "PERSONALIZED WRIST PROFILE SAVED";
-        message.textContent = "Both wrists have been calibrated using their highest comfortable movement. Game targets are set to 80% of each comfortable peak.";
+        const baselineAverage = {
+            LEFT: calculateCalibrationBaselineAverage("LEFT"),
+            RIGHT: calculateCalibrationBaselineAverage("RIGHT")
+        };
+        updateCalibrationBaselineDashboard(baselineAverage);
+        window.__rehaboCalibrationBaseline = baselineAverage;
+
+        message.textContent = "Both wrists have been calibrated. The average of the four directional peaks is now saved as each wrist's calibration baseline.";
         countdownEl.textContent = "✓";
         resultMessage.textContent = "Calibration complete. You may now continue to the rehabilitation exercise.";
 
@@ -4417,11 +4520,8 @@ requestAnimationFrame(cursorAnimationLoop);
             neutral: JSON.parse(JSON.stringify(neutral)),
             orientationSign: JSON.parse(JSON.stringify(orientationSign)),
             comfortablePeaks: JSON.parse(JSON.stringify(peaks)),
-            targets80: { LEFT: {}, RIGHT: {} }
+            calibrationBaselineAverage: baselineAverage
         };
-        for (const side of ["LEFT","RIGHT"]) {
-            for (const d of directions) record.targets80[side][d.key] = +(peaks[side][d.key] * TARGET_RATIO).toFixed(1);
-        }
         window.__rehaboCalibrationRecord = record;
 
         // Ensure every final value is written to the permanent BOTH-WRISTS table.
