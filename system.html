@@ -1910,7 +1910,6 @@
     min-width: 0;
 }
 
-.current-movement-card,
 .peak-card-panel {
     border: 1px solid rgba(63, 190, 255, 0.35);
     background: rgba(4, 21, 42, 0.76);
@@ -1922,34 +1921,6 @@
     color: #69d8ff;
     font-size: 0.73rem;
     letter-spacing: 0.10em;
-}
-
-.axis-readout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.65rem;
-}
-
-.axis-value {
-    padding: 0.75rem;
-    border: 1px solid rgba(63, 190, 255, 0.26);
-    background: rgba(3, 17, 37, 0.85);
-}
-
-.axis-value span {
-    display: block;
-    color: #88b8cf;
-    font-size: 0.65rem;
-    letter-spacing: 0.07em;
-}
-
-.axis-value strong {
-    display: block;
-    margin-top: 0.35rem;
-    color: #42caff;
-    font-family: "Orbitron", sans-serif;
-    font-size: 1.25rem;
-    font-weight: 500;
 }
 
 .manual-calibration-button {
@@ -2423,7 +2394,6 @@
 
     .peak-grid,
     .result-grid,
-    .axis-readout,
     .wrist-readout {
         grid-template-columns: 1fr 1fr;
     }
@@ -2664,20 +2634,6 @@
             </div>
 
             <div class="calibration-side-panel">
-                <section class="current-movement-card">
-                    <h4 class="subpanel-title">CURRENT MOVEMENT</h4>
-                    <div class="axis-readout">
-                        <div class="axis-value">
-                            <span>PITCH (UP / DOWN)</span>
-                            <strong id="calibration-pitch">0.0°</strong>
-                        </div>
-                        <div class="axis-value">
-                            <span>ROLL (LEFT / RIGHT)</span>
-                            <strong id="calibration-roll">0.0°</strong>
-                        </div>
-                    </div>
-                </section>
-
                 <section class="peak-card-panel two-wrist-peak-panel">
                     <h4 class="subpanel-title">COMFORTABLE PEAK ANGLES // BOTH WRISTS</h4>
                     <div class="two-wrist-results">
