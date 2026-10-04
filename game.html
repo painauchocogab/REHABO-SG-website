@@ -2811,314 +2811,300 @@
       }
     }
 
+
     /* =========================================================
-       FINAL LEVEL 2 DASHBOARD POLISH
-       Clean internal alignment based on the supplied
-       Level2-Dashboard.png reference.
+       LEVEL 2 FINAL DASHBOARD ALIGNMENT
+       The supplied Level2-Dashboard.png is the visual frame.
+       HTML supplies only the live/dynamic content inside it.
        ========================================================= */
 
-    /* Keep the supplied dashboard artwork centered and at a stable size. */
-    .level-2 #level2Dashboard {
+    .level-2 .level2-dashboard {
       left: 50%;
-      top: 132px;
-      width: min(47vw, 640px);
+      top: 145px;
+      width: min(45vw, 610px);
       aspect-ratio: 1663 / 1150;
       transform: translateX(-50%);
       z-index: 7;
+      pointer-events: none;
+      background:
+        url("https://painauchocogab.github.io/REHABO-SG-website/Level2-Dashboard.png?v=final3")
+        center / 100% 100%
+        no-repeat;
+      filter:
+        drop-shadow(0 16px 26px rgba(0, 0, 0, 0.32))
+        drop-shadow(0 0 14px rgba(255, 193, 72, 0.10));
     }
 
-    /* Level 2 must never show the Level 1 ITEMS chip. */
-    .level-2 #gardenProgressChip {
-      display: none !important;
-    }
-
-    .level-2 #treasureProgressChip {
-      display: inline-flex !important;
-    }
-
-    /* No floating directional target on Level 2. */
-    .level-2 #target {
-      display: none !important;
-    }
-
-    /* ---------------------------------------------------------
-       TOP: TREASURE PATH
-       --------------------------------------------------------- */
-
-    .level-2 #sequencePanel {
+    /* The PNG already contains the gold sequence boxes.
+       These elements are transparent overlays only. */
+    .level-2 .sequence-panel {
+      position: absolute;
       left: 50%;
-      top: 16.5%;
-      width: 73%;
-      height: 31%;
+      top: 18.5%;
+      width: 70%;
+      height: 29%;
       min-height: 0;
-      padding: 8px 10px 7px;
+      padding: 0;
       transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
       border: 0;
       border-radius: 0;
       background: transparent;
       box-shadow: none;
       backdrop-filter: none;
       clip-path: none;
-      overflow: visible;
+      z-index: 10;
+      pointer-events: none;
     }
 
     .level-2 .sequence-heading {
+      flex: 0 0 auto;
       width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      margin: 0 0 8px;
-      padding: 0;
+      margin: 0 0 7px;
+      padding: 0 2px;
+      color: rgba(255, 228, 154, 0.82);
+      font-size: 7px;
       line-height: 1;
-      color: rgba(255, 228, 154, 0.84);
-      text-shadow: 0 0 7px rgba(255, 198, 78, 0.08);
+      letter-spacing: 0.15em;
     }
 
     .level-2 .sequence-heading strong {
-      flex-shrink: 0;
       color: #ffe49a;
-      font-family: "Share Tech Mono", monospace;
       font-size: 8px;
-      letter-spacing: 0.12em;
+      line-height: 1;
       white-space: nowrap;
+      text-shadow: 0 0 8px rgba(255, 201, 84, 0.22);
     }
 
     .level-2 .sequence-steps {
+      flex: 1 1 auto;
+      min-height: 0;
       width: 100%;
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 8px;
+      gap: 7px;
       align-items: stretch;
     }
 
     .level-2 .sequence-step {
       position: relative;
-      width: 100%;
-      height: 66px;
-      min-height: 66px;
-      padding: 0;
+      min-height: 0;
+      height: 100%;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      border: 1px solid rgba(255, 211, 107, 0.28);
-      border-radius: 2px;
-      background: rgba(4, 16, 25, 0.48);
-      color: rgba(235, 248, 255, 0.36);
+      padding: 0;
+      border: 0 !important;
+      border-radius: 0;
+      background: transparent !important;
+      box-shadow: none !important;
+      color: rgba(235, 248, 255, 0.34);
       font-family: Orbitron, sans-serif;
-      font-size: 25px;
+      font-size: clamp(28px, 2.4vw, 38px);
       line-height: 1;
-      box-shadow:
-        inset 0 0 14px rgba(255, 192, 70, 0.028),
-        0 0 0 1px rgba(0, 0, 0, 0.12);
-      transform: none;
+      transform: none !important;
+      transition: color 180ms ease, filter 180ms ease, opacity 180ms ease;
     }
 
     .level-2 .sequence-step.completed {
-      border-color: rgba(99, 239, 193, 0.68);
-      background: rgba(19, 74, 59, 0.34);
       color: #63efc1;
-      box-shadow:
-        0 0 14px rgba(99, 239, 193, 0.10),
-        inset 0 0 15px rgba(99, 239, 193, 0.035);
+      opacity: 0.96;
+      text-shadow: 0 0 8px rgba(99, 239, 193, 0.28);
     }
 
     .level-2 .sequence-step.current {
-      border-color: #ffd36b;
-      background: rgba(92, 61, 12, 0.40);
-      color: #fff7df;
-      box-shadow:
-        0 0 16px rgba(255, 211, 107, 0.18),
-        inset 0 0 16px rgba(255, 211, 107, 0.065);
-      transform: translateY(-2px);
+      color: #fff8df;
+      opacity: 1;
+      text-shadow:
+        0 0 8px rgba(255, 220, 130, 0.58),
+        0 0 18px rgba(255, 193, 72, 0.22);
     }
 
-    .level-2 .sequence-step.current::after,
-    .level-2 .sequence-step.completed::after {
+    .level-2 .sequence-step.current::before {
+      content: "";
       position: absolute;
-      right: 7px;
-      bottom: 5px;
-      margin: 0;
-      font-family: "Share Tech Mono", monospace;
-      line-height: 1;
+      inset: 3px 4px;
+      border: 1px solid rgba(255, 211, 107, 0.42);
+      background: rgba(116, 76, 14, 0.12);
+      box-shadow:
+        inset 0 0 14px rgba(255, 205, 96, 0.045),
+        0 0 10px rgba(255, 205, 96, 0.06);
+      pointer-events: none;
+      z-index: -1;
     }
 
     .level-2 .sequence-step.current::after {
       content: "CURRENT";
-      left: 0;
-      right: 0;
-      bottom: 5px;
+      position: absolute;
+      left: 50%;
+      bottom: 4px;
+      transform: translateX(-50%);
+      margin: 0;
       color: #ffe49a;
+      font-family: "Share Tech Mono", monospace;
       font-size: 5px;
+      line-height: 1;
       letter-spacing: 0.12em;
-      text-align: center;
+      white-space: nowrap;
     }
 
     .level-2 .sequence-step.completed::after {
       content: "✓";
+      position: absolute;
+      right: 9px;
+      bottom: 4px;
+      margin: 0;
       color: #63efc1;
-      font-size: 10px;
+      font-size: 11px;
+      line-height: 1;
     }
 
-    /* ---------------------------------------------------------
-       BOTTOM: CURRENT MOVEMENT
-       --------------------------------------------------------- */
-
+    /* Lower part of the supplied dashboard is also an image frame.
+       This overlay carries only the live instruction text. */
     .level-2 .direction-card {
+      position: absolute;
       left: 50%;
-      top: 53.8%;
+      top: 60.5%;
       bottom: auto;
-      width: 73%;
-      height: 31%;
+      width: 66%;
+      height: 22%;
       min-height: 0;
-      padding: 7px 10px;
+      padding: 0;
       transform: translateX(-50%);
+      z-index: 11;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 0;
-      border: 0;
+      text-align: center;
+      border: 0 !important;
       border-radius: 0;
-      background: transparent;
-      box-shadow: none;
+      background: transparent !important;
+      box-shadow: none !important;
       backdrop-filter: none;
       clip-path: none;
-      text-align: center;
+      pointer-events: none;
+      overflow: hidden;
     }
 
     .level-2 .direction-card::before {
-      content: none;
+      content: none !important;
     }
 
     .level-2 .direction-card .label {
-      margin: 0 0 6px;
+      flex: 0 0 auto;
+      margin: 0 0 7px;
       color: #63dfff;
-      font-size: 8px;
+      font-family: "Share Tech Mono", monospace;
+      font-size: 7px;
       line-height: 1;
-      letter-spacing: 0.15em;
-      text-shadow: 0 0 8px rgba(99, 223, 255, 0.14);
+      letter-spacing: 0.17em;
+      text-shadow: 0 0 8px rgba(99, 223, 255, 0.16);
     }
 
     .level-2 .direction-card strong {
+      flex: 0 0 auto;
+      display: block;
       margin: 0;
       color: #ffe49a;
       font-family: Orbitron, sans-serif;
-      font-size: clamp(27px, 2.2vw, 36px);
-      font-weight: 700;
+      font-size: clamp(24px, 2.6vw, 33px);
       line-height: 1;
-      letter-spacing: 0.035em;
+      letter-spacing: 0.02em;
       white-space: nowrap;
       text-shadow:
-        0 0 12px rgba(255, 199, 88, 0.22),
-        0 2px 0 rgba(42, 18, 0, 0.20);
-    }
-
-    .level-2 .direction-card.repositioning {
-      top: 53.8%;
-      border: 0;
-      box-shadow: none;
-      background: transparent;
-    }
-
-    .level-2 .direction-card.repositioning .label {
-      color: #ffd36b;
-      margin-bottom: 5px;
-    }
-
-    .level-2 .direction-card.repositioning strong {
-      font-size: clamp(35px, 3.1vw, 48px);
-      color: #ffe49a;
-      letter-spacing: 0;
+        0 0 10px rgba(255, 201, 88, 0.24),
+        0 0 22px rgba(255, 177, 61, 0.10);
     }
 
     .level-2 .reposition-hint {
-      display: none;
+      flex: 0 0 auto;
       margin: 7px 0 0;
-      color: rgba(220, 239, 247, 0.66);
+      color: rgba(214, 238, 248, 0.72);
+      font-family: "Share Tech Mono", monospace;
       font-size: 6px;
       line-height: 1;
       letter-spacing: 0.10em;
+      white-space: nowrap;
+    }
+
+    .level-2 .direction-card.repositioning {
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+
+    .level-2 .direction-card.repositioning .label {
+      color: #ffe49a;
+    }
+
+    .level-2 .direction-card.repositioning strong {
+      font-size: clamp(30px, 3vw, 40px);
+      color: #fff7df;
     }
 
     .level-2 .direction-card.repositioning .reposition-hint {
-      display: block;
+      color: #63dfff;
     }
 
-    /* Keep the decorative dashboard artwork readable behind the controls. */
-    .level-2 .level2-dashboard {
-      filter:
-        drop-shadow(0 18px 28px rgba(0, 0, 0, 0.34))
-        drop-shadow(0 0 20px rgba(255, 186, 67, 0.12));
+    /* Make sure the non-level-2 target can never appear over the dashboard. */
+    .level-2 #target {
+      display: none !important;
     }
 
-    /* ---------------------------------------------------------
-       FINAL POPUP TUNING
-       --------------------------------------------------------- */
-
-    .level-2 .treasure-popup {
-      border-color: rgba(255, 211, 107, 0.86);
-      background:
-        linear-gradient(
-          145deg,
-          rgba(34, 20, 7, 0.98),
-          rgba(3, 18, 29, 0.98)
-        );
-      box-shadow:
-        0 0 0 1px rgba(99, 223, 255, 0.10),
-        0 0 58px rgba(255, 191, 73, 0.24),
-        inset 0 0 30px rgba(255, 191, 73, 0.06);
+    /* Level 2 HUD cleanup: no Garden/Items indicator. */
+    .level-2 #gardenProgressChip,
+    .level-2 #gardenItem {
+      display: none !important;
     }
 
     @media (max-width: 900px) {
-      .level-2 #level2Dashboard {
-        top: 138px;
-        width: min(70vw, 560px);
+      .level-2 .level2-dashboard {
+        top: 132px;
+        width: min(58vw, 540px);
       }
 
-      .level-2 #sequencePanel {
-        top: 16.5%;
-        width: 73%;
-      }
-
-      .level-2 .sequence-step {
-        height: 58px;
-        min-height: 58px;
-        font-size: 21px;
+      .level-2 .sequence-panel {
+        top: 18.5%;
+        width: 70%;
+        height: 29%;
       }
 
       .level-2 .direction-card {
-        top: 53.8%;
-        width: 73%;
-        height: 31%;
+        top: 60.5%;
+        width: 66%;
+        height: 22%;
       }
     }
 
     @media (max-width: 650px) {
-      .level-2 #level2Dashboard {
-        top: 146px;
-        width: 90vw;
+      .level-2 .level2-dashboard {
+        top: 150px;
+        width: min(92vw, 470px);
       }
 
-      .level-2 #sequencePanel {
-        top: 16.5%;
-        width: 74%;
-        padding: 5px 6px;
+      .level-2 .sequence-panel {
+        top: 18.5%;
+        width: 70%;
+        height: 29%;
       }
 
       .level-2 .sequence-heading {
         margin-bottom: 5px;
+        font-size: 6px;
       }
 
       .level-2 .sequence-heading strong {
         font-size: 6px;
       }
 
+      .level-2 .sequence-steps {
+        gap: 5px;
+      }
+
       .level-2 .sequence-step {
-        height: 46px;
-        min-height: 46px;
-        font-size: 18px;
+        font-size: 22px;
       }
 
       .level-2 .sequence-step.current::after {
@@ -3127,34 +3113,33 @@
       }
 
       .level-2 .sequence-step.completed::after {
-        right: 4px;
-        bottom: 4px;
+        right: 6px;
+        bottom: 3px;
         font-size: 8px;
       }
 
       .level-2 .direction-card {
-        top: 53.8%;
-        width: 74%;
-        height: 30.5%;
-        padding: 5px 6px;
+        top: 60.5%;
+        width: 66%;
+        height: 22%;
       }
 
       .level-2 .direction-card .label {
-        margin-bottom: 4px;
         font-size: 6px;
+        margin-bottom: 5px;
       }
 
       .level-2 .direction-card strong {
-        font-size: 24px;
+        font-size: 22px;
       }
 
       .level-2 .direction-card.repositioning strong {
-        font-size: 34px;
+        font-size: 28px;
       }
 
       .level-2 .reposition-hint {
-        margin-top: 5px;
         font-size: 5px;
+        margin-top: 5px;
       }
     }
 
@@ -3593,7 +3578,7 @@
               id="directionLabel"
               class="label"
             >
-              CURRENT MOVEMENT
+              WRIST MOVEMENT REQUIRED
             </div>
 
             <strong id="directionText">
@@ -4290,12 +4275,6 @@
           .hidden =
           level !== 2;
 
-        $("directionLabel")
-          .textContent =
-          level === 2
-            ? "CURRENT MOVEMENT"
-            : "WRIST MOVEMENT REQUIRED";
-
         $("sequencePanel")
           .hidden =
           level !== 2;
@@ -4828,7 +4807,7 @@
                 if (label) {
 
                   label.textContent =
-                    "CURRENT MOVEMENT";
+                    "WRIST MOVEMENT REQUIRED";
 
                 }
 
