@@ -1233,7 +1233,7 @@
       z-index: 7;
       pointer-events: none;
       background:
-        url("https://painauchocogab.github.io/REHABO-SG-website/Level2-Dashboard.png?v=final4")
+        url("https://painauchocogab.github.io/REHABO-SG-website/Level2-Dashboard.png?v=final2")
         center / 100% 100%
         no-repeat;
       filter:
@@ -2812,11 +2812,22 @@
     }
 
     /* =========================================================
-       FINAL LEVEL 2 CENTER DASHBOARD ALIGNMENT
-       Matches the supplied Treasure Hunt dashboard reference.
-       The dashboard artwork itself is supplied by Level2-Dashboard.png.
+       FINAL LEVEL 2 DASHBOARD POLISH
+       Clean internal alignment based on the supplied
+       Level2-Dashboard.png reference.
        ========================================================= */
 
+    /* Keep the supplied dashboard artwork centered and at a stable size. */
+    .level-2 #level2Dashboard {
+      left: 50%;
+      top: 132px;
+      width: min(47vw, 640px);
+      aspect-ratio: 1663 / 1150;
+      transform: translateX(-50%);
+      z-index: 7;
+    }
+
+    /* Level 2 must never show the Level 1 ITEMS chip. */
     .level-2 #gardenProgressChip {
       display: none !important;
     }
@@ -2825,127 +2836,149 @@
       display: inline-flex !important;
     }
 
-    .level2-dashboard {
-      left: 50%;
-      top: 146px;
-      width: min(46vw, 620px);
-      height: auto;
-      aspect-ratio: 605 / 422;
-      transform: translateX(-50%);
-      z-index: 7;
-      overflow: visible;
-      background-image: url("https://painauchocogab.github.io/REHABO-SG-website/Level2-Dashboard.png?v=final4");
-      background-position: center center;
-      background-size: 100% 100%;
-      background-repeat: no-repeat;
-      filter:
-        drop-shadow(0 18px 30px rgba(0, 0, 0, 0.38))
-        drop-shadow(0 0 20px rgba(255, 194, 76, 0.12));
+    /* No floating directional target on Level 2. */
+    .level-2 #target {
+      display: none !important;
     }
 
-    .level-2 .sequence-panel {
+    /* ---------------------------------------------------------
+       TOP: TREASURE PATH
+       --------------------------------------------------------- */
+
+    .level-2 #sequencePanel {
       left: 50%;
-      top: 17.5%;
-      width: 79%;
-      min-height: 0;
+      top: 16.5%;
+      width: 73%;
       height: 31%;
-      padding: 7px 8px 6px;
+      min-height: 0;
+      padding: 8px 10px 7px;
       transform: translateX(-50%);
-      z-index: 10;
       border: 0;
       border-radius: 0;
       background: transparent;
       box-shadow: none;
       backdrop-filter: none;
       clip-path: none;
+      overflow: visible;
     }
 
     .level-2 .sequence-heading {
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: 100%;
-      margin: 0 0 9px;
-      padding: 0 3px;
-      color: rgba(255, 228, 154, 0.86);
-      font-size: 8px;
-      letter-spacing: 0.15em;
-      text-shadow: 0 0 8px rgba(255, 201, 84, 0.14);
+      gap: 14px;
+      margin: 0 0 8px;
+      padding: 0;
+      line-height: 1;
+      color: rgba(255, 228, 154, 0.84);
+      text-shadow: 0 0 7px rgba(255, 198, 78, 0.08);
     }
 
     .level-2 .sequence-heading strong {
+      flex-shrink: 0;
       color: #ffe49a;
+      font-family: "Share Tech Mono", monospace;
       font-size: 8px;
       letter-spacing: 0.12em;
-      text-shadow: 0 0 9px rgba(255, 201, 84, 0.22);
+      white-space: nowrap;
     }
 
     .level-2 .sequence-steps {
+      width: 100%;
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 8px;
-      width: 100%;
-      height: calc(100% - 24px);
+      align-items: stretch;
     }
 
     .level-2 .sequence-step {
-      min-height: 0;
-      height: 100%;
-      border: 1px solid rgba(255, 205, 94, 0.40);
-      border-radius: 0;
-      background:
-        linear-gradient(145deg, rgba(8, 20, 28, 0.68), rgba(4, 15, 24, 0.42));
-      color: rgba(235, 248, 255, 0.38);
-      font-family: Orbitron, sans-serif;
-      font-size: clamp(20px, 2.0vw, 28px);
-      box-shadow: inset 0 0 14px rgba(255, 192, 70, 0.025);
-    }
-
-    .level-2 .sequence-step.completed {
-      border-color: rgba(99, 239, 193, 0.82);
-      background:
-        linear-gradient(145deg, rgba(18, 73, 58, 0.46), rgba(5, 32, 30, 0.30));
-      color: #63efc1;
-      box-shadow:
-        0 0 15px rgba(99, 239, 193, 0.13),
-        inset 0 0 16px rgba(99, 239, 193, 0.07);
-    }
-
-    .level-2 .sequence-step.current {
-      border-color: #ffd36b;
-      background:
-        linear-gradient(145deg, rgba(93, 62, 13, 0.48), rgba(43, 27, 5, 0.34));
-      color: #fff8e3;
-      box-shadow:
-        0 0 18px rgba(255, 211, 107, 0.20),
-        inset 0 0 18px rgba(255, 211, 107, 0.07);
-      transform: translateY(-2px);
-    }
-
-    .level-2 .sequence-step.current::after {
-      color: #ffe49a;
-      font-size: 5px;
-    }
-
-    .level-2 .sequence-step.completed::after {
-      color: #63efc1;
-      font-size: 8px;
-    }
-
-    .level-2 .direction-card {
-      left: 50%;
-      top: 53.5%;
-      bottom: auto;
-      width: 79%;
-      height: 31%;
-      min-height: 0;
-      padding: 8px 18px;
-      transform: translateX(-50%);
-      z-index: 10;
+      position: relative;
+      width: 100%;
+      height: 66px;
+      min-height: 66px;
+      padding: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      border: 1px solid rgba(255, 211, 107, 0.28);
+      border-radius: 2px;
+      background: rgba(4, 16, 25, 0.48);
+      color: rgba(235, 248, 255, 0.36);
+      font-family: Orbitron, sans-serif;
+      font-size: 25px;
+      line-height: 1;
+      box-shadow:
+        inset 0 0 14px rgba(255, 192, 70, 0.028),
+        0 0 0 1px rgba(0, 0, 0, 0.12);
+      transform: none;
+    }
+
+    .level-2 .sequence-step.completed {
+      border-color: rgba(99, 239, 193, 0.68);
+      background: rgba(19, 74, 59, 0.34);
+      color: #63efc1;
+      box-shadow:
+        0 0 14px rgba(99, 239, 193, 0.10),
+        inset 0 0 15px rgba(99, 239, 193, 0.035);
+    }
+
+    .level-2 .sequence-step.current {
+      border-color: #ffd36b;
+      background: rgba(92, 61, 12, 0.40);
+      color: #fff7df;
+      box-shadow:
+        0 0 16px rgba(255, 211, 107, 0.18),
+        inset 0 0 16px rgba(255, 211, 107, 0.065);
+      transform: translateY(-2px);
+    }
+
+    .level-2 .sequence-step.current::after,
+    .level-2 .sequence-step.completed::after {
+      position: absolute;
+      right: 7px;
+      bottom: 5px;
+      margin: 0;
+      font-family: "Share Tech Mono", monospace;
+      line-height: 1;
+    }
+
+    .level-2 .sequence-step.current::after {
+      content: "CURRENT";
+      left: 0;
+      right: 0;
+      bottom: 5px;
+      color: #ffe49a;
+      font-size: 5px;
+      letter-spacing: 0.12em;
+      text-align: center;
+    }
+
+    .level-2 .sequence-step.completed::after {
+      content: "✓";
+      color: #63efc1;
+      font-size: 10px;
+    }
+
+    /* ---------------------------------------------------------
+       BOTTOM: CURRENT MOVEMENT
+       --------------------------------------------------------- */
+
+    .level-2 .direction-card {
+      left: 50%;
+      top: 53.8%;
+      bottom: auto;
+      width: 73%;
+      height: 31%;
+      min-height: 0;
+      padding: 7px 10px;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
       border: 0;
       border-radius: 0;
       background: transparent;
@@ -2960,98 +2993,154 @@
     }
 
     .level-2 .direction-card .label {
-      margin: 0 0 3px;
+      margin: 0 0 6px;
       color: #63dfff;
       font-size: 8px;
-      letter-spacing: 0.16em;
-      text-shadow: 0 0 8px rgba(99, 223, 255, 0.16);
+      line-height: 1;
+      letter-spacing: 0.15em;
+      text-shadow: 0 0 8px rgba(99, 223, 255, 0.14);
     }
 
     .level-2 .direction-card strong {
-      margin: 2px 0 0;
+      margin: 0;
       color: #ffe49a;
       font-family: Orbitron, sans-serif;
-      font-size: clamp(26px, 2.6vw, 38px);
+      font-size: clamp(27px, 2.2vw, 36px);
+      font-weight: 700;
       line-height: 1;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.035em;
+      white-space: nowrap;
       text-shadow:
-        0 0 10px rgba(255, 199, 88, 0.24),
-        0 0 22px rgba(255, 199, 88, 0.10);
-    }
-
-    .level-2 .direction-card.repositioning strong {
-      font-size: clamp(34px, 3.4vw, 48px);
+        0 0 12px rgba(255, 199, 88, 0.22),
+        0 2px 0 rgba(42, 18, 0, 0.20);
     }
 
     .level-2 .direction-card.repositioning {
+      top: 53.8%;
       border: 0;
       box-shadow: none;
+      background: transparent;
+    }
+
+    .level-2 .direction-card.repositioning .label {
+      color: #ffd36b;
+      margin-bottom: 5px;
+    }
+
+    .level-2 .direction-card.repositioning strong {
+      font-size: clamp(35px, 3.1vw, 48px);
+      color: #ffe49a;
+      letter-spacing: 0;
     }
 
     .level-2 .reposition-hint {
-      margin-top: 7px;
-      color: rgba(214, 238, 248, 0.64);
-      font-size: 7px;
-      letter-spacing: 0.11em;
+      display: none;
+      margin: 7px 0 0;
+      color: rgba(220, 239, 247, 0.66);
+      font-size: 6px;
+      line-height: 1;
+      letter-spacing: 0.10em;
+    }
+
+    .level-2 .direction-card.repositioning .reposition-hint {
+      display: block;
+    }
+
+    /* Keep the decorative dashboard artwork readable behind the controls. */
+    .level-2 .level2-dashboard {
+      filter:
+        drop-shadow(0 18px 28px rgba(0, 0, 0, 0.34))
+        drop-shadow(0 0 20px rgba(255, 186, 67, 0.12));
+    }
+
+    /* ---------------------------------------------------------
+       FINAL POPUP TUNING
+       --------------------------------------------------------- */
+
+    .level-2 .treasure-popup {
+      border-color: rgba(255, 211, 107, 0.86);
+      background:
+        linear-gradient(
+          145deg,
+          rgba(34, 20, 7, 0.98),
+          rgba(3, 18, 29, 0.98)
+        );
+      box-shadow:
+        0 0 0 1px rgba(99, 223, 255, 0.10),
+        0 0 58px rgba(255, 191, 73, 0.24),
+        inset 0 0 30px rgba(255, 191, 73, 0.06);
     }
 
     @media (max-width: 900px) {
-      .level2-dashboard {
-        top: 132px;
-        width: min(56vw, 560px);
+      .level-2 #level2Dashboard {
+        top: 138px;
+        width: min(70vw, 560px);
       }
 
-      .level-2 .sequence-panel {
-        top: 17%;
-        width: 79%;
-        height: 31%;
+      .level-2 #sequencePanel {
+        top: 16.5%;
+        width: 73%;
+      }
+
+      .level-2 .sequence-step {
+        height: 58px;
+        min-height: 58px;
+        font-size: 21px;
       }
 
       .level-2 .direction-card {
-        top: 53%;
-        width: 79%;
+        top: 53.8%;
+        width: 73%;
         height: 31%;
       }
     }
 
     @media (max-width: 650px) {
-      .level2-dashboard {
-        top: 148px;
-        width: min(92vw, 470px);
+      .level-2 #level2Dashboard {
+        top: 146px;
+        width: 90vw;
       }
 
-      .level-2 .sequence-panel {
-        top: 17%;
-        width: 80%;
-        height: 31%;
+      .level-2 #sequencePanel {
+        top: 16.5%;
+        width: 74%;
         padding: 5px 6px;
       }
 
       .level-2 .sequence-heading {
-        font-size: 6px;
-        margin-bottom: 6px;
+        margin-bottom: 5px;
       }
 
       .level-2 .sequence-heading strong {
         font-size: 6px;
       }
 
-      .level-2 .sequence-steps {
-        gap: 5px;
+      .level-2 .sequence-step {
+        height: 46px;
+        min-height: 46px;
+        font-size: 18px;
       }
 
-      .level-2 .sequence-step {
-        font-size: 17px;
+      .level-2 .sequence-step.current::after {
+        bottom: 3px;
+        font-size: 4px;
+      }
+
+      .level-2 .sequence-step.completed::after {
+        right: 4px;
+        bottom: 4px;
+        font-size: 8px;
       }
 
       .level-2 .direction-card {
-        top: 53%;
-        width: 80%;
-        height: 31%;
-        padding: 5px 10px;
+        top: 53.8%;
+        width: 74%;
+        height: 30.5%;
+        padding: 5px 6px;
       }
 
       .level-2 .direction-card .label {
+        margin-bottom: 4px;
         font-size: 6px;
       }
 
@@ -3060,11 +3149,11 @@
       }
 
       .level-2 .direction-card.repositioning strong {
-        font-size: 32px;
+        font-size: 34px;
       }
 
       .level-2 .reposition-hint {
-        margin-top: 4px;
+        margin-top: 5px;
         font-size: 5px;
       }
     }
@@ -3504,7 +3593,7 @@
               id="directionLabel"
               class="label"
             >
-              WRIST MOVEMENT REQUIRED
+              CURRENT MOVEMENT
             </div>
 
             <strong id="directionText">
@@ -4201,6 +4290,12 @@
           .hidden =
           level !== 2;
 
+        $("directionLabel")
+          .textContent =
+          level === 2
+            ? "CURRENT MOVEMENT"
+            : "WRIST MOVEMENT REQUIRED";
+
         $("sequencePanel")
           .hidden =
           level !== 2;
@@ -4733,7 +4828,7 @@
                 if (label) {
 
                   label.textContent =
-                    "WRIST MOVEMENT REQUIRED";
+                    "CURRENT MOVEMENT";
 
                 }
 
