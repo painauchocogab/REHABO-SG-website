@@ -110,11 +110,11 @@
     }
 
     /* ---------- Level themes ---------- */
-    .level-1 { --accent: #63efc1; --accent2: #63dfff; --warning: #ffce7a; }
-    .level-2 { --accent: #ffd36b; --accent2: #63dfff; --warning: #ff9f7a; }
-    .level-3 { --accent: #76e8ff; --accent2: #b4f6ff; --warning: #ffcf72; }
-    .level-4 { --accent: #ad8cff; --accent2: #67d9ff; --warning: #ff8fcb; }
-    .level-5 { --accent: #ff75c8; --accent2: #ff5f86; --warning: #ffcc7a; }
+    .level-1 { --accent: #63efc1; --accent2: #63dfff; --warning: #ffce7a; background-image: url("./Level1-background.png"); }
+    .level-2 { --accent: #ffd36b; --accent2: #63dfff; --warning: #ff9f7a; background-image: url("./Level2-background.png"); }
+    .level-3 { --accent: #76e8ff; --accent2: #b4f6ff; --warning: #ffcf72; background-image: url("./Level3-background.png"); }
+    .level-4 { --accent: #ad8cff; --accent2: #67d9ff; --warning: #ff8fcb; background-image: url("./Level4-background.png"); }
+    .level-5 { --accent: #ff75c8; --accent2: #ff5f86; --warning: #ffcc7a; background-image: url("./Level5-background.png"); }
 
     /* ---------- Background lights ---------- */
     .ambient-lights {
@@ -646,7 +646,334 @@
       .reconnect,
       .exit { min-height: 40px; }
     }
-  </style>
+  
+
+    /* =========================================================
+       OPTION 6 // MODULAR SCI-FI CONSOLE LAYOUT
+       ========================================================= */
+
+    .game-area {
+      width: min(94vw, 1380px);
+      height: min(84vh, 760px);
+      aspect-ratio: 16 / 9;
+    }
+
+    .game-titlebar {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      top: 14px;
+      height: 52px;
+      z-index: 6;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 0 18px;
+      border: 1px solid rgba(110, 220, 255, .34);
+      background: linear-gradient(90deg, rgba(2,17,31,.82), rgba(3,29,47,.56), rgba(2,17,31,.82));
+      box-shadow: 0 0 22px rgba(0,190,255,.06), inset 0 0 16px rgba(0,190,255,.035);
+      backdrop-filter: blur(7px);
+    }
+
+    .game-titlebar::before,
+    .game-titlebar::after {
+      content: "";
+      position: absolute;
+      top: -1px;
+      width: 110px;
+      height: 2px;
+      background: var(--accent2);
+      box-shadow: 0 0 10px var(--accent2);
+    }
+
+    .game-titlebar::before { left: 0; }
+    .game-titlebar::after { right: 0; }
+
+    .titlebar-left,
+    .titlebar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .titlebar-left {
+      font-family: Orbitron, sans-serif;
+      font-size: 10px;
+      letter-spacing: .11em;
+      color: #dff8ff;
+    }
+
+    .system-mark {
+      color: var(--accent2);
+      font-size: 13px;
+      letter-spacing: .12em;
+    }
+
+    .titlebar-divider {
+      color: rgba(185,242,255,.42);
+    }
+
+    #gameTitlebarName {
+      color: #eaf8ff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .titlebar-right {
+      flex-shrink: 0;
+      font-size: 7px;
+      letter-spacing: .12em;
+    }
+
+    .level-chip,
+    .avg-chip,
+    .score-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 28px;
+      padding: 0 10px;
+      border: 1px solid rgba(110,220,255,.22);
+      background: rgba(2,15,30,.62);
+      color: rgba(196,236,247,.58);
+    }
+
+    .level-chip b { color: var(--accent); }
+    .avg-chip b { color: var(--accent2); }
+    .score-chip b { color: #fff; }
+
+    .game-header {
+      left: 26px;
+      top: 82px;
+      width: 250px;
+      min-height: 114px;
+      padding: 16px 18px;
+      z-index: 5;
+    }
+
+    .game-header::before {
+      content: "01 // GAME";
+    }
+
+    .objective {
+      right: 26px;
+      top: 82px;
+      width: 235px;
+      min-height: 114px;
+      padding: 16px 18px;
+      z-index: 5;
+    }
+
+    .objective::before {
+      content: "02 // OBJECTIVE";
+    }
+
+    .wrist-live-panel {
+      top: 220px;
+      width: 248px;
+      min-height: 246px;
+      padding: 14px;
+      z-index: 5;
+    }
+
+    .wrist-live-panel.left { left: 26px; }
+    .wrist-live-panel.right { right: 26px; }
+
+    .wrist-live-panel::after {
+      content: "LIVE";
+      position: absolute;
+      right: 13px;
+      top: 12px;
+      color: rgba(190,242,255,.34);
+      font-size: 7px;
+      letter-spacing: .12em;
+    }
+
+    .wrist-live-header {
+      padding-bottom: 10px;
+    }
+
+    .wrist-live-grid {
+      gap: 6px;
+    }
+
+    .wrist-live-metric {
+      padding: 8px 9px 7px;
+    }
+
+    .wrist-live-value {
+      font-size: 10px;
+    }
+
+    .target {
+      left: 50%;
+      top: 50%;
+      width: 112px;
+      height: 112px;
+      z-index: 7;
+    }
+
+    .direction-card {
+      bottom: 78px;
+      width: 270px;
+      min-height: 88px;
+      z-index: 8;
+    }
+
+    .bottom-rail {
+      left: 26px;
+      right: 26px;
+      bottom: 18px;
+      z-index: 9;
+    }
+
+    .rail-tag {
+      display: flex;
+      min-width: 128px;
+    }
+
+    .feedback {
+      z-index: 12;
+    }
+
+    @media (max-width: 1180px) {
+      .game-titlebar { left: 14px; right: 14px; }
+      .game-header { left: 14px; }
+      .objective { right: 14px; }
+      .wrist-live-panel { width: 220px; }
+      .wrist-live-panel.left { left: 14px; }
+      .wrist-live-panel.right { right: 14px; }
+      .bottom-rail { left: 14px; right: 14px; }
+    }
+
+    @media (max-width: 900px) {
+      .game-titlebar {
+        height: 48px;
+        padding: 0 10px;
+      }
+
+      .titlebar-right {
+        gap: 5px;
+      }
+
+      .avg-chip {
+        display: none;
+      }
+
+      .game-header {
+        top: 72px;
+        width: 205px;
+      }
+
+      .objective {
+        top: 72px;
+        width: 190px;
+      }
+
+      .wrist-live-panel {
+        top: auto;
+        bottom: 118px;
+        width: 205px;
+        min-height: 185px;
+      }
+
+      .direction-card {
+        bottom: 66px;
+      }
+
+      .bottom-rail {
+        bottom: 12px;
+      }
+
+      .rail-tag {
+        display: none;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .game-area {
+        width: 96vw;
+        height: auto;
+        aspect-ratio: 4 / 3;
+      }
+
+      .game-titlebar {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        height: 44px;
+      }
+
+      .titlebar-right .level-chip,
+      .titlebar-right .score-chip {
+        min-height: 24px;
+        padding: 0 7px;
+        font-size: 6px;
+      }
+
+      .game-header {
+        left: 10px;
+        top: 66px;
+        width: 170px;
+        min-height: 98px;
+        padding: 11px;
+      }
+
+      .objective {
+        right: 10px;
+        top: 66px;
+        width: 160px;
+        min-height: 98px;
+        padding: 11px;
+      }
+
+      .wrist-live-panel {
+        bottom: 138px;
+        width: calc(50% - 16px);
+        min-height: 0;
+        padding: 9px;
+      }
+
+      .wrist-live-panel.left { left: 10px; }
+      .wrist-live-panel.right { right: 10px; }
+
+      .wrist-live-value {
+        font-size: 7px;
+      }
+
+      .target {
+        width: 84px;
+        height: 84px;
+        font-size: 34px;
+      }
+
+      .direction-card {
+        width: 180px;
+        bottom: 94px;
+        min-height: 68px;
+      }
+
+      .bottom-rail {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        gap: 5px;
+      }
+
+      .lives,
+      .sensor-chip,
+      .reconnect,
+      .exit {
+        min-height: 34px;
+        padding: 0 8px;
+        font-size: 6px;
+      }
+    }
+</style>
 </head>
 
 <body>
@@ -657,6 +984,19 @@
         <div class="ambient-lights" aria-hidden="true">
           <i></i><i></i><i></i><i></i>
           <i></i><i></i><i></i><i></i>
+        </div>
+
+        <div class="game-titlebar" aria-label="Game status header">
+          <div class="titlebar-left">
+            <span class="system-mark">REHABO-SG</span>
+            <span class="titlebar-divider">//</span>
+            <span id="gameTitlebarName">PERSONALIZED REHABILITATION GAME</span>
+          </div>
+          <div class="titlebar-right">
+            <span class="level-chip">LEVEL <b id="levelHud">—</b></span>
+            <span class="avg-chip">BILATERAL AVG <b id="averageHud">—</b></span>
+            <span class="score-chip">SCORE <b id="scoreHud">0</b></span>
+          </div>
         </div>
 
         <header class="game-header hud-panel">
@@ -877,53 +1217,17 @@
           5: 'Level5-background.png'
         };
 
-        const file = backgrounds[level] || backgrounds[1];
-        const version = '20261004-3';
-
-        // Use the actual GitHub Pages URL first. Then try the raw GitHub URL,
-        // followed by the local relative path as a final fallback.
-        const sources = [
-          `https://painauchocogab.github.io/REHABO-SG-website/${encodeURIComponent(file)}?v=${version}`,
-          `https://raw.githubusercontent.com/painauchocogab/REHABO-SG-website/main/${encodeURIComponent(file)}?v=${version}`,
-          `./${file}?v=${version}`
-        ];
-
-        world.style.backgroundImage = 'none';
-
-        let index = 0;
-
-        function tryNextBackground() {
-          if (index >= sources.length) {
-            console.error('REHABO-SG: could not load background:', file);
-            return;
-          }
-
-          const src = sources[index++];
-          const image = new Image();
-
-          image.onload = () => {
-            world.style.backgroundImage = `url("${src}")`;
-            world.style.backgroundSize = 'cover';
-            world.style.backgroundPosition = 'center';
-            world.style.backgroundRepeat = 'no-repeat';
-            console.log('REHABO-SG background loaded:', src);
-          };
-
-          image.onerror = () => {
-            console.warn('REHABO-SG background failed:', src);
-            tryNextBackground();
-          };
-
-          image.src = src;
-        }
-
-        tryNextBackground();
+        const src = 'https://painauchocogab.github.io/REHABO-SG-website/' + (backgrounds[level] || backgrounds[1]) + '?v=20261004-option6';
+        world.style.backgroundImage = `url("${src}")`;
       }
 
       function showGameInfo() {
         const game = games[level];
 
         $('gameName').textContent = game.name;
+
+        const titlebarName = $('gameTitlebarName');
+        if (titlebarName) titlebarName.textContent = game.name;
         $('gameSubtitle').textContent = game.subtitle;
         $('objectiveText').textContent = game.objective;
         $('livesText').textContent = level <= 2 ? '∞' : '3';
