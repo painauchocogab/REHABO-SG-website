@@ -2995,6 +2995,100 @@
 }
 </style>
 
+
+<style>
+/* ==========================================================
+   REHABO-SG PERSONALIZED GAME INVITATION + GARDEN ADVENTURE
+   ========================================================== */
+.game-invitation-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    background: rgba(1, 8, 20, .82);
+    backdrop-filter: blur(8px);
+}
+.game-invitation-overlay[hidden] { display: none; }
+.game-invitation-card {
+    width: min(560px, 94vw);
+    padding: 2rem;
+    position: relative;
+    border: 1px solid #55d9ff;
+    background:
+        linear-gradient(rgba(45,157,220,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45,157,220,.035) 1px, transparent 1px),
+        linear-gradient(145deg, rgba(4,28,54,.98), rgba(2,13,29,.98));
+    background-size: 24px 24px, 24px 24px, auto;
+    box-shadow: 0 0 70px rgba(0,174,255,.22), inset 0 0 35px rgba(0,120,200,.10);
+    text-align: center;
+    overflow: hidden;
+}
+.game-invitation-card::before,
+.game-invitation-card::after {
+    content: "";
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    border-color: #63dfff;
+    border-style: solid;
+}
+.game-invitation-card::before { top: 10px; left: 10px; border-width: 1px 0 0 1px; }
+.game-invitation-card::after { right: 10px; bottom: 10px; border-width: 0 1px 1px 0; }
+.game-invitation-kicker { color:#55d9ff; font-size:.7rem; letter-spacing:.18em; margin:0 0 .65rem; }
+.game-invitation-card h2 { margin:.2rem 0 .35rem; color:#f1fbff; font-size:1.55rem; letter-spacing:.08em; }
+.game-invitation-game { color:#63efc1; font-size:1.05rem; letter-spacing:.12em; margin:.75rem 0; text-shadow:0 0 16px rgba(99,239,193,.55); }
+.game-invitation-average { color:#8fdcff; font-size:.8rem; margin:.4rem 0; }
+.game-invitation-message { color:#a8c8da; line-height:1.6; font-size:.78rem; }
+.game-invitation-actions { display:flex; justify-content:center; gap:.7rem; flex-wrap:wrap; margin-top:1.35rem; }
+.game-invitation-actions button { min-width:150px; padding:.8rem 1rem; border:1px solid #36caff; color:#eaf8ff; background:#062442; font:inherit; letter-spacing:.08em; cursor:pointer; }
+.game-invitation-actions .game-start-confirm { background:linear-gradient(90deg,#087bb8,#0aa8d7); box-shadow:0 0 22px rgba(42,202,255,.24); }
+.game-invitation-actions button:hover { box-shadow:0 0 20px rgba(85,217,255,.28); transform:translateY(-1px); }
+
+.garden-game-layer {
+    position:absolute;
+    inset:0;
+    z-index:20;
+    display:none;
+    overflow:hidden;
+    background-image:linear-gradient(rgba(1,18,30,.10),rgba(1,18,30,.10)), url("Level1-background.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+.hand-visual-stage.garden-active .garden-game-layer { display:block; }
+.hand-visual-stage.garden-active .wrist-hands-visual,
+.hand-visual-stage.garden-active .stage-instruction { opacity:0; pointer-events:none; }
+.garden-hud {
+    position:absolute; top:1rem; left:1rem; right:1rem;
+    display:flex; justify-content:space-between; align-items:center; gap:.7rem;
+    z-index:4; pointer-events:none;
+}
+.garden-hud-panel {
+    padding:.5rem .75rem; border:1px solid rgba(103,221,255,.7);
+    background:rgba(2,19,31,.72); color:#eaf8ff; box-shadow:0 0 18px rgba(46,205,255,.18);
+    font-size:.68rem; letter-spacing:.09em; backdrop-filter:blur(3px);
+}
+.garden-hud-panel strong { color:#63efc1; margin-left:.35rem; }
+.garden-target {
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:58px; height:58px; border-radius:50%; z-index:5;
+    border:2px solid #fff; background:radial-gradient(circle, #fff 0 10%, #7dffd5 12% 28%, #27cfff 31% 48%, rgba(39,207,255,.08) 51% 100%); color:#fff; font:700 1rem/1 monospace; text-shadow:0 0 10px #fff;
+    box-shadow:0 0 12px #fff,0 0 28px #55eaff,0 0 55px rgba(99,239,193,.8);
+    cursor:pointer; animation:gardenTargetPulse 1.15s ease-in-out infinite;
+}
+.garden-target::before,.garden-target::after { content:""; position:absolute; inset:-13px; border:1px solid rgba(255,255,255,.7); border-radius:50%; animation:gardenRing 1.7s linear infinite; }
+.garden-target::after { inset:-25px; opacity:.35; animation-duration:2.4s; }
+@keyframes gardenTargetPulse { 50%{transform:translate(-50%,-50%) scale(1.13);filter:brightness(1.3);} }
+@keyframes gardenRing { to{transform:rotate(360deg) scale(1.12);opacity:0;} }
+.garden-complete-flash { position:absolute; inset:0; z-index:8; pointer-events:none; background:rgba(255,255,255,.55); opacity:0; }
+.garden-complete-flash.active { animation:gardenFlash .28s ease-out; }
+@keyframes gardenFlash { 0%{opacity:.55}100%{opacity:0} }
+.garden-exit { position:absolute; bottom:1rem; right:1rem; z-index:7; padding:.55rem .8rem; border:1px solid rgba(255,255,255,.7); color:#fff; background:rgba(2,18,30,.72); font:inherit; cursor:pointer; }
+@media(max-width:650px){.garden-hud{align-items:flex-start;flex-direction:column}.garden-target{width:48px;height:48px}}
+</style>
+
 </head>
 <body>
     <a href="index.html" aria-label="Return to REHABO-SG home">
@@ -3082,6 +3176,18 @@
                         <img src="handright.png" alt="Right futuristic wrist visualization">
                         <span class="hand-label">RIGHT WRIST</span>
                     </div>
+                </div>
+
+
+                <div class="garden-game-layer" id="garden-game-layer" aria-label="Garden Adventure game">
+                    <div class="garden-hud">
+                        <div class="garden-hud-panel">GARDEN ADVENTURE <strong>LEVEL 1</strong></div>
+                        <div class="garden-hud-panel">BILATERAL BASELINE <strong id="garden-average-display">—</strong></div>
+                        <div class="garden-hud-panel">COLLECTED <strong id="garden-score">0</strong></div>
+                    </div>
+                    <button class="garden-target" id="garden-target" type="button" aria-label="Garden target"></button>
+                    <div class="garden-complete-flash" id="garden-complete-flash" aria-hidden="true"></div>
+                    <button class="garden-exit" id="garden-exit" type="button">EXIT GAME</button>
                 </div>
 
                 <p class="stage-instruction" id="exercise-instruction">
@@ -3224,7 +3330,45 @@
             </div>
         </aside>
 
-        
+        <div class="calibration-footer">
+            <section class="info-card">
+                <h4>CALIBRATION STATUS</h4>
+                <p><strong id="calibration-step">READY</strong> — WAITING TO BEGIN</p>
+                <p class="progress-dots" aria-label="Calibration progress">
+                    <i class="active"></i><i></i><i></i><i></i><i></i>
+                </p>
+            </section>
+
+            <section class="info-card">
+                <h4>CALIBRATION RESULTS // COMFORTABLE PEAK</h4>
+                <div class="result-grid">
+                    <div class="result-item"><span>↑ UP</span><strong id="result-up">—</strong></div>
+                    <div class="result-item"><span>↓ DOWN</span><strong id="result-down">—</strong></div>
+                    <div class="result-item"><span>← LEFT</span><strong id="result-left">—</strong></div>
+                    <div class="result-item"><span>→ RIGHT</span><strong id="result-right">—</strong></div>
+                </div>
+            </section>
+
+            <section class="info-card game-targets">
+                <h4>GAME TARGETS // 80%</h4>
+                <div class="result-grid">
+                    <div class="result-item"><span>↑ UP</span><strong id="target-up">—</strong></div>
+                    <div class="result-item"><span>↓ DOWN</span><strong id="target-down">—</strong></div>
+                    <div class="result-item"><span>← LEFT</span><strong id="target-left">—</strong></div>
+                    <div class="result-item"><span>→ RIGHT</span><strong id="target-right">—</strong></div>
+                </div>
+            </section>
+
+            <div class="calibration-controls">
+                <span class="calibration-progress-text">
+                    CALIBRATION <span id="calibration-progress">READY</span>
+                    <span class="progress-dots" aria-hidden="true">
+                        <i class="active"></i><i></i><i></i><i></i><i></i>
+                    </span>
+                </span>
+                <button class="calibration-action" id="begin-calibration" type="button" disabled hidden>▶ BEGIN CALIBRATION</button>
+            </div>
+        </div>
     </div>
 </section>
 <section class="balance-workspace" id="balance-workspace" aria-labelledby="balance-title" hidden>
@@ -3423,6 +3567,21 @@
         <p class="calibration-safety-note">Move only as far as comfortably possible. Do not force your wrist. The system records the greatest comfortable movement detected during each 5-second test.</p>
     </section>
 </div>
+
+<div class="game-invitation-overlay" id="game-invitation-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="game-invitation-title">
+  <section class="game-invitation-card">
+    <p class="game-invitation-kicker">CALIBRATION COMPLETE // PERSONALIZED GAME READY</p>
+    <h2 id="game-invitation-title">READY FOR REHABILITATION?</h2>
+    <p class="game-invitation-game" id="game-invitation-game">GARDEN ADVENTURE // LEVEL 1</p>
+    <p class="game-invitation-average" id="game-invitation-average">FINAL BILATERAL AVERAGE: —</p>
+    <p class="game-invitation-message" id="game-invitation-message">Your game level has been selected using the final average of your LEFT and RIGHT wrist calibration baselines. Would you like to begin?</p>
+    <div class="game-invitation-actions">
+      <button class="game-start-confirm" id="game-invitation-yes" type="button">YES, START GAME</button>
+      <button id="game-invitation-no" type="button">NOT NOW</button>
+    </div>
+  </section>
+</div>
+
     <!-- Legacy compatibility controls kept hidden while REHABO-SG uses the new wrist calibration flow. -->
     <button id="legacy-game-start" type="button" hidden></button>
     <button id="pause-exercise" type="button" hidden></button>
@@ -4203,6 +4362,10 @@ function updateLiveDashboard(data) {
     if (Number.isFinite(Number(data.roll))) {
         leftRoll = Number(data.roll);
     }
+
+    if (typeof window.updateGardenGameFromSensor === "function") {
+        window.updateGardenGameFromSensor(data);
+    }
 }
 
 // CLOSE updateLiveDashboard()
@@ -4916,7 +5079,20 @@ requestAnimationFrame(cursorAnimationLoop);
         manualCalibrationButton.disabled = false;
         manualCalibrationNote.textContent = "CALIBRATION COMPLETE. CLICK START CALIBRATION TO MEASURE AGAIN.";
         manualCalibrationNote.style.color = "#63efc1";
-        setTimeout(hideOverlay, 5500);
+
+        // Final bilateral average = average of the LEFT and RIGHT calibration baselines.
+        const finalBilateralAverage = (Number.isFinite(baselineAverage.LEFT) && Number.isFinite(baselineAverage.RIGHT))
+            ? +((baselineAverage.LEFT + baselineAverage.RIGHT) / 2).toFixed(1)
+            : null;
+        window.__rehaboFinalBilateralAverage = finalBilateralAverage;
+        record.bilateralAverage = finalBilateralAverage;
+        try { localStorage.setItem("rehabo-sg-latest-calibration", JSON.stringify(record)); }
+        catch (error) { console.warn("Could not save bilateral average.", error); }
+
+        hideOverlay();
+        if (typeof window.showPersonalizedGameInvitation === "function") {
+            window.showPersonalizedGameInvitation(baselineAverage);
+        }
     }
 
     function finishBecauseSensorLost() {
@@ -4995,5 +5171,178 @@ requestAnimationFrame(cursorAnimationLoop);
 #game-cursor { display: none !important; }
 
 </style>
+
+<script>
+/* ==========================================================
+   REHABO-SG PERSONALIZED GAME SELECTION
+   Bilateral average = mean of LEFT + RIGHT calibration baselines.
+   Prototype level boundaries are researcher-defined.
+   ========================================================== */
+(() => {
+    const invitation = document.getElementById("game-invitation-overlay");
+    const yesButton = document.getElementById("game-invitation-yes");
+    const noButton = document.getElementById("game-invitation-no");
+    const invitationGame = document.getElementById("game-invitation-game");
+    const invitationAverage = document.getElementById("game-invitation-average");
+    const invitationMessage = document.getElementById("game-invitation-message");
+    const stage = document.querySelector(".hand-visual-stage");
+    const gardenLayer = document.getElementById("garden-game-layer");
+    const gardenTarget = document.getElementById("garden-target");
+    const gardenCursor = document.getElementById("garden-cursor");
+    const gardenScore = document.getElementById("garden-score");
+    const gardenAverageDisplay = document.getElementById("garden-average-display");
+    const gardenFlash = document.getElementById("garden-complete-flash");
+    const gardenExit = document.getElementById("garden-exit");
+
+    let selectedGame = null;
+    let gardenAverage = null;
+    let gardenScoreValue = 0;
+    let gardenGameActive = false;
+
+    const games = {
+        1: { name: "GARDEN ADVENTURE", range: "0–20°" },
+        2: { name: "TREASURE HUNT", range: "21–40°" },
+        3: { name: "SKY PILOT", range: "41–60°" },
+        4: { name: "SPACE ESCAPE", range: "61–80°" },
+        5: { name: "NINJA DODGE", range: "81°+" }
+    };
+
+    function getGameLevel(average) {
+        if (!Number.isFinite(average)) return null;
+        if (average <= 20) return 1;
+        if (average <= 40) return 2;
+        if (average <= 60) return 3;
+        if (average <= 80) return 4;
+        return 5;
+    }
+
+    function getBilateralAverage(baseline) {
+        if (!baseline) return null;
+        const left = Number(baseline.LEFT);
+        const right = Number(baseline.RIGHT);
+        if (!Number.isFinite(left) || !Number.isFinite(right)) return null;
+        return +((left + right) / 2).toFixed(1);
+    }
+
+    window.showPersonalizedGameInvitation = function(baseline) {
+        const average = getBilateralAverage(baseline);
+        const level = getGameLevel(average);
+        if (!invitation || !level || !Number.isFinite(average)) return;
+
+        selectedGame = level;
+        gardenAverage = average;
+        invitationGame.textContent = games[level].name + " // LEVEL " + level;
+        invitationAverage.textContent = "FINAL BILATERAL AVERAGE: " + average.toFixed(1) + "°";
+        invitationMessage.textContent = level === 1
+            ? "Your personalized game is ready. It was selected from the final average of both wrist calibration baselines. Would you like to begin?"
+            : "Your personalized level has been selected from the final average of both wrist calibration baselines. This game level is identified, but its game environment has not been configured yet.";
+        yesButton.disabled = level !== 1;
+        yesButton.textContent = level === 1 ? "YES, START GAME" : "LEVEL NOT YET AVAILABLE";
+        invitation.hidden = false;
+    };
+
+    function randomGardenTarget() {
+        if (!gardenLayer || !gardenTarget) return;
+        const x = 12 + Math.random() * 76;
+        const y = 22 + Math.random() * 55;
+        gardenTarget.style.left = x + "%";
+        gardenTarget.style.top = y + "%";
+    }
+
+    function startGardenAdventure() {
+        if (selectedGame !== 1 || !stage) return;
+        gardenGameActive = true;
+        gardenScoreValue = 0;
+        gardenScore.textContent = "0";
+        gardenAverageDisplay.textContent = gardenAverage.toFixed(1) + "°";
+        stage.classList.add("garden-active");
+        invitation.hidden = true;
+        randomGardenTarget();
+        updateGardenCursor();
+    }
+
+    function stopGardenAdventure() {
+        gardenGameActive = false;
+        if (stage) stage.classList.remove("garden-active");
+        if (invitation) invitation.hidden = true;
+    }
+
+    let gardenTargetDirection = "UP";
+    let gardenDirectionHold = 0;
+
+    function randomGardenTarget() {
+        if (!gardenLayer || !gardenTarget) return;
+        const choices = ["UP", "DOWN", "LEFT", "RIGHT"];
+        gardenTargetDirection = choices[Math.floor(Math.random() * choices.length)];
+        gardenTarget.dataset.direction = gardenTargetDirection;
+        gardenTarget.setAttribute("aria-label", "Garden target — move " + gardenTargetDirection);
+        gardenTarget.textContent = gardenTargetDirection === "UP" ? "↑" : gardenTargetDirection === "DOWN" ? "↓" : gardenTargetDirection === "LEFT" ? "←" : "→";
+        const x = gardenTargetDirection === "LEFT" ? 22 : gardenTargetDirection === "RIGHT" ? 78 : 50;
+        const y = gardenTargetDirection === "UP" ? 28 : gardenTargetDirection === "DOWN" ? 70 : 49;
+        gardenTarget.style.left = x + "%";
+        gardenTarget.style.top = y + "%";
+        gardenDirectionHold = 0;
+    }
+
+    function startGardenAdventure() {
+        if (selectedGame !== 1 || !stage) return;
+        gardenGameActive = true;
+        gardenScoreValue = 0;
+        gardenScore.textContent = "0";
+        gardenAverageDisplay.textContent = gardenAverage.toFixed(1) + "°";
+        stage.classList.add("garden-active");
+        invitation.hidden = true;
+        randomGardenTarget();
+    }
+
+    function stopGardenAdventure() {
+        gardenGameActive = false;
+        if (stage) stage.classList.remove("garden-active");
+        if (invitation) invitation.hidden = true;
+    }
+
+    function registerGardenCollection() {
+        gardenScoreValue += 1;
+        gardenScore.textContent = String(gardenScoreValue);
+        gardenFlash.classList.remove("active");
+        void gardenFlash.offsetWidth;
+        gardenFlash.classList.add("active");
+        randomGardenTarget();
+    }
+
+    function updateGardenGameFromSensor(data) {
+        if (!gardenGameActive || !data) return;
+        const direction = String(data.direction || "").toUpperCase();
+        if (direction === gardenTargetDirection) {
+            gardenDirectionHold += 1;
+            if (gardenDirectionHold >= 3) registerGardenCollection();
+        } else {
+            gardenDirectionHold = 0;
+        }
+    }
+
+    if (yesButton) yesButton.addEventListener("click", startGardenAdventure);
+    if (noButton) noButton.addEventListener("click", () => { if (invitation) invitation.hidden = true; });
+    if (gardenExit) gardenExit.addEventListener("click", stopGardenAdventure);
+    if (gardenTarget) gardenTarget.addEventListener("click", () => { if (gardenGameActive) registerGardenCollection(); });
+
+    window.updateGardenGameFromSensor = updateGardenGameFromSensor;
+})();
+</script>
+    if (yesButton) yesButton.addEventListener("click", startGardenAdventure);
+    if (noButton) noButton.addEventListener("click", () => { if (invitation) invitation.hidden = true; });
+    if (gardenExit) gardenExit.addEventListener("click", stopGardenAdventure);
+    if (gardenTarget) gardenTarget.addEventListener("click", () => { if (gardenGameActive) { gardenScoreValue += 1; gardenScore.textContent = String(gardenScoreValue); randomGardenTarget(); } });
+
+    window.updateGardenGameFromSensor = function(data) {
+        if (!data || String(data.side).toUpperCase() !== "LEFT") return;
+        if (Number.isFinite(Number(data.pitch))) window.__rehaboLivePitchLeft = Number(data.pitch);
+        if (Number.isFinite(Number(data.roll))) window.__rehaboLiveRollLeft = Number(data.roll);
+        updateGardenCursor();
+        checkGardenTarget();
+    };
+})();
+</script>
+
 </body>
 </html>
