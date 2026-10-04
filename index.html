@@ -153,6 +153,64 @@
             letter-spacing: 0.08em;
         }
 
+        .patient-profile-trigger {
+            position: absolute;
+            top: 0.75rem;
+            right: 9.7rem;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            min-width: 9.3rem;
+            padding: 0.52rem 0.7rem;
+            border: 1px solid rgba(46, 143, 224, 0.58);
+            background: rgba(2, 18, 39, 0.72);
+            color: #83b9d9;
+            font-family: "Orbitron", sans-serif;
+            font-size: 0.53rem;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            cursor: pointer;
+            box-shadow: inset 0 0 14px rgba(26, 121, 202, 0.08);
+            transition: border-color 180ms ease, color 180ms ease, background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+        }
+
+        .patient-profile-trigger:hover,
+        .patient-profile-trigger:focus-visible {
+            border-color: #54c6ff;
+            background: rgba(4, 30, 57, 0.88);
+            color: #effaff;
+            box-shadow: 0 0 18px rgba(42, 158, 255, 0.22), inset 0 0 14px rgba(26, 121, 202, 0.1);
+            transform: translateY(-1px);
+            outline: none;
+        }
+
+        .patient-profile-icon {
+            display: grid;
+            width: 1.35rem;
+            height: 1.35rem;
+            place-items: center;
+            border: 1px solid #39a9ff;
+            border-radius: 50%;
+            color: #63c8ff;
+            font-size: 0.66rem;
+            line-height: 1;
+            box-shadow: 0 0 9px rgba(57, 169, 255, 0.24);
+        }
+
+        .patient-profile-trigger span:last-child {
+            display: grid;
+            gap: 0.12rem;
+            text-align: left;
+        }
+
+        .patient-profile-trigger small {
+            color: #426e91;
+            font-family: "Orbitron", sans-serif;
+            font-size: 0.42rem;
+            letter-spacing: 0.08em;
+        }
+
         .hero-copy {
             position: absolute;
             top: 27%;
@@ -678,6 +736,12 @@
                 right: 0;
             }
 
+            .patient-profile-trigger {
+                top: 4.45rem;
+                right: 0;
+                min-width: 9rem;
+            }
+
             .hero-copy {
                 position: relative;
                 top: auto;
@@ -1109,7 +1173,10 @@
                         Review and save the patient's basic information before entering the rehabilitation system.
                     </p>
                 </div>
-                <button class="logout-button" id="logout-button" type="button">LOG OUT</button>
+                <div class="profile-actions">
+                    <button class="profile-button" id="return-home-button" type="button">RETURN TO REHABO-SG &gt;</button>
+                    <button class="logout-button" id="logout-button" type="button">LOG OUT</button>
+                </div>
             </header>
 
             <section class="profile-card" aria-labelledby="profile-card-title">
@@ -1192,6 +1259,11 @@
             <span class="status-dot"></span>SYSTEM ONLINE
             <small>v1.0.0</small>
         </div>
+
+        <button class="patient-profile-trigger" id="patient-profile-trigger" type="button" aria-label="Open patient personal information">
+            <span class="patient-profile-icon" aria-hidden="true">●</span>
+            <span>PATIENT PROFILE<small>PERSONAL INFORMATION &gt;</small></span>
+        </button>
 
         <section class="hero-copy" aria-labelledby="hero-title">
             <p class="eyebrow">MOBILE REHABILITATION SYSTEM</p>
@@ -1405,6 +1477,8 @@
         const profileSummary = document.getElementById("profile-summary");
         const enterSystemButton = document.getElementById("enter-system-button");
         const logoutButton = document.getElementById("logout-button");
+        const patientProfileTrigger = document.getElementById("patient-profile-trigger");
+        const returnHomeButton = document.getElementById("return-home-button");
 
         const profileFields = {
             name: document.getElementById("patient-name"),
@@ -1545,6 +1619,18 @@
             profileSummary.classList.remove("visible");
             profileStatus.textContent = "";
             showLogin();
+        });
+
+        patientProfileTrigger.addEventListener("click", () => {
+            loadSavedProfile();
+            loginScreen.hidden = true;
+            patientDashboard.hidden = false;
+            document.body.classList.remove("app-locked");
+            window.scrollTo(0, 0);
+        });
+
+        returnHomeButton.addEventListener("click", () => {
+            showSystemHome();
         });
 
         document.querySelectorAll('a[href^="#"]').forEach((link) => {
