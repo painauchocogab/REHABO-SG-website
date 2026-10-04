@@ -1,12 +1,11 @@
 
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>REHABO-SG | System Initialization</title>
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REHABO-SG | System Initialization</title>
+    <style>
         @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700&family=Share+Tech+Mono&display=swap");
 
         * {
@@ -1911,7 +1910,6 @@
     min-width: 0;
 }
 
-.current-movement-card,
 .peak-card-panel {
     border: 1px solid rgba(63, 190, 255, 0.35);
     background: rgba(4, 21, 42, 0.76);
@@ -1923,34 +1921,6 @@
     color: #69d8ff;
     font-size: 0.73rem;
     letter-spacing: 0.10em;
-}
-
-.axis-readout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.65rem;
-}
-
-.axis-value {
-    padding: 0.75rem;
-    border: 1px solid rgba(63, 190, 255, 0.26);
-    background: rgba(3, 17, 37, 0.85);
-}
-
-.axis-value span {
-    display: block;
-    color: #88b8cf;
-    font-size: 0.65rem;
-    letter-spacing: 0.07em;
-}
-
-.axis-value strong {
-    display: block;
-    margin-top: 0.35rem;
-    color: #42caff;
-    font-family: "Orbitron", sans-serif;
-    font-size: 1.25rem;
-    font-weight: 500;
 }
 
 .manual-calibration-button {
@@ -1986,78 +1956,75 @@
     line-height: 1.4;
 }
 
-.calibration-average-dashboard {
+
+/* Calibration baseline average dashboard */
+.calibration-average-panel {
     margin-top: 0.8rem;
-    border: 1px solid rgba(99, 239, 193, 0.32);
-    background: rgba(4, 21, 42, 0.76);
+    border: 1px solid rgba(63, 190, 255, 0.42);
+    background: rgba(4, 21, 42, 0.82);
     padding: 0.85rem;
 }
 
-.average-dashboard-note {
-    margin: -0.25rem 0 0.7rem;
-    color: #6f9ab3;
-    font-size: 0.57rem;
-    letter-spacing: 0.045em;
-    line-height: 1.45;
-}
-
-.average-wrist-grid {
+.calibration-average-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.65rem;
+    gap: 0.75rem;
 }
 
-.average-wrist-card {
-    min-width: 0;
+.calibration-average-card {
+    min-height: 92px;
     padding: 0.75rem;
-    border: 1px solid rgba(99, 239, 193, 0.28);
-    background: rgba(3, 17, 37, 0.85);
+    border: 1px solid rgba(63, 190, 255, 0.30);
+    background: rgba(3, 17, 37, 0.86);
 }
 
-.average-wrist-card span {
+.calibration-average-card span {
     display: block;
-    color: #63cfff;
+    color: #83b7d0;
     font-size: 0.62rem;
-    letter-spacing: 0.09em;
+    letter-spacing: 0.08em;
 }
 
-.average-wrist-card strong {
+.calibration-average-card strong {
     display: block;
     margin-top: 0.35rem;
-    color: #63efc1;
+    color: #69d8ff;
     font-family: "Orbitron", sans-serif;
     font-size: 1.25rem;
-    font-weight: 500;
 }
 
-.average-wrist-card small {
+.calibration-average-card small {
     display: block;
-    margin-top: 0.3rem;
-    color: #6f9ab3;
-    font-size: 0.55rem;
-    letter-spacing: 0.06em;
+    margin-top: 0.25rem;
+    color: #63efc1;
+    font-size: 0.56rem;
+    letter-spacing: 0.04em;
 }
 
-.average-wrist-card.complete {
-    border-color: rgba(99, 239, 193, 0.55);
+.calibration-average-note {
+    margin: 0.65rem 0 0;
+    color: #6f9ab3;
+    font-size: 0.60rem;
+    line-height: 1.45;
+    letter-spacing: 0.03em;
+}
+
+@media (max-width: 520px) {
+    .calibration-average-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .peak-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr 1fr;
     gap: 0.55rem;
-    min-width: 0;
 }
 
 .two-wrist-results {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr 1fr;
     gap: 0.8rem;
-    min-width: 0;
-}
-
-.wrist-result-column {
-    min-width: 0;
 }
 
 .wrist-result-column h5 {
@@ -2073,18 +2040,7 @@
     }
 }
 
-@media (max-width: 430px) {
-    .peak-card {
-        padding: 0.5rem;
-    }
-
-    .peak-card strong {
-        font-size: 0.78rem;
-    }
-}
-
 .peak-card {
-    min-width: 0;
     min-height: 78px;
     padding: 0.65rem;
     border: 1px solid rgba(63, 190, 255, 0.28);
@@ -2107,7 +2063,7 @@
     margin-top: 0.25rem;
     color: #e8f5ff;
     font-family: "Orbitron", sans-serif;
-    font-size: clamp(0.72rem, 2.2vw, 1rem);
+    font-size: 1rem;
 }
 
 .peak-card small {
@@ -2197,33 +2153,6 @@
     background: #0b4168;
 }
 
-.live-data-table {
-    margin-top: 0;
-    border-top: 1px solid rgba(141, 204, 237, 0.28);
-}
-
-.live-row {
-    display: grid;
-    grid-template-columns: 1.25fr 0.9fr 0.9fr;
-    gap: 0.35rem;
-    align-items: center;
-    padding: 0.62rem 0.2rem;
-    border-bottom: 1px solid rgba(141, 204, 237, 0.14);
-    color: #e8f5ff;
-    font-size: 0.67rem;
-}
-
-.live-row span:nth-child(2),
-.live-row span:nth-child(3) {
-    text-align: center;
-}
-
-.live-header {
-    color: #69d8ff;
-    font-weight: 600;
-    letter-spacing: 0.07em;
-}
-
 .sensor-data-shell {
     padding: 0.7rem;
     border: 1px solid rgba(63, 190, 255, 0.24);
@@ -2278,11 +2207,11 @@
 .wrist-readout {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.45rem;
+    gap: 0.25rem 0.45rem;
 }
 
 .wrist-readout div {
-    padding: 0.5rem;
+    padding: 0.42rem 0.5rem;
     border-bottom: 1px solid rgba(141, 204, 237, 0.12);
 }
 
@@ -2475,7 +2404,6 @@
     .monitor-title,
     .monitor-status,
     .sensor-buttons,
-    .live-data-table,
     .sensor-data-shell {
         grid-column: 1 / -1;
     }
@@ -2525,7 +2453,6 @@
 
     .peak-grid,
     .result-grid,
-    .axis-readout,
     .wrist-readout {
         grid-template-columns: 1fr 1fr;
     }
@@ -2536,6 +2463,7 @@
 }
 
 </style>
+
 <style>
 /* =========================================================
    REHABO-SG GUIDED WRIST CALIBRATION
@@ -2666,691 +2594,433 @@
 .calibration-safety-note{margin:1rem 0 0;color:#7899ad;font-size:.68rem;line-height:1.5;}
 @media(max-width:600px){.calibration-two-wrist-grid,.calibration-result-grid{grid-template-columns:1fr;}}
 </style>
-<style>
-/* ==========================================================
-   REHABO-SG — CLEAN WRIST DASHBOARD LAYOUT
-   ========================================================== */
-.layout-redesigned {
-    width: min(1500px, calc(100% - 2rem));
-    margin: 2.25rem auto;
-    padding: .75rem;
-    border: 1px solid rgba(63,190,255,.48);
-    background: linear-gradient(145deg, rgba(3,22,44,.98), rgba(2,10,24,.99));
-    box-shadow: 0 0 42px rgba(0,153,255,.10), inset 0 0 35px rgba(0,103,171,.05);
-}
-.layout-redesigned .training-layout {
-    display:grid;
-    grid-template-columns:minmax(0,1.12fr) minmax(500px,.88fr);
-    grid-template-areas:
-      "exercise monitor"
-      "game game"
-      "footer footer";
-    gap:.85rem;
-    align-items:start;
-}
-.layout-redesigned .exercise-panel { grid-area:exercise; display:flex; flex-direction:column; gap:.75rem; min-width:0; }
-.layout-redesigned .monitor-panel { grid-area:monitor; display:flex; flex-direction:column; gap:.65rem; min-width:0; }
-.layout-redesigned .exercise-title { padding:.1rem .1rem .25rem; }
-.layout-redesigned .exercise-stage { min-height:560px; }
-.layout-redesigned .current-movement-card { margin:0; }
-.layout-redesigned .session-setup { margin:0; }
-.layout-redesigned .monitor-title { padding:.1rem .1rem .2rem; }
-.layout-redesigned .sensor-buttons { grid-template-columns:1fr 1fr; }
-.layout-redesigned .wrist-card { min-width:0; }
-.layout-redesigned .monitor-panel > .wrist-card { display:block; }
-.layout-redesigned .monitor-panel { display:grid; grid-template-columns:1fr 1fr; }
-.layout-redesigned .monitor-panel > .monitor-title,
-.layout-redesigned .monitor-panel > .monitor-status,
-.layout-redesigned .monitor-panel > .sensor-buttons,
-.layout-redesigned .monitor-panel > .live-data-table,
-.layout-redesigned .monitor-panel > .peak-card-panel,
-.layout-redesigned .monitor-panel > .manual-calibration-button,
-.layout-redesigned .monitor-panel > .manual-calibration-note,
-.layout-redesigned .monitor-panel > .calibration-average-dashboard,
-.layout-redesigned .monitor-panel > .sensor-data-shell { grid-column:1/-1; }
-.layout-redesigned .peak-card-panel { margin:0; }
-.layout-redesigned .two-wrist-results { gap:.65rem; }
-.layout-redesigned .calibration-average-dashboard { margin:0; }
-.layout-redesigned .manual-calibration-button { margin-top:0; }
-.layout-redesigned .rehabo-game-panel {
-    grid-area:game;
-    margin:0;
-    padding:1rem;
-    border:1px solid rgba(63,190,255,.42);
-    background:rgba(2,15,33,.82);
-}
-.layout-redesigned .rehabo-game-header { display:flex; justify-content:space-between; gap:1rem; align-items:flex-start; }
-.layout-redesigned .game-controls { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(240px,.7fr); gap:.65rem; align-items:stretch; }
-.layout-redesigned .game-start-button { margin-top:0; }
-.layout-redesigned .game-difficulty-readout {
-    min-width:0; padding:.7rem .85rem; border:1px solid rgba(99,239,193,.32); background:rgba(3,31,45,.45);
-    display:flex; flex-direction:column; justify-content:center;
-}
-.layout-redesigned .game-difficulty-readout span { color:#69d8ff; font-size:.58rem; letter-spacing:.10em; }
-.layout-redesigned .game-difficulty-readout strong { color:#63efc1; font-family:"Orbitron",sans-serif; font-size:1.15rem; margin-top:.18rem; }
-.layout-redesigned .game-difficulty-readout small { color:#6f9ab3; font-size:.5rem; margin-top:.18rem; letter-spacing:.04em; }
-.layout-redesigned .calibration-footer { grid-area:footer; margin:0; }
-@media (max-width:1100px){
- .layout-redesigned .training-layout{grid-template-columns:1fr;grid-template-areas:"exercise" "monitor" "game" "footer";}
- .layout-redesigned .exercise-stage{min-height:500px;}
-}
-@media (max-width:760px){
- .layout-redesigned{width:min(100%,calc(100% - .75rem));padding:.55rem;}
- .layout-redesigned .monitor-panel{display:flex;}
- .layout-redesigned .monitor-panel > .wrist-card{width:100%;}
- .layout-redesigned .game-controls{grid-template-columns:1fr;}
- .layout-redesigned .rehabo-game-header{flex-direction:column;}
- .layout-redesigned .sensor-buttons{grid-template-columns:1fr;}
-}
-</style><style>
-/* FINAL LAYOUT OVERRIDE — clean two-column rehabilitation dashboard */
-.training-workspace.layout-redesigned-shell,
-.training-workspace {
-  width:min(1500px, calc(100% - 2rem));
-  margin:1rem auto 2rem;
-  padding:.75rem;
-  position:relative;
-  overflow:visible;
-}
-.training-workspace > .training-topbar {
-  display:flex !important;
-  min-height:58px;
-  margin-bottom:.75rem;
-  position:relative;
-  z-index:20;
-}
-.training-workspace > .training-layout.layout-redesigned {
-  display:grid !important;
-  grid-template-columns:minmax(0,1.5fr) minmax(390px,.9fr) !important;
-  grid-template-areas:"exercise monitor" "game game" "footer footer" !important;
-  gap:.8rem !important;
-  align-items:stretch !important;
-  width:100%;
-}
-.training-workspace .exercise-panel {
-  grid-area:exercise !important;
-  display:grid !important;
-  grid-template-columns:minmax(0,1fr) !important;
-  grid-template-rows:auto minmax(470px,1fr) auto auto !important;
-  gap:.7rem !important;
-  min-width:0 !important;
-  min-height:0 !important;
-  padding:.75rem !important;
-  position:relative !important;
-  z-index:1 !important;
-  visibility:visible !important;
-}
-.training-workspace .exercise-title,
-.training-workspace .exercise-stage,
-.training-workspace .current-movement-card,
-.training-workspace .session-setup {
-  grid-column:1 !important;
-  visibility:visible !important;
-}
-.training-workspace .exercise-stage {
-  display:block !important;
-  position:relative !important;
-  width:100% !important;
-  min-width:0 !important;
-  min-height:470px !important;
-  height:100% !important;
-  opacity:1 !important;
-  visibility:visible !important;
-  overflow:hidden !important;
-}
-.training-workspace .calibration-axis,
-.training-workspace .calibration-center,
-.training-workspace .stage-instruction {
-  visibility:visible !important;
-}
-.training-workspace .calibration-axis { display:block !important; }
-.training-workspace .calibration-center { display:block !important; }
-.training-workspace .current-movement-card {
-  display:block !important;
-  margin:0 !important;
-}
-.training-workspace .session-setup {
-  display:flex !important;
-  margin:0 !important;
-}
-.training-workspace .monitor-panel {
-  grid-area:monitor !important;
-  display:grid !important;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-  grid-auto-rows:auto !important;
-  align-content:start !important;
-  gap:.6rem !important;
-  min-width:0 !important;
-  padding:.75rem !important;
-  position:relative !important;
-  z-index:2 !important;
-  visibility:visible !important;
-}
-.training-workspace .monitor-panel > .monitor-title,
-.training-workspace .monitor-panel > .monitor-status,
-.training-workspace .monitor-panel > .sensor-buttons,
-.training-workspace .monitor-panel > .live-data-table,
-.training-workspace .monitor-panel > .peak-card-panel,
-.training-workspace .monitor-panel > .manual-calibration-button,
-.training-workspace .monitor-panel > .manual-calibration-note,
-.training-workspace .monitor-panel > .calibration-average-dashboard,
-.training-workspace .monitor-panel > .sensor-data-shell {
-  grid-column:1 / -1 !important;
-}
-.training-workspace .monitor-panel > .wrist-card {
-  display:block !important;
-  grid-column:span 1 !important;
-  min-width:0 !important;
-}
-.training-workspace .two-wrist-results {
-  display:grid !important;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-  gap:.7rem !important;
-}
-.training-workspace .peak-grid {
-  display:grid !important;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-  gap:.45rem !important;
-}
-.training-workspace .calibration-average-dashboard {
-  margin:0 !important;
-}
-.training-workspace .rehabo-game-panel {
-  grid-area:game !important;
-  min-width:0 !important;
-  margin:0 !important;
-}
-.training-workspace .calibration-footer {
-  grid-area:footer !important;
-  min-width:0 !important;
-}
-@media (max-width:1050px) {
-  .training-workspace > .training-layout.layout-redesigned {
-    grid-template-columns:1fr !important;
-    grid-template-areas:"exercise" "monitor" "game" "footer" !important;
-  }
-  .training-workspace .monitor-panel {
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-  }
-}
-@media (max-width:650px) {
-  .training-workspace {
-    width:calc(100% - .7rem) !important;
-    padding:.5rem !important;
-  }
-  .training-workspace .monitor-panel,
-  .training-workspace .two-wrist-results {
-    grid-template-columns:1fr !important;
-  }
-  .training-workspace .monitor-panel > .wrist-card {
-    grid-column:1 !important;
-  }
-  .training-workspace .exercise-stage { min-height:400px !important; }
-}
-</style>
-
 </head>
 <body>
-<a aria-label="Return to REHABO-SG home" href="index.html">
-<img alt="REHABO-SG logo" class="brand-logo" src="REHABO-SG%20LOGO.png"/>
-</a>
-<main class="initialization-panel">
-<p class="panel-heading">REHABO-SG</p>
-<h1>SYSTEM INITIALIZATION</h1>
-<p aria-live="polite" class="initialization-status">
-<span aria-hidden="true" class="pulse"></span>
-<span id="status-message">INITIALIZING SYSTEM...</span>
-</p>
-<ul aria-label="System component status" class="system-list">
-<li data-ready-at="18"><span class="indicator">○</span><span>ROBOT CONTROLLER</span><span class="device-state">CHECKING</span></li>
-<li data-ready-at="38"><span class="indicator">○</span><span>MOTION SENSOR</span><span class="device-state">CHECKING</span></li>
-<li data-ready-at="58"><span class="indicator">○</span><span>BALANCE PLATFORM</span><span class="device-state">CHECKING</span></li>
-<li data-ready-at="78"><span class="indicator">○</span><span>TABLET INTERFACE</span><span class="device-state">CHECKING</span></li>
-<li><span class="indicator">◐</span><span>PATIENT PROFILE</span><span class="device-state">STANDBY</span></li>
-</ul>
-<div class="progress-area">
-<div aria-label="System initialization progress" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="progress-track" role="progressbar">
-<div class="progress-fill"></div>
-</div>
-<span class="progress-value">0%</span>
-</div>
-<p class="panel-footer">SECURE REHABILITATION SYSTEM</p>
-<a class="scroll-to-dashboard" href="#control-dashboard">
-            ↓   OPEN CONTROL DASHBOARD
+    <a href="index.html" aria-label="Return to REHABO-SG home">
+        <img class="brand-logo" src="REHABO-SG%20LOGO.png" alt="REHABO-SG logo">
+    </a>
+
+    <main class="initialization-panel">
+        <p class="panel-heading">REHABO-SG</p>
+        <h1>SYSTEM INITIALIZATION</h1>
+        <p class="initialization-status" aria-live="polite">
+            <span class="pulse" aria-hidden="true"></span>
+            <span id="status-message">INITIALIZING SYSTEM...</span>
+        </p>
+
+        <ul class="system-list" aria-label="System component status">
+            <li data-ready-at="18"><span class="indicator">○</span><span>ROBOT CONTROLLER</span><span class="device-state">CHECKING</span></li>
+            <li data-ready-at="38"><span class="indicator">○</span><span>MOTION SENSOR</span><span class="device-state">CHECKING</span></li>
+            <li data-ready-at="58"><span class="indicator">○</span><span>BALANCE PLATFORM</span><span class="device-state">CHECKING</span></li>
+            <li data-ready-at="78"><span class="indicator">○</span><span>TABLET INTERFACE</span><span class="device-state">CHECKING</span></li>
+            <li><span class="indicator">◐</span><span>PATIENT PROFILE</span><span class="device-state">STANDBY</span></li>
+        </ul>
+
+        <div class="progress-area">
+            <div class="progress-track" role="progressbar" aria-label="System initialization progress"
+                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <div class="progress-fill"></div>
+            </div>
+            <span class="progress-value">0%</span>
+        </div>
+
+        <p class="panel-footer">SECURE REHABILITATION SYSTEM</p>
+        <a class="scroll-to-dashboard" href="#control-dashboard">
+            ↓ &nbsp; OPEN CONTROL DASHBOARD
         </a>
-</main>
-<section aria-labelledby="dashboard-title" class="control-dashboard" id="control-dashboard">
-<header class="dashboard-header">
-<p class="dashboard-brand">REHABO-SG</p>
-<h2 class="dashboard-title" id="dashboard-title">REHABILITATION CONTROL SYSTEM</h2>
-<p class="dashboard-status">SYSTEM STATUS <span>●</span> ONLINE</p>
-</header>
-<h3 class="mode-heading">SELECT REHABILITATION MODE</h3>
-<div class="mode-grid">
-<button aria-pressed="false" class="mode-card" type="button">
-<span aria-hidden="true" class="mode-icon">↗</span>
-<span class="mode-name">UPPER LIMB<br/>TRAINING</span>
+    </main>
+
+    <section class="control-dashboard" id="control-dashboard" aria-labelledby="dashboard-title">
+        <header class="dashboard-header">
+            <p class="dashboard-brand">REHABO-SG</p>
+            <h2 class="dashboard-title" id="dashboard-title">REHABILITATION CONTROL SYSTEM</h2>
+            <p class="dashboard-status">SYSTEM STATUS <span>●</span> ONLINE</p>
+        </header>
+
+        <h3 class="mode-heading">SELECT REHABILITATION MODE</h3>
+
+        <div class="mode-grid">
+            <button class="mode-card" type="button" aria-pressed="false">
+                <span class="mode-icon" aria-hidden="true">↗</span>
+                <span class="mode-name">UPPER LIMB<br>TRAINING</span>
+            </button>
+            <button class="mode-card" type="button" aria-pressed="false">
+                <span class="mode-icon" aria-hidden="true">⇄</span>
+                <span class="mode-name">BALANCE &amp;<br>WEIGHT SHIFT</span>
+            </button>
+            <button class="mode-card" type="button" aria-pressed="false">
+                <span class="mode-icon" aria-hidden="true">▥</span>
+                <span class="mode-name">PROGRESS<br>TRACKING</span>
+            </button>
+            <button class="mode-card" type="button" aria-pressed="false">
+    <span class="mode-icon" aria-hidden="true">◷</span>
+    <span class="mode-name">HISTORICAL<br>TRIALS</span>
 </button>
-<button aria-pressed="false" class="mode-card" type="button">
-<span aria-hidden="true" class="mode-icon">⇄</span>
-<span class="mode-name">BALANCE &amp;<br/>WEIGHT SHIFT</span>
-</button>
-<button aria-pressed="false" class="mode-card" type="button">
-<span aria-hidden="true" class="mode-icon">▥</span>
-<span class="mode-name">PROGRESS<br/>TRACKING</span>
-</button>
-<button aria-pressed="false" class="mode-card" type="button">
-<span aria-hidden="true" class="mode-icon">◷</span>
-<span class="mode-name">HISTORICAL<br/>TRIALS</span>
-</button>
-</div>
-<p aria-live="polite" class="mode-message" id="mode-message">SELECT A MODE</p>
-</section>
-<section aria-labelledby="training-heading" class="training-workspace" hidden="" id="upper-limb-training">
-<header class="training-topbar">
-<h2 class="training-heading" id="training-heading">REHAB MODE // WRIST</h2>
-<span class="session-badge">● READY</span>
-</header>
-<div class="training-layout layout-redesigned">
-<section aria-labelledby="exercise-title" class="exercise-panel">
-<h3 class="exercise-title" id="exercise-title">WRIST REHABILITATION</h3>
-<div aria-label="Wrist calibration area" class="exercise-stage">
-<div aria-hidden="true" class="calibration-axis">
-<span class="up">UP</span>
-<span class="down">DOWN</span>
-<span class="left">LEFT</span>
-<span class="right">RIGHT</span>
-<span class="axis-line-h"></span>
-<span class="axis-line-v"></span>
-</div>
-<div aria-hidden="true" class="calibration-center"></div>
-<p class="stage-instruction" id="exercise-instruction">
+        </div>
+
+        <p class="mode-message" id="mode-message" aria-live="polite">SELECT A MODE</p>
+    </section>
+<section class="training-workspace" id="upper-limb-training"
+         aria-labelledby="training-heading" hidden>
+    <header class="training-topbar">
+        <h2 class="training-heading" id="training-heading">REHAB MODE // WRIST</h2>
+        <span class="session-badge">● READY</span>
+    </header>
+
+    <div class="training-layout">
+        <section class="exercise-panel" aria-labelledby="exercise-title">
+            <h3 class="exercise-title" id="exercise-title">WRIST REHABILITATION</h3>
+
+            <div class="exercise-stage" aria-label="Wrist calibration area">
+                <div class="calibration-axis" aria-hidden="true">
+                    <span class="up">UP</span>
+                    <span class="down">DOWN</span>
+                    <span class="left">LEFT</span>
+                    <span class="right">RIGHT</span>
+                    <span class="axis-line-h"></span>
+                    <span class="axis-line-v"></span>
+                </div>
+                <div class="calibration-center" aria-hidden="true"></div>
+
+                <p class="stage-instruction" id="exercise-instruction">
                     Place your wrist in a comfortable neutral position to begin calibration.
                 </p>
-<!-- Retained for existing JavaScript compatibility; hidden by the new UI. -->
-<button aria-label="Rehabilitation target" class="target-button" disabled="" type="button"></button>
-<div aria-hidden="true" id="game-cursor"></div>
-<div aria-live="polite" class="rehabo-game-board" id="rehabo-game-board">
-<div class="game-direction-label" id="game-direction-label">READY</div>
-<div class="game-side-label" id="game-side-label">CALIBRATE FIRST</div>
-<div aria-hidden="true" class="game-star" id="game-star">★</div>
-<div class="game-angle-readout">
-<span>CURRENT MOVEMENT</span>
-<strong id="game-current-angle">0.0°</strong>
-</div>
-<div class="game-best-readout">
-<span>BEST CAPTURED</span>
-<strong id="game-best-angle">—</strong>
-</div>
-<button class="game-capture-button" disabled="" id="game-capture-button" type="button">✦ CAPTURE MOVEMENT</button>
-</div>
-</div><section class="current-movement-card">
-<h4 class="subpanel-title">CURRENT MOVEMENT</h4>
-<div class="axis-readout">
-<div class="axis-value">
-<span>PITCH (UP / DOWN)</span>
-<strong id="calibration-pitch">0.0°</strong>
-</div>
-<div class="axis-value">
-<span>ROLL (LEFT / RIGHT)</span>
-<strong id="calibration-roll">0.0°</strong>
-</div>
-</div>
-</section><div class="session-setup">
-<label for="duration-select">SESSION LENGTH</label>
-<select id="duration-select">
-<option value="">Choose time</option>
-<option value="20">20 seconds</option>
-<option value="40">40 seconds</option>
-<option value="60">60 seconds</option>
-<option value="90">90 seconds</option>
-<option value="120">120 seconds</option>
-</select>
-<span aria-live="polite" class="session-timer" id="session-timer">--:--</span>
-</div>
 
+                <!-- Retained for existing JavaScript compatibility; hidden by the new UI. -->
+                <button class="target-button" type="button"
+                        aria-label="Rehabilitation target" disabled></button>
+                <div id="game-cursor" aria-hidden="true"></div>
+            </div>
 
-</section>
-<aside aria-labelledby="monitor-title" class="monitor-panel">
-<h3 class="monitor-title" id="monitor-title">LIVE MONITORING</h3>
-<p class="monitor-status" id="serial-status">● SENSORS DISCONNECTED</p>
-<div class="sensor-buttons">
-<button id="connect-left" onclick="connectSensor('LEFT')" type="button">CONNECT LEFT SENSOR</button>
-<button id="connect-right" onclick="connectSensor('RIGHT')" type="button">CONNECT RIGHT SENSOR</button>
-</div>
-<div class="live-data-table">
-<div class="live-row live-header">
-<span>DATA</span>
-<span>LEFT WRIST</span>
-<span>RIGHT WRIST</span>
-</div>
-<div class="live-row">
-<span>Angle</span>
-<span id="left-angle">0°</span>
-<span id="right-angle">0°</span>
-</div>
-<div class="live-row">
-<span>Angular Velocity</span>
-<span id="left-angular">0.00 °/s</span>
-<span id="right-angular">0.00 °/s</span>
-</div>
-<div class="live-row">
-<span>Acceleration</span>
-<span id="left-acceleration">0.00 m/s²</span>
-<span id="right-acceleration">0.00 m/s²</span>
-</div>
-<div class="live-row">
-<span>Direction</span>
-<span id="left-direction">Neutral</span>
-<span id="right-direction">Neutral</span>
-</div>
-<div class="live-row">
-<span>Movement State</span>
-<span id="left-state">Idle</span>
-<span id="right-state">Idle</span>
-</div>
-</div><section class="peak-card-panel two-wrist-peak-panel">
-<h4 class="subpanel-title">COMFORTABLE PEAK ANGLES // BOTH WRISTS</h4>
-<div class="two-wrist-results">
-<div class="wrist-result-column">
-<h5>LEFT WRIST</h5>
-<div class="peak-grid">
-<div class="peak-card" id="peak-left-up-card"><span>↑ UP</span><strong id="peak-left-up">—</strong><small id="peak-left-up-status">PENDING</small></div>
-<div class="peak-card" id="peak-left-down-card"><span>↓ DOWN</span><strong id="peak-left-down">—</strong><small id="peak-left-down-status">PENDING</small></div>
-<div class="peak-card" id="peak-left-left-card"><span>← LEFT</span><strong id="peak-left-left">—</strong><small id="peak-left-left-status">PENDING</small></div>
-<div class="peak-card" id="peak-left-right-card"><span>→ RIGHT</span><strong id="peak-left-right">—</strong><small id="peak-left-right-status">PENDING</small></div>
-</div>
-</div>
-<div class="wrist-result-column">
-<h5>RIGHT WRIST</h5>
-<div class="peak-grid">
-<div class="peak-card" id="peak-right-up-card"><span>↑ UP</span><strong id="peak-right-up">—</strong><small id="peak-right-up-status">PENDING</small></div>
-<div class="peak-card" id="peak-right-down-card"><span>↓ DOWN</span><strong id="peak-right-down">—</strong><small id="peak-right-down-status">PENDING</small></div>
-<div class="peak-card" id="peak-right-left-card"><span>← LEFT</span><strong id="peak-right-left">—</strong><small id="peak-right-left-status">PENDING</small></div>
-<div class="peak-card" id="peak-right-right-card"><span>→ RIGHT</span><strong id="peak-right-right">—</strong><small id="peak-right-right-status">PENDING</small></div>
-</div>
-</div>
-</div>
+            <div class="calibration-side-panel">
+                <section class="peak-card-panel two-wrist-peak-panel">
+                    <h4 class="subpanel-title">COMFORTABLE PEAK ANGLES // BOTH WRISTS</h4>
+                    <div class="two-wrist-results">
+                        <div class="wrist-result-column">
+                            <h5>LEFT WRIST</h5>
+                            <div class="peak-grid">
+                                <div class="peak-card" id="peak-left-up-card"><span>↑ UP</span><strong id="peak-left-up">—</strong><small id="peak-left-up-status">PENDING</small></div>
+                                <div class="peak-card" id="peak-left-down-card"><span>↓ DOWN</span><strong id="peak-left-down">—</strong><small id="peak-left-down-status">PENDING</small></div>
+                                <div class="peak-card" id="peak-left-left-card"><span>← LEFT</span><strong id="peak-left-left">—</strong><small id="peak-left-left-status">PENDING</small></div>
+                                <div class="peak-card" id="peak-left-right-card"><span>→ RIGHT</span><strong id="peak-left-right">—</strong><small id="peak-left-right-status">PENDING</small></div>
+                            </div>
+                        </div>
+                        <div class="wrist-result-column">
+                            <h5>RIGHT WRIST</h5>
+                            <div class="peak-grid">
+                                <div class="peak-card" id="peak-right-up-card"><span>↑ UP</span><strong id="peak-right-up">—</strong><small id="peak-right-up-status">PENDING</small></div>
+                                <div class="peak-card" id="peak-right-down-card"><span>↓ DOWN</span><strong id="peak-right-down">—</strong><small id="peak-right-down-status">PENDING</small></div>
+                                <div class="peak-card" id="peak-right-left-card"><span>← LEFT</span><strong id="peak-right-left">—</strong><small id="peak-right-left-status">PENDING</small></div>
+                                <div class="peak-card" id="peak-right-right-card"><span>→ RIGHT</span><strong id="peak-right-right">—</strong><small id="peak-right-right-status">PENDING</small></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="manual-calibration-button" id="manual-calibrate-button" type="button">▶ START CALIBRATION</button>
+                    <p class="manual-calibration-note" id="manual-calibration-note">CLICK START CALIBRATION TO BEGIN. CONNECTED SENSORS WILL BE MEASURED.</p>
 
+                    <section class="calibration-average-panel" aria-labelledby="calibration-average-title">
+                        <h4 class="subpanel-title" id="calibration-average-title">AVERAGE ANGLE // CALIBRATION BASELINE</h4>
+                        <div class="calibration-average-grid">
+                            <div class="calibration-average-card">
+                                <span>LEFT WRIST</span>
+                                <strong id="baseline-average-left">—</strong>
+                                <small id="baseline-average-left-status">PENDING</small>
+                            </div>
+                            <div class="calibration-average-card">
+                                <span>RIGHT WRIST</span>
+                                <strong id="baseline-average-right">—</strong>
+                                <small id="baseline-average-right-status">PENDING</small>
+                            </div>
+                        </div>
+                        <p class="calibration-average-note">AVERAGE OF THE 4 CALIBRATED DIRECTIONS (UP, DOWN, LEFT, RIGHT). THIS VALUE SERVES AS THE WRIST-SPECIFIC BASELINE FOR ACCUMULATED GAME PERFORMANCE DATA.</p>
+                    </section>
+                </section>
+            </div>
 
+            <div class="session-setup">
+                <label for="duration-select">SESSION LENGTH</label>
+                <select id="duration-select">
+                    <option value="">Choose time</option>
+                    <option value="20">20 seconds</option>
+                    <option value="40">40 seconds</option>
+                    <option value="60">60 seconds</option>
+                    <option value="90">90 seconds</option>
+                    <option value="120">120 seconds</option>
+                </select>
+                <span class="session-timer" id="session-timer" aria-live="polite">--:--</span>
+            </div>
+        </section>
 
+        <aside class="monitor-panel" aria-labelledby="monitor-title">
+            <h3 class="monitor-title" id="monitor-title">LIVE MONITORING</h3>
 
-</section><button class="manual-calibration-button" id="manual-calibrate-button" type="button">▶ START CALIBRATION</button><p class="manual-calibration-note" id="manual-calibration-note">CLICK START CALIBRATION TO BEGIN. CONNECTED SENSORS WILL BE MEASURED.</p><section aria-live="polite" class="calibration-average-dashboard" id="calibration-average-dashboard">
-<h4 class="subpanel-title">CALIBRATION AVERAGE ANGLE</h4>
-<p class="average-dashboard-note">AVERAGE OF ALL VALID MOVEMENT READINGS DURING THE 4-DIRECTION CALIBRATION</p>
-<div class="average-wrist-grid">
-<div class="average-wrist-card">
-<span>LEFT WRIST</span>
-<strong id="calibration-average-left">—</strong>
-<small id="calibration-average-left-status">PENDING</small>
-</div>
-<div class="average-wrist-card">
-<span>RIGHT WRIST</span>
-<strong id="calibration-average-right">—</strong>
-<small id="calibration-average-right-status">PENDING</small>
-</div>
-</div>
+            <p class="monitor-status" id="serial-status">● SENSORS DISCONNECTED</p>
+
+            <div class="sensor-buttons">
+                <button id="connect-left" type="button" onclick="connectSensor('LEFT')">CONNECT LEFT SENSOR</button>
+                <button id="connect-right" type="button" onclick="connectSensor('RIGHT')">CONNECT RIGHT SENSOR</button>
+            </div>
+
+            <section class="wrist-card" aria-label="Left wrist sensor details">
+                <div class="wrist-card-header">
+                    <strong>LEFT WRIST</strong>
+                    <span id="left-sensor-chip">READY</span>
+                </div>
+                <div class="wrist-readout">
+                    <div><span>Pitch</span><strong id="left-pitch-live">0.0°</strong></div>
+                    <div><span>Roll</span><strong id="left-roll-live">0.0°</strong></div>
+                    <div><span>Angle</span><strong id="left-angle">0.0°</strong></div>
+                    <div><span>Angular Velocity</span><strong id="left-angular">0.00 °/s</strong></div>
+                    <div><span>Acceleration</span><strong id="left-acceleration">0.00 m/s²</strong></div>
+                    <div><span>Direction</span><strong id="left-direction-live">Neutral</strong></div>
+                    <div><span>Movement State</span><strong id="left-state-live">Idle</strong></div>
+                </div>
+                <div class="axis-diagram" aria-hidden="true">
+                    <span class="axis-label axis-up">UP (+)</span>
+                    <span class="axis-label axis-down">DOWN (-)</span>
+                    <span class="axis-label axis-left">LEFT (-)</span>
+                    <span class="axis-label axis-right">RIGHT (+)</span>
+                    <span class="axis-center"></span>
+                </div>
+            </section>
+
+            <section class="wrist-card" aria-label="Right wrist sensor details">
+                <div class="wrist-card-header">
+                    <strong>RIGHT WRIST</strong>
+                    <span id="right-sensor-chip">READY</span>
+                </div>
+                <div class="wrist-readout">
+                    <div><span>Pitch</span><strong id="right-pitch-live">0.0°</strong></div>
+                    <div><span>Roll</span><strong id="right-roll-live">0.0°</strong></div>
+                    <div><span>Angle</span><strong id="right-angle">0.0°</strong></div>
+                    <div><span>Angular Velocity</span><strong id="right-angular">0.00 °/s</strong></div>
+                    <div><span>Acceleration</span><strong id="right-acceleration">0.00 m/s²</strong></div>
+                    <div><span>Direction</span><strong id="right-direction-live">Neutral</strong></div>
+                    <div><span>Movement State</span><strong id="right-state-live">Idle</strong></div>
+                </div>
+                <div class="axis-diagram" aria-hidden="true">
+                    <span class="axis-label axis-up">UP (+)</span>
+                    <span class="axis-label axis-down">DOWN (-)</span>
+                    <span class="axis-label axis-left">LEFT (-)</span>
+                    <span class="axis-label axis-right">RIGHT (+)</span>
+                    <span class="axis-center"></span>
+                </div>
+            </section>
+
+            <div class="sensor-data-shell">
+                <p class="sensor-data-heading">RAW SENSOR STREAM</p>
+                <pre id="sensor-data">WAITING FOR SENSOR DATA...</pre>
+            </div>
+        </aside>
+
+        <!-- Calibration footer dashboards removed -->
+    </div>
 </section>
-<section aria-label="Left wrist sensor details" class="wrist-card">
-<div class="wrist-card-header">
-<strong>LEFT WRIST</strong>
-<span id="left-sensor-chip">READY</span>
-</div>
-<div class="wrist-readout">
-<div><span>Pitch</span><strong id="left-pitch-live">0.0°</strong></div>
-<div><span>Roll</span><strong id="left-roll-live">0.0°</strong></div>
-<div><span>Direction</span><strong id="left-direction-live">Neutral</strong></div>
-<div><span>State</span><strong id="left-state-live">Idle</strong></div>
-</div>
-<div aria-hidden="true" class="axis-diagram">
-<span class="axis-label axis-up">UP (+)</span>
-<span class="axis-label axis-down">DOWN (-)</span>
-<span class="axis-label axis-left">LEFT (-)</span>
-<span class="axis-label axis-right">RIGHT (+)</span>
-<span class="axis-center"></span>
-</div>
-</section>
-<section aria-label="Right wrist sensor details" class="wrist-card">
-<div class="wrist-card-header">
-<strong>RIGHT WRIST</strong>
-<span id="right-sensor-chip">READY</span>
-</div>
-<div class="wrist-readout">
-<div><span>Pitch</span><strong id="right-pitch-live">0.0°</strong></div>
-<div><span>Roll</span><strong id="right-roll-live">0.0°</strong></div>
-<div><span>Direction</span><strong id="right-direction-live">Neutral</strong></div>
-<div><span>State</span><strong id="right-state-live">Idle</strong></div>
-</div>
-<div aria-hidden="true" class="axis-diagram">
-<span class="axis-label axis-up">UP (+)</span>
-<span class="axis-label axis-down">DOWN (-)</span>
-<span class="axis-label axis-left">LEFT (-)</span>
-<span class="axis-label axis-right">RIGHT (+)</span>
-<span class="axis-center"></span>
-</div>
-</section>
-<div class="sensor-data-shell">
-<p class="sensor-data-heading">RAW SENSOR STREAM</p>
-<pre id="sensor-data">WAITING FOR SENSOR DATA...</pre>
-</div>
-</aside>
-<div class="calibration-footer">
-<section class="info-card">
-<h4>CALIBRATION STATUS</h4>
-<p><strong id="calibration-step">READY</strong> — WAITING TO BEGIN</p>
-<p aria-label="Calibration progress" class="progress-dots">
-<i class="active"></i><i></i><i></i><i></i><i></i>
-</p>
-</section>
-<div class="calibration-controls">
-<span class="calibration-progress-text">
-                    CALIBRATION <span id="calibration-progress">READY</span>
-<span aria-hidden="true" class="progress-dots">
-<i class="active"></i><i></i><i></i><i></i><i></i>
-</span>
-</span>
-<button class="calibration-action" disabled="" hidden="" id="begin-calibration" type="button">▶ BEGIN CALIBRATION</button>
-</div>
-</div>
-<section aria-labelledby="rehabo-game-title" class="rehabo-game-panel" id="rehabo-game-panel">
-<div class="rehabo-game-header">
-<div>
-<h4 class="subpanel-title" id="rehabo-game-title">GAME // CONSTELLATION REACH</h4>
-<p>DIFFICULTY IS PERSONALIZED FROM THE BILATERAL CALIBRATION AVERAGE. NO FIXED ANGLE TARGET.</p>
-</div>
-<span class="game-round-counter" id="game-round-counter">0 / 8</span>
-</div>
-<div class="game-controls">
-<button class="manual-calibration-button game-start-button" disabled="" id="game-start-button" type="button">▶ START GAME</button>
-<button class="game-reset-button" disabled="" id="game-reset-button" type="button">RESET</button>
-<div class="game-difficulty-readout"><span>PERSONALIZED DIFFICULTY</span><strong id="game-bilateral-average">—°</strong><small>BASED ON LEFT + RIGHT CALIBRATION AVERAGE</small></div></div>
-<div class="game-data-strip">
-<div><span>SESSION BEST</span><strong id="game-session-best">—</strong></div>
-<div><span>DATA CAPTURED</span><strong id="game-data-count">0</strong></div>
-<div><span>STATUS</span><strong id="game-status">CALIBRATION REQUIRED</strong></div>
-</div>
-</section></div>
-</section>
-<section aria-labelledby="balance-title" class="balance-workspace" hidden="" id="balance-workspace">
-<header class="balance-header">
-<h2 id="balance-title">REHAB MODE // BALANCE &amp; WEIGHT SHIFT</h2>
-<p class="monitor-status" id="device-session-status">
+<section class="balance-workspace" id="balance-workspace" aria-labelledby="balance-title" hidden>
+    <header class="balance-header">
+        <h2 id="balance-title">REHAB MODE // BALANCE &amp; WEIGHT SHIFT</h2>
+        <p class="monitor-status" id="device-session-status">
     ● SENSOR SESSION
 </p>
-</header>
-<div class="balance-layout">
-<section aria-labelledby="weight-shift-title" class="balance-stage">
-<h3 id="weight-shift-title">WEIGHT DISTRIBUTION // CENTER OF MASS</h3>
-<div class="weight-track">
-<button aria-label="Shift weight left" class="weight-target" data-side="LEFT" disabled="" type="button">
-<img alt="" class="footprint-image" src="Foot Print Left.png"/>
-<span>SHIFT LEFT</span>
-</button>
-<button aria-label="Shift weight right" class="weight-target" data-side="RIGHT" disabled="" type="button">
-<img alt="" class="footprint-image" src="Foot Print Right.png"/>
-<span>SHIFT RIGHT</span>
-</button>
-<aside aria-label="Pressure scale" class="pressure-legend">
-<span class="pressure-low">LOWEST</span>
-<img alt="Pressure spectrum from low to high" src="Color Spectrum.png"/>
-<span class="pressure-high">HIGHEST</span>
+    </header>
+
+    <div class="balance-layout">
+        <section class="balance-stage" aria-labelledby="weight-shift-title">
+            <h3 id="weight-shift-title">WEIGHT DISTRIBUTION // CENTER OF MASS</h3>
+
+            <div class="weight-track">
+    <button class="weight-target" type="button" data-side="LEFT" disabled
+            aria-label="Shift weight left">
+        <img class="footprint-image" src="Foot Print Left.png" alt="">
+        <span>SHIFT LEFT</span>
+    </button>
+
+    <button class="weight-target" type="button" data-side="RIGHT" disabled
+            aria-label="Shift weight right">
+        <img class="footprint-image" src="Foot Print Right.png" alt="">
+        <span>SHIFT RIGHT</span>
+    </button>
+    <aside class="pressure-legend" aria-label="Pressure scale">
+    <span class="pressure-low">LOWEST</span>
+    <img src="Color Spectrum.png" alt="Pressure spectrum from low to high">
+    <span class="pressure-high">HIGHEST</span>
 </aside>
 </div>
-<p class="weight-instruction" id="weight-instruction">
+
+            <p class="weight-instruction" id="weight-instruction">
                 Choose a duration, then start the test.
             </p>
-<div class="balance-setup">
-<label for="balance-duration">TEST LENGTH</label>
-<select id="balance-duration">
-<option value="20">20 seconds</option>
-<option selected="" value="40">40 seconds</option>
-<option value="60">60 seconds</option>
-<option value="90">90 seconds</option>
-</select>
-<span class="balance-timer" id="balance-timer">00:40</span>
-</div>
-<div class="balance-controls">
-<button class="start-exercise" id="start-balance" type="button">▶ START BALANCE TEST</button>
-<button class="start-exercise" id="reset-balance" type="button">RESET</button>
-</div>
+
+            <div class="balance-setup">
+                <label for="balance-duration">TEST LENGTH</label>
+                <select id="balance-duration">
+                    <option value="20">20 seconds</option>
+                    <option value="40" selected>40 seconds</option>
+                    <option value="60">60 seconds</option>
+                    <option value="90">90 seconds</option>
+                </select>
+                <span class="balance-timer" id="balance-timer">00:40</span>
+            </div>
+
+            <div class="balance-controls">
+                <button class="start-exercise" id="start-balance" type="button">▶ START BALANCE TEST</button>
+                <button class="start-exercise" id="reset-balance" type="button">RESET</button>
+            </div>
+        </section>
+
+        <aside class="balance-metrics" aria-label="Balance test measurements">
+            <h3>LIVE BALANCE METRICS</h3>
+            <div class="balance-metric"><span>BALANCE SCORE</span><strong id="balance-score">—</strong></div>
+            <div class="balance-metric"><span>LEFT / RIGHT</span><strong id="weight-split">50% / 50%</strong></div>
+            <div class="balance-metric"><span>CENTER DEVIATION</span><strong id="center-deviation">0.0 cm</strong></div>
+            <div class="balance-metric"><span>TIME</span><strong id="balance-elapsed">00:00</strong></div>
+            <p class="balance-note">Demo results are simulated and are not clinical measurements.</p>
+        </aside>
+    </div>
 </section>
-<aside aria-label="Balance test measurements" class="balance-metrics">
-<h3>LIVE BALANCE METRICS</h3>
-<div class="balance-metric"><span>BALANCE SCORE</span><strong id="balance-score">—</strong></div>
-<div class="balance-metric"><span>LEFT / RIGHT</span><strong id="weight-split">50% / 50%</strong></div>
-<div class="balance-metric"><span>CENTER DEVIATION</span><strong id="center-deviation">0.0 cm</strong></div>
-<div class="balance-metric"><span>TIME</span><strong id="balance-elapsed">00:00</strong></div>
-<p class="balance-note">Demo results are simulated and are not clinical measurements.</p>
-</aside>
-</div>
+<section class="progress-workspace" id="progress-workspace"
+         aria-labelledby="progress-title" hidden>
+    <header class="progress-header">
+        <h2 id="progress-title">REHAB MODE // PROGRESS TRACKING</h2>
+        <span class="session-badge">● DEMO DATA</span>
+    </header>
+
+    <div class="progress-grid">
+        <section class="progress-card" aria-labelledby="trend-title">
+            <h3 id="trend-title">PERFORMANCE TREND</h3>
+            <svg class="performance-chart" viewBox="0 0 520 250"
+                 role="img" aria-label="Sample performance increased from 40 to 82 over five sessions">
+                <line class="chart-grid" x1="55" y1="30" x2="500" y2="30"/>
+                <line class="chart-grid" x1="55" y1="75" x2="500" y2="75"/>
+                <line class="chart-grid" x1="55" y1="120" x2="500" y2="120"/>
+                <line class="chart-grid" x1="55" y1="165" x2="500" y2="165"/>
+                <line class="chart-grid" x1="55" y1="210" x2="500" y2="210"/>
+
+                <text class="chart-axis-label" x="12" y="214">0</text>
+                <text class="chart-axis-label" x="5" y="169">25</text>
+                <text class="chart-axis-label" x="5" y="124">50</text>
+                <text class="chart-axis-label" x="5" y="79">75</text>
+                <text class="chart-axis-label" x="0" y="34">100</text>
+
+                <polyline class="chart-line"
+                          points="75,138 175,102 275,102 375,66 475,57"/>
+                <circle class="chart-point" cx="75" cy="138" r="6"/>
+                <circle class="chart-point" cx="175" cy="102" r="6"/>
+                <circle class="chart-point" cx="275" cy="102" r="6"/>
+                <circle class="chart-point" cx="375" cy="66" r="6"/>
+                <circle class="chart-point" cx="475" cy="57" r="6"/>
+
+                <text class="chart-session-label" x="65" y="238">01</text>
+                <text class="chart-session-label" x="165" y="238">02</text>
+                <text class="chart-session-label" x="265" y="238">03</text>
+                <text class="chart-session-label" x="365" y="238">04</text>
+                <text class="chart-session-label" x="465" y="238">05</text>
+            </svg>
+        </section>
+
+        <section class="progress-card" aria-labelledby="current-session-title">
+            <h3 id="current-session-title">CURRENT SESSION</h3>
+            <p class="progress-stat"><span>UPPER-LIMB ACCURACY</span><strong>86%</strong></p>
+            <p class="progress-stat"><span>REPETITIONS</span><strong>10 / 10</strong></p>
+            <p class="progress-stat"><span>BALANCE WEIGHT SHIFT</span><strong>79%</strong></p>
+            <p class="progress-stat"><span>STABILITY</span><strong>82%</strong></p>
+        </section>
+
+        <section class="progress-card overall-card" aria-labelledby="overall-title">
+            <h3 id="overall-title">OVERALL SESSION PERFORMANCE</h3>
+            <div class="overall-score">82%</div>
+
+            <div class="progress-milestones" aria-label="Four sample progress milestones">
+                <span class="milestone" style="--milestone-color:#42caff"></span>
+                <span class="milestone" style="--milestone-color:#ffd166"></span>
+                <span class="milestone" style="--milestone-color:#ff8c69"></span>
+                <span class="milestone" style="--milestone-color:#ff5470"></span>
+            </div>
+
+            <details class="progress-report">
+                <summary>VIEW FULL SESSION REPORT</summary>
+                <p>Sample report: upper-limb accuracy was 86% across 10 repetitions. Balance weight-shift performance was 79%, with a stability score of 82%.</p>
+                <p>These values are illustrative demo data, not clinical measurements.</p>
+            </details>
+        </section>
+    </div>
 </section>
-<section aria-labelledby="progress-title" class="progress-workspace" hidden="" id="progress-workspace">
-<header class="progress-header">
-<h2 id="progress-title">REHAB MODE // PROGRESS TRACKING</h2>
-<span class="session-badge">● DEMO DATA</span>
-</header>
-<div class="progress-grid">
-<section aria-labelledby="trend-title" class="progress-card">
-<h3 id="trend-title">PERFORMANCE TREND</h3>
-<svg aria-label="Sample performance increased from 40 to 82 over five sessions" class="performance-chart" role="img" viewbox="0 0 520 250">
-<line class="chart-grid" x1="55" x2="500" y1="30" y2="30"></line>
-<line class="chart-grid" x1="55" x2="500" y1="75" y2="75"></line>
-<line class="chart-grid" x1="55" x2="500" y1="120" y2="120"></line>
-<line class="chart-grid" x1="55" x2="500" y1="165" y2="165"></line>
-<line class="chart-grid" x1="55" x2="500" y1="210" y2="210"></line>
-<text class="chart-axis-label" x="12" y="214">0</text>
-<text class="chart-axis-label" x="5" y="169">25</text>
-<text class="chart-axis-label" x="5" y="124">50</text>
-<text class="chart-axis-label" x="5" y="79">75</text>
-<text class="chart-axis-label" x="0" y="34">100</text>
-<polyline class="chart-line" points="75,138 175,102 275,102 375,66 475,57"></polyline>
-<circle class="chart-point" cx="75" cy="138" r="6"></circle>
-<circle class="chart-point" cx="175" cy="102" r="6"></circle>
-<circle class="chart-point" cx="275" cy="102" r="6"></circle>
-<circle class="chart-point" cx="375" cy="66" r="6"></circle>
-<circle class="chart-point" cx="475" cy="57" r="6"></circle>
-<text class="chart-session-label" x="65" y="238">01</text>
-<text class="chart-session-label" x="165" y="238">02</text>
-<text class="chart-session-label" x="265" y="238">03</text>
-<text class="chart-session-label" x="365" y="238">04</text>
-<text class="chart-session-label" x="465" y="238">05</text>
-</svg>
-</section>
-<section aria-labelledby="current-session-title" class="progress-card">
-<h3 id="current-session-title">CURRENT SESSION</h3>
-<p class="progress-stat"><span>UPPER-LIMB ACCURACY</span><strong>86%</strong></p>
-<p class="progress-stat"><span>REPETITIONS</span><strong>10 / 10</strong></p>
-<p class="progress-stat"><span>BALANCE WEIGHT SHIFT</span><strong>79%</strong></p>
-<p class="progress-stat"><span>STABILITY</span><strong>82%</strong></p>
-</section>
-<section aria-labelledby="overall-title" class="progress-card overall-card">
-<h3 id="overall-title">OVERALL SESSION PERFORMANCE</h3>
-<div class="overall-score">82%</div>
-<div aria-label="Four sample progress milestones" class="progress-milestones">
-<span class="milestone" style="--milestone-color:#42caff"></span>
-<span class="milestone" style="--milestone-color:#ffd166"></span>
-<span class="milestone" style="--milestone-color:#ff8c69"></span>
-<span class="milestone" style="--milestone-color:#ff5470"></span>
-</div>
-<details class="progress-report">
-<summary>VIEW FULL SESSION REPORT</summary>
-<p>Sample report: upper-limb accuracy was 86% across 10 repetitions. Balance weight-shift performance was 79%, with a stability score of 82%.</p>
-<p>These values are illustrative demo data, not clinical measurements.</p>
-</details>
-</section>
-</div>
-</section>
-<section aria-labelledby="history-title" class="history-workspace" hidden="" id="history-workspace">
-<header class="history-header">
-<div>
-<h2 id="history-title">REHAB MODE // HISTORICAL TRIALS</h2>
-<p>SESSION ACTIVITY LOG <span aria-hidden="true">● LIVE</span></p>
-</div>
-<button class="history-clear" id="clear-history" type="button">CLEAR HISTORY</button>
-</header>
-<div class="history-summary">
-<div><span>TOTAL TRIALS</span><strong id="history-count">0</strong></div>
-<div><span>LAST ACTIVITY</span><strong id="history-last">—</strong></div>
-</div>
-<ol aria-live="polite" class="history-list" id="history-list">
-<li class="history-empty">No trials recorded yet. Complete an exercise to see activity here.</li>
-</ol>
-<p class="history-note">
+<section class="history-workspace" id="history-workspace"
+         aria-labelledby="history-title" hidden>
+    <header class="history-header">
+        <div>
+            <h2 id="history-title">REHAB MODE // HISTORICAL TRIALS</h2>
+            <p>SESSION ACTIVITY LOG <span aria-hidden="true">● LIVE</span></p>
+        </div>
+        <button class="history-clear" id="clear-history" type="button">CLEAR HISTORY</button>
+    </header>
+
+    <div class="history-summary">
+        <div><span>TOTAL TRIALS</span><strong id="history-count">0</strong></div>
+        <div><span>LAST ACTIVITY</span><strong id="history-last">—</strong></div>
+    </div>
+
+    <ol class="history-list" id="history-list" aria-live="polite">
+        <li class="history-empty">No trials recorded yet. Complete an exercise to see activity here.</li>
+    </ol>
+
+    <p class="history-note">
         Activity is saved in this browser. Demo logs are not clinical records or sensor readings.
     </p>
 </section>
-<dialog aria-labelledby="feedback-title" class="session-feedback" id="session-feedback">
-<h2 id="feedback-title">SESSION COMPLETE</h2>
-<p id="feedback-summary"></p>
-<p id="feedback-detail">
+<dialog class="session-feedback" id="session-feedback" aria-labelledby="feedback-title">
+    <h2 id="feedback-title">SESSION COMPLETE</h2>
+    <p id="feedback-summary"></p>
+    <p id="feedback-detail">
         These are simulated demo results, not a clinical assessment.
     </p>
-<div class="feedback-actions">
-<button class="start-exercise" id="retry-session" type="button">RUN AGAIN</button>
-<button class="start-exercise" id="close-feedback" type="button">CLOSE</button>
-</div>
+    <div class="feedback-actions">
+        <button class="start-exercise" id="retry-session" type="button">RUN AGAIN</button>
+        <button class="start-exercise" id="close-feedback" type="button">CLOSE</button>
+    </div>
 </dialog>
+
 <!-- Automatic two-wrist calibration notification dashboard -->
-<div aria-labelledby="calibration-overlay-title" aria-modal="true" class="calibration-overlay" id="calibration-overlay" role="dialog">
-<section class="calibration-dialog">
-<p class="calibration-kicker" id="calibration-overlay-kicker">BOTH WRIST SENSORS ONLINE</p>
-<h2 id="calibration-overlay-title">HIGHEST COMFORTABLE TILT TEST</h2>
-<div class="calibration-direction-icon" id="calibration-direction-icon">◌</div>
-<p class="calibration-message" id="calibration-overlay-message">The left and right MPU6050 sensors are connected and receiving data.</p>
-<div class="calibration-countdown" id="calibration-countdown">3</div>
-<div class="calibration-timer" hidden="" id="calibration-timer">5.0 s</div>
-<div class="calibration-progress-track" hidden="" id="calibration-progress-track">
-<div class="calibration-progress-fill" id="calibration-progress-fill"></div>
+<div class="calibration-overlay" id="calibration-overlay" role="dialog" aria-modal="true" aria-labelledby="calibration-overlay-title">
+    <section class="calibration-dialog">
+        <p class="calibration-kicker" id="calibration-overlay-kicker">BOTH WRIST SENSORS ONLINE</p>
+        <h2 id="calibration-overlay-title">HIGHEST COMFORTABLE TILT TEST</h2>
+        <div class="calibration-direction-icon" id="calibration-direction-icon">◌</div>
+        <p class="calibration-message" id="calibration-overlay-message">The left and right MPU6050 sensors are connected and receiving data.</p>
+        <div class="calibration-countdown" id="calibration-countdown">3</div>
+        <div class="calibration-timer" id="calibration-timer" hidden>5.0 s</div>
+        <div class="calibration-progress-track" id="calibration-progress-track" hidden>
+            <div class="calibration-progress-fill" id="calibration-progress-fill"></div>
+        </div>
+        <div class="calibration-live-grid calibration-two-wrist-grid" id="calibration-live-grid" hidden>
+            <div class="calibration-live-cell"><span>LEFT CURRENT</span><strong id="calibration-left-current">0.0°</strong></div>
+            <div class="calibration-live-cell"><span>RIGHT CURRENT</span><strong id="calibration-right-current">0.0°</strong></div>
+            <div class="calibration-live-cell"><span>LEFT PEAK</span><strong id="calibration-left-peak">0.0°</strong></div>
+            <div class="calibration-live-cell"><span>RIGHT PEAK</span><strong id="calibration-right-peak">0.0°</strong></div>
+        </div>
+        <div class="calibration-result-grid" id="calibration-result-grid" hidden>
+            <div><span>LEFT UP</span><strong id="result-left-up">—</strong></div>
+            <div><span>LEFT DOWN</span><strong id="result-left-down">—</strong></div>
+            <div><span>LEFT LEFT</span><strong id="result-left-left">—</strong></div>
+            <div><span>LEFT RIGHT</span><strong id="result-left-right">—</strong></div>
+            <div><span>RIGHT UP</span><strong id="result-right-up">—</strong></div>
+            <div><span>RIGHT DOWN</span><strong id="result-right-down">—</strong></div>
+            <div><span>RIGHT LEFT</span><strong id="result-right-left">—</strong></div>
+            <div><span>RIGHT RIGHT</span><strong id="result-right-right">—</strong></div>
+        </div>
+        <p class="calibration-result-message" id="calibration-result-message"></p>
+        <p class="calibration-safety-note">Move only as far as comfortably possible. Do not force your wrist. The system records the greatest comfortable movement detected during each 5-second test.</p>
+    </section>
 </div>
-<div class="calibration-live-grid calibration-two-wrist-grid" hidden="" id="calibration-live-grid">
-<div class="calibration-live-cell"><span>LEFT CURRENT</span><strong id="calibration-left-current">0.0°</strong></div>
-<div class="calibration-live-cell"><span>RIGHT CURRENT</span><strong id="calibration-right-current">0.0°</strong></div>
-<div class="calibration-live-cell"><span>LEFT PEAK</span><strong id="calibration-left-peak">0.0°</strong></div>
-<div class="calibration-live-cell"><span>RIGHT PEAK</span><strong id="calibration-right-peak">0.0°</strong></div>
-</div>
-<div class="calibration-result-grid" hidden="" id="calibration-result-grid">
-<div><span>LEFT UP</span><strong id="result-left-up">—</strong></div>
-<div><span>LEFT DOWN</span><strong id="result-left-down">—</strong></div>
-<div><span>LEFT LEFT</span><strong id="result-left-left">—</strong></div>
-<div><span>LEFT RIGHT</span><strong id="result-left-right">—</strong></div>
-<div><span>RIGHT UP</span><strong id="result-right-up">—</strong></div>
-<div><span>RIGHT DOWN</span><strong id="result-right-down">—</strong></div>
-<div><span>RIGHT LEFT</span><strong id="result-right-left">—</strong></div>
-<div><span>RIGHT RIGHT</span><strong id="result-right-right">—</strong></div>
-</div>
-<p class="calibration-result-message" id="calibration-result-message"></p>
-<p class="calibration-safety-note">Move only as far as comfortably possible. Do not force your wrist. The system records the greatest comfortable movement detected during each 5-second test.</p>
-</section>
-</div>
-<!-- Legacy compatibility controls kept hidden while REHABO-SG uses the new wrist calibration flow. -->
-<button hidden="" id="legacy-game-start" type="button"></button>
-<button hidden="" id="pause-exercise" type="button"></button>
-<button hidden="" id="reset-exercise" type="button"></button>
-<span hidden="" id="repetitions">0</span>
-<span hidden="" id="angle-fill"></span>
-<span hidden="" id="speed-fill"></span>
-<span hidden="" id="accuracy-fill"></span>
-<script>
+    <!-- Legacy compatibility controls kept hidden while REHABO-SG uses the new wrist calibration flow. -->
+    <button id="legacy-game-start" type="button" hidden></button>
+    <button id="pause-exercise" type="button" hidden></button>
+    <button id="reset-exercise" type="button" hidden></button>
+    <span id="repetitions" hidden>0</span>
+    <span id="angle-fill" hidden></span>
+    <span id="speed-fill" hidden></span>
+    <span id="accuracy-fill" hidden></span>
+    <script>
       const progressTrack = document.querySelector(".progress-track");
 const progressFill = document.querySelector(".progress-fill");
 const progressValue = document.querySelector(".progress-value");
@@ -3853,6 +3523,7 @@ document.getElementById("connect-right").addEventListener("click", async () => {
     await connectSensor("RIGHT");
 });
     </script>
+
 <script>
 let leftPort = null;
 let rightPort = null;
@@ -4055,7 +3726,6 @@ function updateLiveDashboard(data) {
     window.__rehaboLatestSensorData = window.__rehaboLatestSensorData || { LEFT: null, RIGHT: null };
     if (data && data.side) window.__rehaboLatestSensorData[String(data.side).toUpperCase()] = data;
     if (typeof window.__rehaboCalibrationSensorUpdate === "function") window.__rehaboCalibrationSensorUpdate(data);
-    if (typeof window.__rehaboGameSensorUpdate === "function") window.__rehaboGameSensorUpdate(data);
     if (!data || !data.side) return;
 
     const side = String(data.side).toUpperCase();
@@ -4409,6 +4079,7 @@ function cursorAnimationLoop() {
 
 requestAnimationFrame(cursorAnimationLoop);
 </script>
+
 <script>
 /* =========================================================
    REHABO-SG AUTOMATIC TWO-WRIST CALIBRATION ENGINE
@@ -4444,13 +4115,6 @@ requestAnimationFrame(cursorAnimationLoop);
         RIGHT: { UP: null, DOWN: null, LEFT: null, RIGHT: null }
     };
 
-    // Average movement angle across every valid movement sample collected
-    // during the four 5-second directional calibration tests.
-    const calibrationAverage = {
-        LEFT: { sum: 0, count: 0, angle: null },
-        RIGHT: { sum: 0, count: 0, angle: null }
-    };
-
     const neutral = {
         LEFT: { pitch: null, roll: null },
         RIGHT: { pitch: null, roll: null }
@@ -4469,6 +4133,7 @@ requestAnimationFrame(cursorAnimationLoop);
         RIGHT: { pitch: { value: 0, abs: 0 }, roll: { value: 0, abs: 0 } }
     };
 
+    const TARGET_RATIO = 0.80;
     const PREP_SECONDS = 0;
     const MEASURE_MS = 5000;
     const TRANSITION_SECONDS = 2;
@@ -4485,6 +4150,7 @@ requestAnimationFrame(cursorAnimationLoop);
     let latest = { LEFT: null, RIGHT: null };
 
     window.__rehaboCalibrationResults = peaks;
+    window.__rehaboCalibrationBaseline = { LEFT: null, RIGHT: null };
 
     function setText(id, value) {
         const el = document.getElementById(id);
@@ -4621,28 +4287,6 @@ requestAnimationFrame(cursorAnimationLoop);
         setText("calibration-right-peak", "0.0°");
     }
 
-    function resetCalibrationAverages() {
-        for (const side of ["LEFT", "RIGHT"]) {
-            calibrationAverage[side].sum = 0;
-            calibrationAverage[side].count = 0;
-            calibrationAverage[side].angle = null;
-            setText("calibration-average-" + side.toLowerCase(), "—");
-            setText("calibration-average-" + side.toLowerCase() + "-status", "PENDING");
-            const card = document.querySelector(".average-wrist-card" + (side === "LEFT" ? ":first-child" : ":last-child"));
-            if (card) card.classList.remove("complete");
-        }
-    }
-
-    function updateCalibrationAverageDashboard() {
-        for (const side of ["LEFT", "RIGHT"]) {
-            const stats = calibrationAverage[side];
-            const average = stats.count > 0 ? stats.sum / stats.count : null;
-            stats.angle = average;
-            setText("calibration-average-" + side.toLowerCase(), average === null ? "—" : average.toFixed(1) + "°");
-            setText("calibration-average-" + side.toLowerCase() + "-status", average === null ? "PENDING" : "LIVE AVERAGE");
-        }
-    }
-
     function countdown(seconds, done) {
         let remaining = seconds;
         countdownEl.textContent = String(remaining);
@@ -4713,17 +4357,8 @@ requestAnimationFrame(cursorAnimationLoop);
                 if (movement > (peaks[side][direction.key] ?? 0)) {
                     peaks[side][direction.key] = movement;
                 }
-
-                // Every valid movement sample contributes to that wrist's
-                // calibration-session average. Missing/invalid packets are
-                // excluded rather than treated as 0°.
-                if (raw !== null) {
-                    calibrationAverage[side].sum += movement;
-                    calibrationAverage[side].count += 1;
-                }
             }
             updateCurrentReadouts(direction);
-            updateCalibrationAverageDashboard();
 
             if (elapsed >= MEASURE_MS) {
                 measureFrame = null;
@@ -4801,6 +4436,25 @@ requestAnimationFrame(cursorAnimationLoop);
         }
     }
 
+    function calculateCalibrationBaselineAverage(side) {
+        const values = directions
+            .map(direction => Number(peaks[side][direction.key]))
+            .filter(Number.isFinite);
+
+        if (values.length !== directions.length) return null;
+        return +(values.reduce((sum, value) => sum + value, 0) / values.length).toFixed(1);
+    }
+
+    function updateCalibrationBaselineDashboard(averages) {
+        for (const side of ["LEFT", "RIGHT"]) {
+            const average = averages[side];
+            const valueId = side === "LEFT" ? "baseline-average-left" : "baseline-average-right";
+            const statusId = side === "LEFT" ? "baseline-average-left-status" : "baseline-average-right-status";
+            setText(valueId, Number.isFinite(average) ? average.toFixed(1) + "°" : "—");
+            setText(statusId, Number.isFinite(average) ? "BASELINE RECORDED" : "PENDING");
+        }
+    }
+
     function finishCalibration() {
         stopTimers();
         running = false;
@@ -4812,24 +4466,23 @@ requestAnimationFrame(cursorAnimationLoop);
         directionIcon.textContent = "✓";
         title.textContent = "CALIBRATION COMPLETE";
         kicker.textContent = "PERSONALIZED WRIST PROFILE SAVED";
-        message.textContent = "Both wrists have been calibrated using their highest comfortable movement. The dashboard now shows the average angle from all valid movement readings collected during the calibration.";
+        const baselineAverage = {
+            LEFT: calculateCalibrationBaselineAverage("LEFT"),
+            RIGHT: calculateCalibrationBaselineAverage("RIGHT")
+        };
+        updateCalibrationBaselineDashboard(baselineAverage);
+        window.__rehaboCalibrationBaseline = baselineAverage;
+
+        message.textContent = "Both wrists have been calibrated. The average of the four directional peaks is now saved as each wrist's calibration baseline.";
         countdownEl.textContent = "✓";
         resultMessage.textContent = "Calibration complete. You may now continue to the rehabilitation exercise.";
-        updateCalibrationAverageDashboard();
 
         const record = {
             timestamp: new Date().toISOString(),
             neutral: JSON.parse(JSON.stringify(neutral)),
             orientationSign: JSON.parse(JSON.stringify(orientationSign)),
             comfortablePeaks: JSON.parse(JSON.stringify(peaks)),
-            averageAngle: {
-                LEFT: calibrationAverage.LEFT.angle,
-                RIGHT: calibrationAverage.RIGHT.angle
-            },
-            averageSampleCount: {
-                LEFT: calibrationAverage.LEFT.count,
-                RIGHT: calibrationAverage.RIGHT.count
-            }
+            calibrationBaselineAverage: baselineAverage
         };
         window.__rehaboCalibrationRecord = record;
 
@@ -4885,7 +4538,6 @@ requestAnimationFrame(cursorAnimationLoop);
         directionIndex = 0;
         resetPeaks();
         resetLivePanel();
-        resetCalibrationAverages();
         resultGrid.hidden = true;
         showOverlay();
         title.textContent = "WRIST CALIBRATION";
@@ -4926,390 +4578,11 @@ requestAnimationFrame(cursorAnimationLoop);
     manualCalibrationButton.addEventListener("click", startManualCalibration);
 })();
 </script>
+
 <style>
 /* Wrist calibration is measurement-only; the MPU6050 must not control a cursor. */
 #game-cursor { display: none !important; }
 
 </style>
-<style>
-/* =========================================================
-   REHABO-SG GAME // CONSTELLATION REACH
-   Measurement-only gameplay: no predefined wrist-angle target.
-   ========================================================= */
-.target-button { display: none !important; }
-.rehabo-game-board {
-    position: absolute;
-    inset: 0;
-    z-index: 8;
-    display: grid;
-    place-items: center;
-    text-align: center;
-    padding: 1.25rem;
-    pointer-events: none;
-}
-.exercise-stage.game-active .calibration-axis,
-.exercise-stage.game-active .calibration-center {
-    opacity: .12;
-}
-.game-direction-label {
-    position: absolute;
-    top: 12%;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: clamp(1.4rem, 3vw, 2.4rem);
-    font-weight: 900;
-    letter-spacing: .14em;
-}
-.game-side-label {
-    position: absolute;
-    top: 24%;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: .72rem;
-    letter-spacing: .18em;
-    color: #63efc1;
-}
-.game-star {
-    font-size: clamp(5rem, 12vw, 9rem);
-    line-height: 1;
-    color: #63efc1;
-    text-shadow: 0 0 18px rgba(99,239,193,.55), 0 0 45px rgba(66,202,255,.28);
-    animation: rehaboStarPulse 1.5s ease-in-out infinite;
-}
-@keyframes rehaboStarPulse {
-    0%, 100% { transform: scale(.94); opacity: .78; }
-    50% { transform: scale(1.08); opacity: 1; }
-}
-.game-angle-readout, .game-best-readout {
-    position: absolute;
-    bottom: 18%;
-    display: flex;
-    flex-direction: column;
-    gap: .2rem;
-    min-width: 120px;
-}
-.game-angle-readout { left: 8%; }
-.game-best-readout { right: 8%; }
-.game-angle-readout span, .game-best-readout span {
-    font-size: .55rem;
-    letter-spacing: .13em;
-    color: #6f9ab3;
-}
-.game-angle-readout strong, .game-best-readout strong {
-    font-size: 1.3rem;
-    color: #fff;
-}
-.game-capture-button {
-    position: absolute;
-    bottom: 5%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 1px solid #63efc1;
-    background: rgba(7,20,32,.94);
-    color: #63efc1;
-    padding: .75rem 1.1rem;
-    font-weight: 800;
-    letter-spacing: .08em;
-    cursor: pointer;
-    pointer-events: auto;
-}
-.game-capture-button:disabled { opacity: .35; cursor: not-allowed; }
-.rehabo-game-panel {
-    margin-top: 1rem;
-    border: 1px solid rgba(66,202,255,.35);
-    padding: 1rem;
-    background: rgba(3,14,26,.72);
-}
-.rehabo-game-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-}
-.rehabo-game-header p {
-    margin: .25rem 0 0;
-    font-size: .62rem;
-    color: #6f9ab3;
-    letter-spacing: .08em;
-}
-.game-round-counter {
-    white-space: nowrap;
-    color: #63efc1;
-    font-weight: 800;
-    font-size: .75rem;
-}
-.game-controls {
-    display: flex;
-    gap: .6rem;
-    margin-top: .8rem;
-}
-.game-start-button:disabled, .game-reset-button:disabled { opacity: .45; cursor: not-allowed; }
-.game-reset-button {
-    border: 1px solid rgba(111,154,179,.55);
-    background: transparent;
-    color: #a7c1d0;
-    padding: .65rem 1rem;
-    cursor: pointer;
-    font-weight: 800;
-}
-.game-data-strip {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: .55rem;
-    margin-top: .8rem;
-}
-.game-data-strip > div {
-    border: 1px solid rgba(66,202,255,.2);
-    padding: .55rem .65rem;
-    min-width: 0;
-}
-.game-data-strip span { display: block; font-size: .52rem; color: #6f9ab3; letter-spacing: .1em; }
-.game-data-strip strong { display: block; margin-top: .2rem; font-size: .82rem; overflow-wrap: anywhere; }
-@media (max-width: 720px) {
-    .game-angle-readout { left: 3%; }
-    .game-best-readout { right: 3%; }
-    .rehabo-game-header { flex-direction: column; }
-    .game-data-strip { grid-template-columns: 1fr; }
-}
-</style>
-<script>
-/* =========================================================
-   CONSTELLATION REACH GAME
-   The game never asks the patient to hit a numerical angle target.
-   It records the best comfortable movement actually performed.
-   ========================================================= */
-(() => {
-    const stage = document.querySelector('.exercise-stage');
-    const startBtn = document.getElementById('game-start-button');
-    const resetBtn = document.getElementById('game-reset-button');
-    const captureBtn = document.getElementById('game-capture-button');
-    const directionLabel = document.getElementById('game-direction-label');
-    const sideLabel = document.getElementById('game-side-label');
-    const currentAngle = document.getElementById('game-current-angle');
-    const bestAngle = document.getElementById('game-best-angle');
-    const roundCounter = document.getElementById('game-round-counter');
-    const sessionBest = document.getElementById('game-session-best');
-    const dataCount = document.getElementById('game-data-count');
-    const status = document.getElementById('game-status');
-    const star = document.getElementById('game-star');
-
-    const rounds = [
-        { side: 'LEFT', direction: 'UP', icon: '↑' },
-        { side: 'RIGHT', direction: 'UP', icon: '↑' },
-        { side: 'LEFT', direction: 'DOWN', icon: '↓' },
-        { side: 'RIGHT', direction: 'DOWN', icon: '↓' },
-        { side: 'LEFT', direction: 'LEFT', icon: '←' },
-        { side: 'RIGHT', direction: 'LEFT', icon: '←' },
-        { side: 'LEFT', direction: 'RIGHT', icon: '→' },
-        { side: 'RIGHT', direction: 'RIGHT', icon: '→' }
-    ];
-
-    let calibrationRecord = null;
-    let roundIndex = -1;
-    let gameRunning = false;
-    let roundActive = false;
-    let roundBest = 0;
-    let sessionResults = [];
-    let raf = null;
-
-    function getCalibration() {
-        if (window.__rehaboCalibrationRecord) return window.__rehaboCalibrationRecord;
-        try {
-            const saved = JSON.parse(localStorage.getItem('rehabo-sg-latest-calibration') || 'null');
-            return saved && saved.comfortablePeaks && saved.neutral ? saved : null;
-        } catch (_) { return null; }
-    }
-
-    function setReadyState() {
-        calibrationRecord = getCalibration();
-        const ready = !!calibrationRecord;
-        startBtn.disabled = !ready || gameRunning;
-        resetBtn.disabled = !gameRunning && sessionResults.length === 0;
-        status.textContent = ready ? 'READY' : 'CALIBRATION REQUIRED';
-        if (!ready) {
-            directionLabel.textContent = 'READY';
-            sideLabel.textContent = 'CALIBRATE FIRST';
-            currentAngle.textContent = '0.0°';
-            bestAngle.textContent = '—';
-            roundCounter.textContent = '0 / 8';
-        }
-    }
-
-    function getMovement(data, round) {
-        if (!data || !calibrationRecord || !calibrationRecord.neutral) return null;
-        if (String(data.side).toUpperCase() !== round.side) return null;
-        const axis = (round.direction === 'LEFT' || round.direction === 'RIGHT') ? 'roll' : 'pitch';
-        const neutral = calibrationRecord.neutral[round.side];
-        if (!neutral || !Number.isFinite(Number(neutral[axis])) || !Number.isFinite(Number(data[axis]))) return null;
-        return Math.abs(Number(data[axis]) - Number(neutral[axis]));
-    }
-
-    function updateGameFromSensor(data) {
-        if (!gameRunning || !roundActive) return;
-        const round = rounds[roundIndex];
-        const movement = getMovement(data, round);
-        if (movement === null) return;
-        roundBest = Math.max(roundBest, movement);
-        currentAngle.textContent = roundBest.toFixed(1) + '°';
-        bestAngle.textContent = roundBest.toFixed(1) + '°';
-    }
-
-    function animateGame() {
-        if (!gameRunning) return;
-        const pulse = 1 + Math.sin(performance.now() / 260) * .045;
-        star.style.transform = `scale(${pulse})`;
-        raf = requestAnimationFrame(animateGame);
-    }
-
-    function beginRound() {
-        if (!gameRunning || roundIndex >= rounds.length) return;
-        const round = rounds[roundIndex];
-        roundActive = true;
-        roundBest = 0;
-        directionLabel.textContent = `${round.icon} ${round.direction}`;
-        sideLabel.textContent = `${round.side} WRIST — MOVE AS FAR AS COMFORTABLY POSSIBLE`;
-        currentAngle.textContent = '0.0°';
-        bestAngle.textContent = '0.0°';
-        roundCounter.textContent = `${roundIndex + 1} / ${rounds.length}`;
-        status.textContent = 'MOVE NOW';
-        captureBtn.disabled = false;
-        star.textContent = '★';
-    }
-
-    function startGame() {
-        calibrationRecord = getCalibration();
-        if (!calibrationRecord) {
-            status.textContent = 'CALIBRATION REQUIRED';
-            return;
-        }
-        gameRunning = true;
-        sessionResults = [];
-        roundIndex = 0;
-        resetBtn.disabled = false;
-        startBtn.disabled = true;
-        stage.classList.add('game-active');
-        status.textContent = 'GET READY';
-        beginRound();
-        if (raf === null) raf = requestAnimationFrame(animateGame);
-    }
-
-    function captureRound() {
-        if (!gameRunning || !roundActive) return;
-        const round = rounds[roundIndex];
-        const comfortablePeak = Number(calibrationRecord.comfortablePeaks?.[round.side]?.[round.direction]);
-        const result = {
-            side: round.side,
-            direction: round.direction,
-            bestAngle: +roundBest.toFixed(1),
-            comfortablePeak: Number.isFinite(comfortablePeak) ? +comfortablePeak.toFixed(1) : null,
-            relativePerformance: Number.isFinite(comfortablePeak) && comfortablePeak > 0
-                ? +(roundBest / comfortablePeak * 100).toFixed(1)
-                : null,
-            timestamp: new Date().toISOString()
-        };
-        sessionResults.push(result);
-        roundActive = false;
-        captureBtn.disabled = true;
-        dataCount.textContent = String(sessionResults.length);
-        sessionBest.textContent = Math.max(...sessionResults.map(r => r.bestAngle)).toFixed(1) + '°';
-        status.textContent = 'CAPTURED';
-        star.textContent = '✦';
-
-        setTimeout(() => {
-            if (!gameRunning) return;
-            roundIndex += 1;
-            if (roundIndex >= rounds.length) finishGame();
-            else beginRound();
-        }, 700);
-    }
-
-    function finishGame() {
-        gameRunning = false;
-        roundActive = false;
-        captureBtn.disabled = true;
-        startBtn.disabled = false;
-        resetBtn.disabled = false;
-        stage.classList.remove('game-active');
-        status.textContent = 'SESSION COMPLETE';
-        directionLabel.textContent = '✦ COMPLETE';
-        sideLabel.textContent = '8 MOVEMENTS CAPTURED';
-        roundCounter.textContent = '8 / 8';
-        const max = sessionResults.length ? Math.max(...sessionResults.map(r => r.bestAngle)) : 0;
-        sessionBest.textContent = max.toFixed(1) + '°';
-        if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
-
-        try {
-            const key = 'rehabo-sg-game-sessions';
-            const history = JSON.parse(localStorage.getItem(key) || '[]');
-            history.unshift({ timestamp: new Date().toISOString(), results: sessionResults });
-            localStorage.setItem(key, JSON.stringify(history.slice(0, 30)));
-        } catch (_) {}
-
-        // Keep the raw session available for the next dashboard/reporting step.
-        window.__rehaboGameSession = JSON.parse(JSON.stringify(sessionResults));
-    }
-
-    function resetGame() {
-        gameRunning = false;
-        roundActive = false;
-        roundIndex = -1;
-        sessionResults = [];
-        if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
-        stage.classList.remove('game-active');
-        captureBtn.disabled = true;
-        directionLabel.textContent = 'READY';
-        sideLabel.textContent = getCalibration() ? 'READY TO PLAY' : 'CALIBRATE FIRST';
-        currentAngle.textContent = '0.0°';
-        bestAngle.textContent = '—';
-        roundCounter.textContent = '0 / 8';
-        dataCount.textContent = '0';
-        sessionBest.textContent = '—';
-        setReadyState();
-    }
-
-    startBtn.addEventListener('click', startGame);
-    captureBtn.addEventListener('click', captureRound);
-    resetBtn.addEventListener('click', resetGame);
-
-    // The serial reader updates this global on every valid packet.
-    const previousUpdate = window.__rehaboGameSensorUpdate;
-    window.__rehaboGameSensorUpdate = function(data) {
-        if (typeof previousUpdate === 'function') previousUpdate(data);
-        updateGameFromSensor(data);
-    };
-
-    // Patch the existing dashboard update hook without replacing calibration.
-    const waitForSensorHook = () => {
-        const current = window.__rehaboGameSensorUpdate;
-        if (window.__rehaboGameHookInstalled) return;
-        window.__rehaboGameHookInstalled = true;
-        window.__rehaboLatestSensorData = window.__rehaboLatestSensorData || { LEFT: null, RIGHT: null };
-    };
-    waitForSensorHook();
-
-    // updateLiveDashboard calls this hook after every valid packet.
-    const originalLive = window.updateLiveDashboard;
-    if (typeof originalLive === 'function') {
-        window.updateLiveDashboard = function(data) {
-            originalLive(data);
-            updateGameFromSensor(data);
-        };
-    }
-
-    window.__rehaboRefreshGameState = setReadyState;
-    setReadyState();
-
-    // Calibration completion should unlock the game immediately.
-    const originalFinishMarker = window.__rehaboCalibrationRecord;
-    window.setInterval(() => {
-        const current = getCalibration();
-        if (current && current !== calibrationRecord) {
-            calibrationRecord = current;
-            setReadyState();
-            if (!gameRunning) sideLabel.textContent = 'READY TO PLAY';
-        }
-    }, 500);
-})();
-</script>
 </body>
 </html>
