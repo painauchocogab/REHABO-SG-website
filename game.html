@@ -983,6 +983,163 @@
     }
 
     /* =========================================================
+       LEVEL 2 TREASURE SEQUENCE
+       ========================================================= */
+
+    .level-2 .target {
+      display: none;
+    }
+
+    .sequence-panel {
+      position: absolute;
+      left: 50%;
+      top: 215px;
+      transform: translateX(-50%);
+      width: 390px;
+      min-height: 88px;
+      padding: 12px 14px;
+      z-index: 8;
+    }
+
+    .sequence-panel[hidden] {
+      display: none;
+    }
+
+    .sequence-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 9px;
+      color: rgba(185, 242, 255, 0.58);
+      font-size: 7px;
+      letter-spacing: 0.15em;
+    }
+
+    .sequence-heading strong {
+      color: var(--accent);
+      font-family: Orbitron, sans-serif;
+      font-size: 8px;
+      letter-spacing: 0.1em;
+    }
+
+    .sequence-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+    }
+
+    .sequence-step {
+      min-height: 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(110, 220, 255, 0.22);
+      background: rgba(1, 12, 24, 0.58);
+      color: rgba(230, 249, 255, 0.48);
+      font-family: Orbitron, sans-serif;
+      font-size: 21px;
+      transition:
+        border-color 180ms ease,
+        background 180ms ease,
+        color 180ms ease,
+        box-shadow 180ms ease,
+        transform 180ms ease;
+    }
+
+    .sequence-step.completed {
+      border-color: color-mix(
+        in srgb,
+        var(--mint) 62%,
+        transparent
+      );
+      background: color-mix(
+        in srgb,
+        var(--mint) 12%,
+        rgba(1, 12, 24, 0.58)
+      );
+      color: var(--mint);
+    }
+
+    .sequence-step.current {
+      border-color: var(--accent);
+      background: color-mix(
+        in srgb,
+        var(--accent) 13%,
+        rgba(1, 12, 24, 0.58)
+      );
+      color: #fff;
+      box-shadow:
+        0 0 14px color-mix(
+          in srgb,
+          var(--accent) 20%,
+          transparent
+        ),
+        inset 0 0 12px color-mix(
+          in srgb,
+          var(--accent) 8%,
+          transparent
+        );
+      transform: translateY(-2px);
+    }
+
+    .sequence-step.current::after {
+      content: "CURRENT";
+      align-self: end;
+      margin-bottom: 4px;
+      color: var(--accent);
+      font-family: "Share Tech Mono", monospace;
+      font-size: 5px;
+      letter-spacing: 0.12em;
+    }
+
+    .sequence-step.completed::after {
+      content: "✓";
+      align-self: end;
+      margin-bottom: 4px;
+      color: var(--mint);
+      font-size: 8px;
+    }
+
+    .chip.treasure {
+      border-color: rgba(255, 211, 107, 0.38);
+    }
+
+    .chip.treasure b {
+      color: #ffd36b;
+    }
+
+    .direction-card.repositioning {
+      border-color: var(--accent);
+      box-shadow:
+        0 0 22px color-mix(
+          in srgb,
+          var(--accent) 22%,
+          transparent
+        );
+    }
+
+    .direction-card.repositioning strong {
+      font-size: 30px;
+      letter-spacing: 0.04em;
+    }
+
+    .direction-card.repositioning .label {
+      color: var(--accent);
+    }
+
+    .reposition-hint {
+      display: none;
+      margin-top: 3px;
+      color: rgba(196, 236, 247, 0.54);
+      font-size: 6px;
+      letter-spacing: 0.1em;
+    }
+
+    .direction-card.repositioning .reposition-hint {
+      display: block;
+    }
+
+    /* =========================================================
        LEVEL 1 COLLECTIBLE
        ========================================================= */
 
@@ -2148,6 +2305,17 @@
           7px;
       }
 
+      .sequence-panel {
+        top: 184px;
+        width: min(88%, 360px);
+        padding: 10px;
+      }
+
+      .sequence-step {
+        min-height: 36px;
+        font-size: 18px;
+      }
+
       .garden-item {
         width:
           96px;
@@ -2290,6 +2458,17 @@
               ITEMS
               <b id="gardenProgress">
                 0 / 10
+              </b>
+            </span>
+
+            <span
+              id="treasureProgressChip"
+              class="chip treasure"
+              hidden
+            >
+              TREASURE
+              <b id="treasureProgress">
+                0 / 5
               </b>
             </span>
 
@@ -2585,6 +2764,27 @@
 
         </section>
 
+        <!-- Level 2 treasure sequence -->
+
+        <section
+          id="sequencePanel"
+          class="sequence-panel hud-panel"
+          hidden
+          aria-label="Treasure direction sequence"
+        >
+          <div class="sequence-heading">
+            <span>TREASURE PATH</span>
+            <strong id="sequenceStatus">
+              FOLLOW IN ORDER
+            </strong>
+          </div>
+
+          <div
+            id="sequenceSteps"
+            class="sequence-steps"
+          ></div>
+        </section>
+
         <!-- Normal directional target for Levels 2-5 -->
 
         <div
@@ -2625,13 +2825,23 @@
           class="direction-card hud-panel"
         >
 
-          <div class="label">
+          <div
+            id="directionLabel"
+            class="label"
+          >
             WRIST MOVEMENT REQUIRED
           </div>
 
           <strong id="directionText">
             READY
           </strong>
+
+          <div
+            id="repositionHint"
+            class="reposition-hint"
+          >
+            PREPARE FOR NEXT MOVEMENT
+          </div>
 
         </div>
 
@@ -2961,6 +3171,18 @@
       let sequenceIndex =
         0;
 
+      let treasureCount =
+        0;
+
+      let repositioning =
+        false;
+
+      let repositionTimer =
+        null;
+
+      const REPOSITION_DURATION =
+        3;
+
       let checkpoints =
         0;
 
@@ -3231,6 +3453,14 @@
           .hidden =
           level !== 1;
 
+        $("treasureProgressChip")
+          .hidden =
+          level !== 2;
+
+        $("sequencePanel")
+          .hidden =
+          level !== 2;
+
         $("livesText")
           .textContent =
           level <= 2
@@ -3403,6 +3633,316 @@
             ? value
 
             : "∞";
+
+      }
+
+      /* ======================================================
+         LEVEL 2 TREASURE PROGRESS
+         ====================================================== */
+
+      function setTreasureProgress() {
+
+        const element =
+          $("treasureProgress");
+
+        if (!element) {
+          return;
+        }
+
+        element.textContent =
+          `${Math.min(
+            treasureCount,
+            5
+          )} / 5`;
+
+      }
+
+      /* ======================================================
+         LEVEL 2 SEQUENCE DISPLAY
+         ====================================================== */
+
+      function renderTreasureSequence() {
+
+        const panel =
+          $("sequencePanel");
+
+        const container =
+          $("sequenceSteps");
+
+        const status =
+          $("sequenceStatus");
+
+        if (
+          !panel ||
+          !container ||
+          !status
+        ) {
+          return;
+        }
+
+        if (
+          level !== 2 ||
+          !sequence.length
+        ) {
+          panel.hidden =
+            true;
+
+          return;
+        }
+
+        panel.hidden =
+          false;
+
+        container.innerHTML =
+          "";
+
+        sequence.forEach(
+          (direction, index) => {
+
+            const step =
+              document.createElement(
+                "div"
+              );
+
+            step.className =
+              "sequence-step";
+
+            if (
+              index <
+              sequenceIndex
+            ) {
+              step.classList.add(
+                "completed"
+              );
+
+            } else if (
+              index ===
+              sequenceIndex
+            ) {
+              step.classList.add(
+                "current"
+              );
+            }
+
+            step.textContent =
+              arrows[direction];
+
+            container.appendChild(
+              step
+            );
+
+          }
+        );
+
+        status.textContent =
+          repositioning
+            ? "REPOSITION"
+            : "FOLLOW IN ORDER";
+
+        setTreasureProgress();
+
+      }
+
+      /* ======================================================
+         LEVEL 2 SEQUENCE GENERATOR
+         ====================================================== */
+
+      function createTreasureSequence(
+        firstExclude = ""
+      ) {
+
+        const result =
+          [];
+
+        let previous =
+          firstExclude;
+
+        for (
+          let index = 0;
+          index < 4;
+          index++
+        ) {
+
+          const direction =
+            randomDir(
+              previous
+            );
+
+          result.push(
+            direction
+          );
+
+          previous =
+            direction;
+
+        }
+
+        return result;
+
+      }
+
+      /* ======================================================
+         LEVEL 2 REPOSITION TIMER
+         ====================================================== */
+
+      function clearRepositionTimer() {
+
+        if (
+          repositionTimer
+        ) {
+
+          clearInterval(
+            repositionTimer
+          );
+
+          repositionTimer =
+            null;
+
+        }
+
+        repositioning =
+          false;
+
+        const card =
+          document.querySelector(
+            ".direction-card"
+          );
+
+        if (card) {
+
+          card.classList.remove(
+            "repositioning"
+          );
+
+        }
+
+      }
+
+      function startRepositionCountdown(
+        nextDirection
+      ) {
+
+        if (
+          level !== 2 ||
+          !active
+        ) {
+          return;
+        }
+
+        clearRepositionTimer();
+
+        repositioning =
+          true;
+
+        setDirection(
+          nextDirection
+        );
+
+        renderTreasureSequence();
+
+        const card =
+          document.querySelector(
+            ".direction-card"
+          );
+
+        if (card) {
+
+          card.classList.add(
+            "repositioning"
+          );
+
+        }
+
+        const label =
+          $("directionLabel");
+
+        const directionText =
+          $("directionText");
+
+        const hint =
+          $("repositionHint");
+
+        let remaining =
+          REPOSITION_DURATION;
+
+        if (label) {
+
+          label.textContent =
+            "REPOSITION WRIST";
+
+        }
+
+        if (directionText) {
+
+          directionText.textContent =
+            `${remaining}`;
+
+        }
+
+        if (hint) {
+
+          hint.textContent =
+            `NEXT: ${arrows[nextDirection]} ${nextDirection}`;
+
+        }
+
+        repositionTimer =
+          setInterval(
+            () => {
+
+              if (
+                !active
+              ) {
+                clearRepositionTimer();
+                return;
+              }
+
+              remaining--;
+
+              if (
+                remaining <= 0
+              ) {
+
+                clearRepositionTimer();
+
+                if (label) {
+
+                  label.textContent =
+                    "WRIST MOVEMENT REQUIRED";
+
+                }
+
+                if (hint) {
+
+                  hint.textContent =
+                    "PREPARE FOR NEXT MOVEMENT";
+
+                }
+
+                setDirection(
+                  nextDirection
+                );
+
+                renderTreasureSequence();
+
+                feedback(
+                  `NEXT: ${arrows[nextDirection]} ${nextDirection}`
+                );
+
+                return;
+
+              }
+
+              if (directionText) {
+
+                directionText.textContent =
+                  `${remaining}`;
+
+              }
+
+            },
+            1000
+          );
 
       }
 
@@ -3617,6 +4157,8 @@
         active =
           false;
 
+        clearRepositionTimer();
+
         if (
           timer
         ) {
@@ -3681,6 +4223,8 @@
 
         }
 
+        clearRepositionTimer();
+
         score =
           0;
 
@@ -3688,6 +4232,9 @@
           0;
 
         sequenceIndex =
+          0;
+
+        treasureCount =
           0;
 
         checkpoints =
@@ -3753,14 +4300,14 @@
         ) {
 
           sequence =
-            Array.from(
-              {
-                length:
-                  4
-              },
-              () =>
-                randomDir()
-            );
+            createTreasureSequence();
+
+          sequenceIndex =
+            0;
+
+          setTreasureProgress();
+
+          renderTreasureSequence();
 
           setDirection(
             sequence[0]
@@ -3848,40 +4395,79 @@
           level === 2
         ) {
 
+          if (
+            repositioning
+          ) {
+            return;
+          }
+
           sequenceIndex++;
+
+          setScore(
+            score + 1
+          );
 
           if (
             sequenceIndex >=
             sequence.length
           ) {
 
-            score +=
-              10;
+            treasureCount++;
 
-            sequenceIndex =
-              0;
-
-            sequence =
-              Array.from(
-                {
-                  length:
-                    4
-                },
-                () =>
-                  randomDir()
-              );
+            // Four correct movements give 4 points.
+            // The treasure bonus adds 6 points for
+            // exactly 10 points per treasure.
+            setScore(
+              score + 6
+            );
 
             feedback(
               "★ TREASURE FOUND"
             );
 
+            if (
+              treasureCount >=
+              5
+            ) {
+
+              setTreasureProgress();
+
+              endGame(
+                true
+              );
+
+              return;
+
+            }
+
+            const previousLastDirection =
+              sequence[
+                sequence.length - 1
+              ];
+
+            sequence =
+              createTreasureSequence(
+                previousLastDirection
+              );
+
+            sequenceIndex =
+              0;
+
+            setTreasureProgress();
+
+            renderTreasureSequence();
+
+            startRepositionCountdown(
+              sequence[0]
+            );
+
+            return;
+
           }
 
-          setScore(
-            score + 1
-          );
+          renderTreasureSequence();
 
-          setDirection(
+          startRepositionCountdown(
             sequence[
               sequenceIndex
             ]
@@ -4046,6 +4632,15 @@
 
         }
 
+        if (
+          level === 2 &&
+          repositioning
+        ) {
+
+          return;
+
+        }
+
         const now =
           Date.now();
 
@@ -4082,6 +4677,8 @@
               "× SEQUENCE RESET",
               true
             );
+
+            renderTreasureSequence();
 
             setDirection(
               sequence[0]
@@ -4788,6 +5385,8 @@
 
           active =
             false;
+
+          clearRepositionTimer();
 
           if (
             timer
