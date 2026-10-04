@@ -771,10 +771,417 @@
             outline: 2px solid #b9e8f7;
             outline-offset: 4px;
         }
+
+        /* PATIENT ACCESS / PROFILE FLOW */
+        body.app-locked {
+            overflow: hidden;
+        }
+
+        .access-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            box-sizing: border-box;
+            background:
+                radial-gradient(circle at 50% 42%, rgba(0, 119, 255, 0.18), transparent 30%),
+                radial-gradient(circle at 15% 80%, rgba(0, 89, 177, 0.12), transparent 28%),
+                linear-gradient(135deg, #020a17 0%, #061a33 52%, #041127 100%);
+        }
+
+        .access-screen[hidden] {
+            display: none;
+        }
+
+        .access-card {
+            width: min(100%, 34rem);
+            padding: 2.6rem;
+            border: 1px solid rgba(59, 165, 237, 0.58);
+            background: rgba(2, 16, 37, 0.88);
+            box-shadow:
+                0 0 45px rgba(0, 110, 220, 0.18),
+                inset 0 0 28px rgba(26, 121, 202, 0.08);
+            box-sizing: border-box;
+            backdrop-filter: blur(12px);
+        }
+
+        .access-kicker {
+            margin: 0 0 0.8rem;
+            color: #5bc5ff;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.28em;
+        }
+
+        .access-card h2 {
+            margin: 0;
+            color: #f4faff;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 900;
+            letter-spacing: 0.06em;
+        }
+
+        .access-subtitle {
+            margin: 0.9rem 0 2rem;
+            color: #9fc4d9;
+            font-family: "Segoe UI", sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .access-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .field-label {
+            display: grid;
+            gap: 0.45rem;
+            color: #72cfff;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+        }
+
+        .access-input,
+        .profile-input,
+        .profile-select {
+            width: 100%;
+            padding: 0.85rem 0.9rem;
+            border: 1px solid rgba(76, 169, 231, 0.5);
+            border-radius: 0;
+            outline: none;
+            background: rgba(1, 11, 27, 0.82);
+            color: #eef8fd;
+            font-family: "Segoe UI", sans-serif;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+        }
+
+        .access-input:focus,
+        .profile-input:focus,
+        .profile-select:focus {
+            border-color: #54c6ff;
+            box-shadow: 0 0 14px rgba(62, 177, 255, 0.2);
+        }
+
+        .access-button,
+        .profile-button,
+        .logout-button {
+            border: 1px solid rgba(222, 235, 243, 0.72);
+            border-radius: 0;
+            padding: 0.95rem 1.2rem;
+            background: linear-gradient(135deg, rgba(225, 237, 243, 0.15), rgba(7, 31, 56, 0.78));
+            color: #f4f8fb;
+            font-family: "Orbitron", sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            cursor: pointer;
+            transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+        }
+
+        .access-button:hover,
+        .profile-button:hover,
+        .logout-button:hover {
+            background: linear-gradient(135deg, rgba(225, 237, 243, 0.27), rgba(15, 74, 103, 0.86));
+            box-shadow: 0 0 22px rgba(120, 205, 235, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .login-error {
+            min-height: 1.1rem;
+            margin: 0;
+            color: #ff8e9c;
+            font-family: "Segoe UI", sans-serif;
+            font-size: 0.8rem;
+        }
+
+        .demo-note {
+            margin: 1.2rem 0 0;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(65, 143, 196, 0.24);
+            color: #668ba5;
+            font-family: "Segoe UI", sans-serif;
+            font-size: 0.72rem;
+            line-height: 1.55;
+        }
+
+        .patient-dashboard {
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            overflow-y: auto;
+            padding: 2rem;
+            box-sizing: border-box;
+            background:
+                radial-gradient(circle at 75% 25%, rgba(0, 119, 255, 0.15), transparent 30%),
+                linear-gradient(135deg, #020a17 0%, #061a33 52%, #041127 100%);
+        }
+
+        .patient-dashboard[hidden] {
+            display: none;
+        }
+
+        .patient-dashboard-inner {
+            width: min(100%, 72rem);
+            margin: 0 auto;
+        }
+
+        .patient-dashboard-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .patient-dashboard-kicker {
+            margin: 0 0 0.7rem;
+            color: #5bc5ff;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.28em;
+        }
+
+        .patient-dashboard h2 {
+            margin: 0;
+            color: #f4faff;
+            font-size: clamp(1.8rem, 5vw, 3.4rem);
+            font-weight: 900;
+            letter-spacing: 0.05em;
+        }
+
+        .patient-dashboard-intro {
+            max-width: 48rem;
+            margin: 0.8rem 0 0;
+            color: #9fc4d9;
+            font-family: "Segoe UI", sans-serif;
+            line-height: 1.6;
+        }
+
+        .profile-card {
+            padding: 1.5rem;
+            border: 1px solid rgba(59, 165, 237, 0.52);
+            background: rgba(2, 16, 37, 0.7);
+            box-shadow: inset 0 0 20px rgba(26, 121, 202, 0.08);
+        }
+
+        .profile-card h3 {
+            margin: 0 0 1.2rem;
+            color: #8fddff;
+            font-size: 0.85rem;
+            letter-spacing: 0.16em;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .profile-grid .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .profile-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1.2rem;
+        }
+
+        .profile-status {
+            min-height: 1.1rem;
+            margin: 0.8rem 0 0;
+            color: #67d6a8;
+            font-family: "Segoe UI", sans-serif;
+            font-size: 0.78rem;
+        }
+
+        .logout-button {
+            flex: 0 0 auto;
+            color: #a9c7d8;
+            border-color: rgba(76, 169, 231, 0.4);
+        }
+
+        .profile-summary {
+            display: none;
+            margin-top: 1.2rem;
+            padding: 1.2rem;
+            border: 1px solid rgba(59, 165, 237, 0.34);
+            background: rgba(1, 11, 27, 0.52);
+        }
+
+        .profile-summary.visible {
+            display: block;
+        }
+
+        .profile-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.9rem;
+        }
+
+        .profile-summary-item {
+            padding: 0.9rem;
+            border-top: 1px solid rgba(52, 163, 244, 0.45);
+        }
+
+        .profile-summary-item span {
+            display: block;
+            margin-bottom: 0.35rem;
+            color: #5bc5ff;
+            font-size: 0.55rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+        }
+
+        .profile-summary-item strong {
+            color: #eef8fd;
+            font-family: "Segoe UI", sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 760px) {
+            .access-card {
+                padding: 1.6rem;
+            }
+
+            .patient-dashboard {
+                padding: 1rem;
+            }
+
+            .patient-dashboard-header {
+                flex-direction: column;
+            }
+
+            .profile-grid,
+            .profile-summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-grid .full-width {
+                grid-column: auto;
+            }
+        }
     </style>
 </head>
-<body>
+<body class="app-locked">
     <img class="brand-logo" src="REHABO-SG%20LOGO.png" alt="REHABO-SG logo">
+
+    <!-- Patient login is shown first. The original REHABO-SG homepage remains unchanged underneath. -->
+    <section class="access-screen" id="patient-login" aria-labelledby="patient-login-title">
+        <div class="access-card">
+            <p class="access-kicker">REHABO-SG / SECURE ACCESS</p>
+            <h2 id="patient-login-title">PATIENT LOGIN</h2>
+            <p class="access-subtitle">Sign in first to access the patient profile and REHABO-SG rehabilitation system.</p>
+
+            <form class="access-form" id="patient-login-form">
+                <label class="field-label">
+                    USERNAME
+                    <input class="access-input" id="login-username" name="username" type="text" autocomplete="username" required>
+                </label>
+
+                <label class="field-label">
+                    PASSWORD
+                    <input class="access-input" id="login-password" name="password" type="password" autocomplete="current-password" required>
+                </label>
+
+                <p class="login-error" id="login-error" role="alert"></p>
+                <button class="access-button" type="submit">ACCESS PATIENT PROFILE &gt;</button>
+            </form>
+
+            <p class="demo-note">
+                Prototype/demo access: <strong>patient</strong> / <strong>rehabo123</strong>.<br>
+                This client-side login is for the school prototype only and is not secure authentication for real patient records.
+            </p>
+        </div>
+    </section>
+
+    <section class="patient-dashboard" id="patient-dashboard" hidden aria-labelledby="patient-dashboard-title">
+        <div class="patient-dashboard-inner">
+            <header class="patient-dashboard-header">
+                <div>
+                    <p class="patient-dashboard-kicker">REHABO-SG / PATIENT PORTAL</p>
+                    <h2 id="patient-dashboard-title">PATIENT PROFILE</h2>
+                    <p class="patient-dashboard-intro">
+                        Review and save the patient's basic information before entering the rehabilitation system.
+                    </p>
+                </div>
+                <button class="logout-button" id="logout-button" type="button">LOG OUT</button>
+            </header>
+
+            <section class="profile-card" aria-labelledby="profile-card-title">
+                <h3 id="profile-card-title">PERSONAL INFORMATION</h3>
+
+                <form id="patient-profile-form">
+                    <div class="profile-grid">
+                        <label class="field-label full-width">
+                            FULL NAME
+                            <input class="profile-input" id="patient-name" type="text" placeholder="Enter patient's full name" required>
+                        </label>
+
+                        <label class="field-label">
+                            AGE
+                            <input class="profile-input" id="patient-age" type="number" min="0" max="120" placeholder="Age" required>
+                        </label>
+
+                        <label class="field-label">
+                            BIRTHDATE
+                            <input class="profile-input" id="patient-birthdate" type="date" required>
+                        </label>
+
+                        <label class="field-label">
+                            SEX
+                            <select class="profile-select" id="patient-sex" required>
+                                <option value="" selected disabled>Select sex</option>
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                                <option value="Prefer not to say">Prefer not to say</option>
+                            </select>
+                        </label>
+
+                        <label class="field-label">
+                            CONTACT NUMBER
+                            <input class="profile-input" id="patient-contact" type="tel" placeholder="09XXXXXXXXX" required>
+                        </label>
+
+                        <label class="field-label">
+                            EMERGENCY CONTACT / PERSON TO CALL
+                            <input class="profile-input" id="emergency-name" type="text" placeholder="Full name and relationship" required>
+                        </label>
+
+                        <label class="field-label">
+                            EMERGENCY CONTACT NUMBER
+                            <input class="profile-input" id="emergency-contact" type="tel" placeholder="09XXXXXXXXX" required>
+                        </label>
+                    </div>
+
+                    <div class="profile-actions">
+                        <button class="profile-button" type="submit">SAVE PATIENT PROFILE &gt;</button>
+                        <button class="profile-button" id="enter-system-button" type="button">ENTER REHABO-SG &gt;</button>
+                    </div>
+                    <p class="profile-status" id="profile-status" role="status"></p>
+                </form>
+
+                <div class="profile-summary" id="profile-summary">
+                    <div class="profile-summary-grid">
+                        <div class="profile-summary-item"><span>FULL NAME</span><strong id="summary-name">—</strong></div>
+                        <div class="profile-summary-item"><span>AGE</span><strong id="summary-age">—</strong></div>
+                        <div class="profile-summary-item"><span>BIRTHDATE</span><strong id="summary-birthdate">—</strong></div>
+                        <div class="profile-summary-item"><span>SEX</span><strong id="summary-sex">—</strong></div>
+                        <div class="profile-summary-item"><span>CONTACT NUMBER</span><strong id="summary-contact">—</strong></div>
+                        <div class="profile-summary-item"><span>EMERGENCY CONTACT</span><strong id="summary-emergency">—</strong></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>
     <main id="home">
         <nav class="top-nav" aria-label="Primary navigation">
             <a href="#" aria-current="page">HOME</a>
@@ -990,6 +1397,160 @@
     </section>
 
     <script>
+        const DEMO_USERNAME = "patient";
+        const DEMO_PASSWORD = "rehabo123";
+
+        const loginScreen = document.getElementById("patient-login");
+        const loginForm = document.getElementById("patient-login-form");
+        const loginError = document.getElementById("login-error");
+        const patientDashboard = document.getElementById("patient-dashboard");
+        const profileForm = document.getElementById("patient-profile-form");
+        const profileStatus = document.getElementById("profile-status");
+        const profileSummary = document.getElementById("profile-summary");
+        const enterSystemButton = document.getElementById("enter-system-button");
+        const logoutButton = document.getElementById("logout-button");
+
+        const profileFields = {
+            name: document.getElementById("patient-name"),
+            age: document.getElementById("patient-age"),
+            birthdate: document.getElementById("patient-birthdate"),
+            sex: document.getElementById("patient-sex"),
+            contact: document.getElementById("patient-contact"),
+            emergencyName: document.getElementById("emergency-name"),
+            emergencyContact: document.getElementById("emergency-contact")
+        };
+
+        const summaryFields = {
+            name: document.getElementById("summary-name"),
+            age: document.getElementById("summary-age"),
+            birthdate: document.getElementById("summary-birthdate"),
+            sex: document.getElementById("summary-sex"),
+            contact: document.getElementById("summary-contact"),
+            emergency: document.getElementById("summary-emergency")
+        };
+
+        function collectProfile() {
+            return {
+                name: profileFields.name.value.trim(),
+                age: profileFields.age.value.trim(),
+                birthdate: profileFields.birthdate.value,
+                sex: profileFields.sex.value,
+                contact: profileFields.contact.value.trim(),
+                emergencyName: profileFields.emergencyName.value.trim(),
+                emergencyContact: profileFields.emergencyContact.value.trim()
+            };
+        }
+
+        function displayProfile(profile) {
+            summaryFields.name.textContent = profile.name || "—";
+            summaryFields.age.textContent = profile.age ? profile.age + " years" : "—";
+            summaryFields.birthdate.textContent = profile.birthdate || "—";
+            summaryFields.sex.textContent = profile.sex || "—";
+            summaryFields.contact.textContent = profile.contact || "—";
+            summaryFields.emergency.textContent =
+                profile.emergencyName && profile.emergencyContact
+                    ? profile.emergencyName + " / " + profile.emergencyContact
+                    : "—";
+            profileSummary.classList.add("visible");
+        }
+
+        function loadSavedProfile() {
+            try {
+                const saved = sessionStorage.getItem("rehaboPatientProfile");
+                if (!saved) return;
+                const profile = JSON.parse(saved);
+                Object.keys(profileFields).forEach((key) => {
+                    if (profileFields[key] && profile[key] !== undefined) {
+                        profileFields[key].value = profile[key];
+                    }
+                });
+                displayProfile(profile);
+                profileStatus.textContent = "PATIENT PROFILE LOADED.";
+            } catch (error) {
+                console.warn("Patient profile could not be loaded.", error);
+            }
+        }
+
+        function showPatientDashboard() {
+            document.body.classList.remove("app-locked");
+            loginScreen.hidden = true;
+            patientDashboard.hidden = false;
+            loadSavedProfile();
+            window.scrollTo(0, 0);
+        }
+
+        function showSystemHome() {
+            patientDashboard.hidden = true;
+            document.body.classList.remove("app-locked");
+            document.getElementById("home").scrollIntoView({ behavior: "smooth", block: "start" });
+            history.replaceState(null, "", "#");
+        }
+
+        function showLogin() {
+            patientDashboard.hidden = true;
+            loginScreen.hidden = false;
+            document.body.classList.add("app-locked");
+            loginForm.reset();
+            loginError.textContent = "";
+            window.scrollTo(0, 0);
+        }
+
+        loginForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const username = document.getElementById("login-username").value.trim();
+            const password = document.getElementById("login-password").value;
+
+            if (username === DEMO_USERNAME && password === DEMO_PASSWORD) {
+                loginError.textContent = "";
+                showPatientDashboard();
+            } else {
+                loginError.textContent = "INVALID USERNAME OR PASSWORD.";
+            }
+        });
+
+        profileForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const profile = collectProfile();
+
+            try {
+                sessionStorage.setItem("rehaboPatientProfile", JSON.stringify(profile));
+                displayProfile(profile);
+                profileStatus.textContent = "PATIENT PROFILE SAVED FOR THIS SESSION.";
+            } catch (error) {
+                profileStatus.textContent = "PROFILE COULD NOT BE SAVED.";
+                console.error(error);
+            }
+        });
+
+        enterSystemButton.addEventListener("click", () => {
+            if (!profileForm.reportValidity()) {
+                profileStatus.textContent = "COMPLETE THE PATIENT PROFILE BEFORE ENTERING REHABO-SG.";
+                return;
+            }
+
+            const profile = collectProfile();
+
+            try {
+                sessionStorage.setItem("rehaboPatientProfile", JSON.stringify(profile));
+            } catch (error) {
+                console.warn("Patient profile could not be stored.", error);
+            }
+
+            displayProfile(profile);
+            profileStatus.textContent = "PROFILE READY. ENTERING REHABO-SG.";
+            showSystemHome();
+        });
+
+        logoutButton.addEventListener("click", () => {
+            sessionStorage.removeItem("rehaboPatientProfile");
+            profileForm.reset();
+            profileSummary.classList.remove("visible");
+            profileStatus.textContent = "";
+            showLogin();
+        });
+
         document.querySelectorAll('a[href^="#"]').forEach((link) => {
             link.addEventListener("click", (event) => {
                 const targetId = link.getAttribute("href");
